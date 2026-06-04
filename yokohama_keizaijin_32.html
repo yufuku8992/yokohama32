@@ -8,163 +8,157 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   :root {
-    --navy: #0d1b3e; --gold: #c9a84c; --gold-light: #e8c97d; --cream: #f8f4ee;
-    --white: #ffffff; --gray-50: #f9f8f6; --gray-100: #f0ede6; --gray-200: #e2ddd4;
-    --gray-400: #9e9488; --gray-600: #6b6358; --gray-800: #3a342c;
-    --red: #c0392b; --red-light: #fdecea; --green: #1a7a4a; --green-light: #e8f5ed;
-    --orange: #c76b0a; --orange-light: #fef3e2; --blue: #1a4a8a; --blue-light: #e8eef8;
-    --sidebar-w: 244px;
+    --navy:#0d1b3e;--gold:#c9a84c;--gold-light:#e8c97d;--cream:#f8f4ee;
+    --white:#ffffff;--gray-50:#f9f8f6;--gray-100:#f0ede6;--gray-200:#e2ddd4;
+    --gray-400:#9e9488;--gray-600:#6b6358;--gray-800:#3a342c;
+    --red:#c0392b;--red-light:#fdecea;--green:#1a7a4a;--green-light:#e8f5ed;
+    --orange:#c76b0a;--orange-light:#fef3e2;--blue:#1a4a8a;--blue-light:#e8eef8;
+    --sidebar-w:244px;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Noto Sans JP', sans-serif; background: var(--cream); color: var(--gray-800); min-height: 100vh; font-size: 14px; line-height: 1.6; }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Noto Sans JP',sans-serif;background:var(--cream);color:var(--gray-800);min-height:100vh;font-size:14px;line-height:1.6;}
 
-  #sidebar { position: fixed; left: 0; top: 0; bottom: 0; width: var(--sidebar-w); background: var(--navy); display: flex; flex-direction: column; z-index: 100; }
-  .sidebar-header { padding: 20px 18px 16px; border-bottom: 1px solid rgba(201,168,76,0.25); }
-  .event-badge { background: linear-gradient(135deg, var(--gold), var(--gold-light)); color: var(--navy); font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 2px; letter-spacing: 0.08em; display: inline-block; margin-bottom: 8px; }
-  .event-title { font-family: 'Noto Serif JP', serif; font-size: 12.5px; color: var(--white); font-weight: 600; line-height: 1.5; }
-  .event-meta { font-size: 10.5px; color: rgba(255,255,255,0.4); margin-top: 6px; line-height: 1.7; }
-  .sidebar-nav { flex: 1; overflow-y: auto; padding: 10px 0; }
-  .nav-section { padding: 8px 16px 3px; font-size: 9px; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.3); font-weight: 500; }
-  .nav-item { display: flex; align-items: center; gap: 9px; padding: 8px 18px; cursor: pointer; border: none; background: none; color: rgba(255,255,255,0.6); font-family: 'Noto Sans JP', sans-serif; font-size: 12.5px; width: 100%; text-align: left; transition: all 0.15s; position: relative; }
-  .nav-item:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.9); }
-  .nav-item.active { background: rgba(201,168,76,0.15); color: var(--gold-light); }
-  .nav-item.active::before { content: ''; position: absolute; left: 0; top: 6px; bottom: 6px; width: 3px; background: var(--gold); border-radius: 0 2px 2px 0; }
-  .nav-icon { font-size: 15px; flex-shrink: 0; }
-  .nav-badge { margin-left: auto; background: var(--red); color: white; font-size: 9px; padding: 1px 5px; border-radius: 10px; font-weight: 700; }
-  .sidebar-footer { padding: 14px 18px; border-top: 1px solid rgba(255,255,255,0.08); }
-  .user-chip { display: flex; align-items: center; gap: 8px; }
-  .user-avatar { width: 28px; height: 28px; background: linear-gradient(135deg, var(--gold), var(--gold-light)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--navy); flex-shrink: 0; }
-  .user-name { font-size: 12px; color: rgba(255,255,255,0.75); font-weight: 500; }
-  .user-role { font-size: 10px; color: rgba(255,255,255,0.35); }
+  #sidebar{position:fixed;left:0;top:0;bottom:0;width:var(--sidebar-w);background:var(--navy);display:flex;flex-direction:column;z-index:100;}
+  .sidebar-header{padding:20px 18px 16px;border-bottom:1px solid rgba(201,168,76,0.25);}
+  .event-badge{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--navy);font-size:10px;font-weight:700;padding:2px 8px;border-radius:2px;letter-spacing:0.08em;display:inline-block;margin-bottom:8px;}
+  .event-title{font-family:'Noto Serif JP',serif;font-size:12.5px;color:var(--white);font-weight:600;line-height:1.5;}
+  .event-meta{font-size:10.5px;color:rgba(255,255,255,0.4);margin-top:6px;line-height:1.7;}
+  .sync-status{font-size:10px;color:rgba(255,255,255,0.4);display:flex;align-items:center;margin-top:6px;}
+  .sync-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;background:var(--gray-400);}
+  .sync-dot.connected{background:var(--green);animation:pulse 2s infinite;}
+  .sync-dot.syncing{background:var(--orange);}
+  .sync-dot.error{background:var(--red);}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+  .sidebar-nav{flex:1;overflow-y:auto;padding:10px 0;}
+  .nav-section{padding:8px 16px 3px;font-size:9px;text-transform:uppercase;letter-spacing:0.12em;color:rgba(255,255,255,0.3);font-weight:500;}
+  .nav-item{display:flex;align-items:center;gap:9px;padding:8px 18px;cursor:pointer;border:none;background:none;color:rgba(255,255,255,0.6);font-family:'Noto Sans JP',sans-serif;font-size:12.5px;width:100%;text-align:left;transition:all 0.15s;position:relative;}
+  .nav-item:hover{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.9);}
+  .nav-item.active{background:rgba(201,168,76,0.15);color:var(--gold-light);}
+  .nav-item.active::before{content:'';position:absolute;left:0;top:6px;bottom:6px;width:3px;background:var(--gold);border-radius:0 2px 2px 0;}
+  .nav-icon{font-size:15px;flex-shrink:0;}
+  .nav-badge{margin-left:auto;background:var(--red);color:white;font-size:9px;padding:1px 5px;border-radius:10px;font-weight:700;}
+  .sidebar-footer{padding:14px 18px;border-top:1px solid rgba(255,255,255,0.08);}
+  .user-chip{display:flex;align-items:center;gap:8px;}
+  .user-avatar{width:28px;height:28px;background:linear-gradient(135deg,var(--gold),var(--gold-light));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--navy);flex-shrink:0;}
+  .user-name{font-size:12px;color:rgba(255,255,255,0.75);font-weight:500;}
+  .user-role{font-size:10px;color:rgba(255,255,255,0.35);}
 
-  /* SYNC STATUS */
-  .sync-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 5px; background: var(--gray-400); }
-  .sync-dot.connected { background: var(--green); animation: pulse 2s infinite; }
-  .sync-dot.syncing { background: var(--orange); }
-  .sync-dot.error { background: var(--red); }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-  .sync-status { font-size: 10px; color: rgba(255,255,255,0.4); display: flex; align-items: center; margin-top: 6px; }
+  #main{margin-left:var(--sidebar-w);min-height:100vh;display:flex;flex-direction:column;}
+  #topbar{background:var(--white);border-bottom:1px solid var(--gray-200);padding:0 26px;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:90;}
+  .page-title{font-family:'Noto Serif JP',serif;font-size:15px;font-weight:600;color:var(--navy);}
+  .topbar-right{display:flex;align-items:center;gap:10px;}
+  .btn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:4px;border:none;cursor:pointer;font-family:'Noto Sans JP',sans-serif;font-size:12.5px;font-weight:500;transition:all 0.15s;}
+  .btn-primary{background:var(--navy);color:var(--white);}
+  .btn-primary:hover{background:#162a5e;}
+  .btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--navy);}
+  .btn-outline{background:transparent;color:var(--navy);border:1px solid var(--gray-200);}
+  .btn-outline:hover{background:var(--gray-50);}
+  .btn-sm{padding:4px 10px;font-size:11.5px;}
+  .btn-danger{background:var(--red);color:white;}
+  .btn-danger:hover{background:#a93226;}
+  #content{flex:1;padding:24px 26px;}
+  .page{display:none;}
+  .page.active{display:block;}
 
-  #main { margin-left: var(--sidebar-w); min-height: 100vh; display: flex; flex-direction: column; }
-  #topbar { background: var(--white); border-bottom: 1px solid var(--gray-200); padding: 0 26px; height: 54px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 90; }
-  .page-title { font-family: 'Noto Serif JP', serif; font-size: 15px; font-weight: 600; color: var(--navy); }
-  .topbar-right { display: flex; align-items: center; gap: 10px; }
-  .btn { display: inline-flex; align-items: center; gap: 5px; padding: 7px 14px; border-radius: 4px; border: none; cursor: pointer; font-family: 'Noto Sans JP', sans-serif; font-size: 12.5px; font-weight: 500; transition: all 0.15s; }
-  .btn-primary { background: var(--navy); color: var(--white); }
-  .btn-primary:hover { background: #162a5e; }
-  .btn-gold { background: linear-gradient(135deg, var(--gold), var(--gold-light)); color: var(--navy); }
-  .btn-outline { background: transparent; color: var(--navy); border: 1px solid var(--gray-200); }
-  .btn-outline:hover { background: var(--gray-50); }
-  .btn-sm { padding: 4px 10px; font-size: 11.5px; }
-  .btn-danger { background: var(--red); color: white; }
-  #content { flex: 1; padding: 24px 26px; }
-  .page { display: none; }
-  .page.active { display: block; }
+  .card{background:var(--white);border:1px solid var(--gray-200);border-radius:6px;overflow:hidden;}
+  .card-header{padding:14px 18px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between;}
+  .card-title{font-family:'Noto Serif JP',serif;font-size:13px;font-weight:600;color:var(--navy);}
+  .card-body{padding:18px;}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+  .grid-4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px;}
 
-  .card { background: var(--white); border: 1px solid var(--gray-200); border-radius: 6px; overflow: hidden; }
-  .card-header { padding: 14px 18px; border-bottom: 1px solid var(--gray-100); display: flex; align-items: center; justify-content: space-between; }
-  .card-title { font-family: 'Noto Serif JP', serif; font-size: 13px; font-weight: 600; color: var(--navy); }
-  .card-body { padding: 18px; }
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-  .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 14px; }
+  .stat-card{background:var(--white);border:1px solid var(--gray-200);border-radius:6px;padding:18px;position:relative;overflow:hidden;}
+  .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+  .stat-card.gold::before{background:linear-gradient(90deg,var(--gold),var(--gold-light));}
+  .stat-card.red::before{background:var(--red);}
+  .stat-card.green::before{background:var(--green);}
+  .stat-card.blue::before{background:var(--blue);}
+  .stat-label{font-size:10.5px;color:var(--gray-400);font-weight:500;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px;}
+  .stat-value{font-size:30px;font-weight:700;color:var(--navy);line-height:1;}
+  .stat-sub{font-size:11px;color:var(--gray-400);margin-top:5px;}
+  .stat-icon{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:26px;opacity:0.1;}
 
-  .stat-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: 6px; padding: 18px; position: relative; overflow: hidden; }
-  .stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
-  .stat-card.gold::before { background: linear-gradient(90deg, var(--gold), var(--gold-light)); }
-  .stat-card.red::before { background: var(--red); }
-  .stat-card.green::before { background: var(--green); }
-  .stat-card.blue::before { background: var(--blue); }
-  .stat-label { font-size: 10.5px; color: var(--gray-400); font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
-  .stat-value { font-size: 30px; font-weight: 700; color: var(--navy); line-height: 1; }
-  .stat-sub { font-size: 11px; color: var(--gray-400); margin-top: 5px; }
-  .stat-icon { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); font-size: 26px; opacity: 0.1; }
+  .tbl{width:100%;border-collapse:collapse;}
+  .tbl thead tr{border-bottom:2px solid var(--gray-200);}
+  .tbl th{padding:8px 12px;text-align:left;font-size:10.5px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.06em;white-space:nowrap;}
+  .tbl td{padding:9px 12px;border-bottom:1px solid var(--gray-100);font-size:13px;vertical-align:middle;}
+  .tbl tbody tr:hover td{background:var(--gray-50);}
+  .tbl tbody tr:last-child td{border-bottom:none;}
 
-  .tbl { width: 100%; border-collapse: collapse; }
-  .tbl thead tr { border-bottom: 2px solid var(--gray-200); }
-  .tbl th { padding: 8px 12px; text-align: left; font-size: 10.5px; font-weight: 700; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; }
-  .tbl td { padding: 9px 12px; border-bottom: 1px solid var(--gray-100); font-size: 13px; }
-  .tbl tbody tr:hover td { background: var(--gray-50); }
-  .tbl tbody tr:last-child td { border-bottom: none; }
+  .badge{display:inline-flex;align-items:center;padding:2px 7px;border-radius:3px;font-size:10.5px;font-weight:600;white-space:nowrap;}
+  .badge-todo{background:var(--gray-100);color:var(--gray-600);}
+  .badge-doing{background:var(--blue-light);color:var(--blue);}
+  .badge-done{background:var(--green-light);color:var(--green);}
+  .badge-overdue{background:var(--red-light);color:var(--red);}
+  .badge-high{background:var(--red-light);color:var(--red);}
+  .badge-mid{background:var(--orange-light);color:var(--orange);}
+  .badge-low{background:var(--green-light);color:var(--green);}
+  .badge-urgent{background:var(--red);color:white;}
+  .badge-normal{background:var(--blue-light);color:var(--blue);}
+  .badge-info{background:var(--gray-100);color:var(--gray-600);}
 
-  .badge { display: inline-flex; align-items: center; padding: 2px 7px; border-radius: 3px; font-size: 10.5px; font-weight: 600; white-space: nowrap; }
-  .badge-todo { background: var(--gray-100); color: var(--gray-600); }
-  .badge-doing { background: var(--blue-light); color: var(--blue); }
-  .badge-done { background: var(--green-light); color: var(--green); }
-  .badge-overdue { background: var(--red-light); color: var(--red); }
-  .badge-high { background: var(--red-light); color: var(--red); }
-  .badge-mid { background: var(--orange-light); color: var(--orange); }
-  .badge-low { background: var(--green-light); color: var(--green); }
-  .badge-urgent { background: var(--red); color: white; }
-  .badge-normal { background: var(--blue-light); color: var(--blue); }
-  .badge-info { background: var(--gray-100); color: var(--gray-600); }
+  .form-row{margin-bottom:14px;}
+  .form-label{font-size:11.5px;font-weight:600;color:var(--gray-600);margin-bottom:5px;display:block;}
+  .form-input,.form-select,.form-textarea{width:100%;padding:7px 11px;border:1px solid var(--gray-200);border-radius:4px;font-family:'Noto Sans JP',sans-serif;font-size:13px;color:var(--gray-800);background:var(--white);outline:none;transition:border-color 0.15s;}
+  .form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,0.12);}
+  .form-textarea{resize:vertical;min-height:72px;}
+  /* inline edit */
+  .inline-input{border:none;background:transparent;font-family:'Noto Sans JP',sans-serif;font-size:13px;color:var(--gray-800);width:100%;padding:2px 4px;border-radius:3px;}
+  .inline-input:focus{outline:none;background:var(--gray-50);border:1px solid var(--gold);}
+  .inline-select{border:none;background:transparent;font-family:'Noto Sans JP',sans-serif;font-size:12px;color:var(--gray-800);padding:2px 4px;border-radius:3px;cursor:pointer;}
+  .inline-select:focus{outline:none;background:var(--gray-50);}
 
-  .form-row { margin-bottom: 14px; }
-  .form-label { font-size: 11.5px; font-weight: 600; color: var(--gray-600); margin-bottom: 5px; display: block; }
-  .form-input, .form-select, .form-textarea { width: 100%; padding: 7px 11px; border: 1px solid var(--gray-200); border-radius: 4px; font-family: 'Noto Sans JP', sans-serif; font-size: 13px; color: var(--gray-800); background: var(--white); outline: none; transition: border-color 0.15s; }
-  .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,168,76,0.12); }
-  .form-textarea { resize: vertical; min-height: 72px; }
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(13,27,62,0.5);z-index:200;align-items:center;justify-content:center;}
+  .modal-overlay.open{display:flex;}
+  .modal{background:var(--white);border-radius:8px;width:520px;max-width:95vw;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.25);}
+  .modal-header{padding:18px 22px 14px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between;}
+  .modal-title{font-family:'Noto Serif JP',serif;font-size:15px;font-weight:600;color:var(--navy);}
+  .modal-close{background:none;border:none;cursor:pointer;font-size:18px;color:var(--gray-400);padding:2px 6px;border-radius:4px;}
+  .modal-close:hover{background:var(--gray-100);}
+  .modal-body{padding:20px 22px;}
+  .modal-footer{padding:14px 22px;border-top:1px solid var(--gray-100);display:flex;justify-content:flex-end;gap:10px;}
 
-  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(13,27,62,0.5); z-index: 200; align-items: center; justify-content: center; }
-  .modal-overlay.open { display: flex; }
-  .modal { background: var(--white); border-radius: 8px; width: 520px; max-width: 95vw; max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.25); }
-  .modal-header { padding: 18px 22px 14px; border-bottom: 1px solid var(--gray-100); display: flex; align-items: center; justify-content: space-between; }
-  .modal-title { font-family: 'Noto Serif JP', serif; font-size: 15px; font-weight: 600; color: var(--navy); }
-  .modal-close { background: none; border: none; cursor: pointer; font-size: 18px; color: var(--gray-400); padding: 2px 6px; border-radius: 4px; }
-  .modal-body { padding: 20px 22px; }
-  .modal-footer { padding: 14px 22px; border-top: 1px solid var(--gray-100); display: flex; justify-content: flex-end; gap: 10px; }
+  .announce-item{border-left:3px solid transparent;padding:11px 14px;margin-bottom:2px;border-radius:0 4px 4px 0;transition:background 0.1s;}
+  .announce-item:hover{background:var(--gray-50);}
+  .announce-item.urgent{border-left-color:var(--red);}
+  .announce-item.normal{border-left-color:var(--blue);}
+  .announce-item.info{border-left-color:var(--gray-200);}
+  .announce-meta{font-size:11px;color:var(--gray-400);margin-top:3px;}
 
-  .announce-item { border-left: 3px solid transparent; padding: 11px 14px; margin-bottom: 2px; border-radius: 0 4px 4px 0; cursor: pointer; transition: background 0.1s; }
-  .announce-item:hover { background: var(--gray-50); }
-  .announce-item.urgent { border-left-color: var(--red); }
-  .announce-item.normal { border-left-color: var(--blue); }
-  .announce-item.info { border-left-color: var(--gray-200); }
-  .announce-meta { font-size: 11px; color: var(--gray-400); margin-top: 3px; }
+  .runbook-item{display:grid;grid-template-columns:90px 1fr 110px 80px;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--gray-100);}
+  .runbook-item:last-child{border-bottom:none;}
+  .runbook-item.current{background:rgba(201,168,76,0.08);margin:0 -18px;padding:9px 18px;border-radius:4px;border-bottom:none;}
+  .current-bar{font-size:9px;background:var(--gold);color:var(--navy);padding:1px 5px;border-radius:2px;font-weight:700;}
+  .now-line{display:flex;align-items:center;gap:8px;margin:2px -18px;padding:0 18px;}
+  .now-line-bar{flex:1;height:1px;background:var(--red);}
+  .now-line-label{font-size:10px;color:var(--red);font-weight:700;white-space:nowrap;}
 
-  .runbook-item { display: grid; grid-template-columns: 90px 1fr 110px 80px; gap: 10px; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--gray-100); }
-  .runbook-item:last-child { border-bottom: none; }
-  .runbook-item.current { background: rgba(201,168,76,0.08); margin: 0 -18px; padding: 9px 18px; border-radius: 4px; border-bottom: none; }
-  .current-bar { font-size: 9px; background: var(--gold); color: var(--navy); padding: 1px 5px; border-radius: 2px; font-weight: 700; }
-  .now-line { display: flex; align-items: center; gap: 8px; margin: 2px -18px; padding: 0 18px; }
-  .now-line-bar { flex: 1; height: 1px; background: var(--red); }
-  .now-line-label { font-size: 10px; color: var(--red); font-weight: 700; white-space: nowrap; }
+  .incident-item{padding:13px 15px;border:1px solid var(--gray-200);border-radius:6px;margin-bottom:10px;border-left:4px solid var(--orange);}
+  .incident-item.resolved{border-left-color:var(--green);opacity:0.7;}
 
-  .incident-item { padding: 13px 15px; border: 1px solid var(--gray-200); border-radius: 6px; margin-bottom: 10px; border-left: 4px solid var(--orange); }
-  .incident-item.resolved { border-left-color: var(--green); opacity: 0.7; }
+  .mb-16{margin-bottom:16px;}.mb-18{margin-bottom:18px;}.mb-20{margin-bottom:20px;}
+  .flex-center{display:flex;align-items:center;}.gap-10{gap:10px;}.gap-12{gap:12px;}
+  .text-muted{color:var(--gray-400);font-size:11.5px;}
+  .separator{height:1px;background:var(--gray-100);margin:14px 0;}
+  .tag{display:inline-flex;align-items:center;padding:2px 7px;background:var(--gray-100);border-radius:3px;font-size:11px;color:var(--gray-600);margin:2px;}
+  .search-wrap{position:relative;}.search-wrap input{padding-left:30px;}
+  .search-icon{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:var(--gray-400);font-size:13px;pointer-events:none;}
+  .empty-state{text-align:center;padding:48px 20px;color:var(--gray-400);}
+  .empty-icon{font-size:36px;margin-bottom:10px;}
+  .loading{text-align:center;padding:30px;color:var(--gray-400);font-size:13px;}
 
-  .checkin-bar-wrap { background: var(--gray-100); height: 8px; border-radius: 4px; overflow: hidden; margin: 8px 0; }
-  .checkin-bar { height: 100%; background: linear-gradient(90deg, var(--green), #4aba7a); border-radius: 4px; transition: width 0.5s; }
-  .attendee-row { display: flex; align-items: center; padding: 7px 12px; border-bottom: 1px solid var(--gray-100); gap: 9px; font-size: 13px; }
-  .attendee-row:last-child { border-bottom: none; }
-  .attendee-row:hover { background: var(--gray-50); }
-  .check-status { width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; }
-  .check-status.in { background: var(--green); color: white; }
-  .check-status.out { background: var(--gray-200); color: var(--gray-600); }
+  /* ROLE TABLE */
+  .role-area-badge{display:inline-block;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:600;}
+  .role-del-btn{opacity:0;transition:opacity 0.15s;background:none;border:none;cursor:pointer;color:var(--red);font-size:16px;padding:2px 6px;}
+  .tbl tbody tr:hover .role-del-btn{opacity:1;}
+  .add-role-row{background:var(--gray-50);}
 
-  .search-wrap { position: relative; }
-  .search-wrap input { padding-left: 30px; }
-  .search-icon { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); color: var(--gray-400); font-size: 13px; pointer-events: none; }
-
-  .mb-16 { margin-bottom: 16px; }
-  .mb-18 { margin-bottom: 18px; }
-  .mb-20 { margin-bottom: 20px; }
-  .flex-center { display: flex; align-items: center; }
-  .gap-10 { gap: 10px; }
-  .gap-12 { gap: 12px; }
-  .text-muted { color: var(--gray-400); font-size: 11.5px; }
-  .separator { height: 1px; background: var(--gray-100); margin: 14px 0; }
-  .tag { display: inline-flex; align-items: center; padding: 2px 7px; background: var(--gray-100); border-radius: 3px; font-size: 11px; color: var(--gray-600); margin: 2px; }
-  .note-decision { background: var(--green-light); border-left: 3px solid var(--green); padding: 5px 9px; border-radius: 0 3px 3px 0; font-size: 12px; margin: 3px 0; }
-  .note-pending { background: var(--orange-light); border-left: 3px solid var(--orange); padding: 5px 9px; border-radius: 0 3px 3px 0; font-size: 12px; margin: 3px 0; }
-  .note-action { background: var(--blue-light); border-left: 3px solid var(--blue); padding: 5px 9px; border-radius: 0 3px 3px 0; font-size: 12px; margin: 3px 0; }
-  .empty-state { text-align: center; padding: 48px 20px; color: var(--gray-400); }
-  .empty-icon { font-size: 36px; margin-bottom: 10px; }
-  .loading { text-align: center; padding: 30px; color: var(--gray-400); font-size: 13px; }
-
-  #toast-container { position: fixed; bottom: 22px; right: 22px; z-index: 999; display: flex; flex-direction: column; gap: 8px; }
-  .toast { background: var(--navy); color: white; padding: 11px 16px; border-radius: 6px; font-size: 13px; box-shadow: 0 4px 16px rgba(0,0,0,0.2); border-left: 4px solid var(--gold); animation: slideIn 0.2s ease; max-width: 320px; }
-  .toast.success { border-left-color: var(--green); }
-  .toast.error { border-left-color: var(--red); }
-  @keyframes slideIn { from { transform: translateX(20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+  #toast-container{position:fixed;bottom:22px;right:22px;z-index:999;display:flex;flex-direction:column;gap:8px;}
+  .toast{background:var(--navy);color:white;padding:11px 16px;border-radius:6px;font-size:13px;box-shadow:0 4px 16px rgba(0,0,0,0.2);border-left:4px solid var(--gold);animation:slideIn 0.2s ease;max-width:320px;}
+  .toast.success{border-left-color:var(--green);}
+  .toast.error{border-left-color:var(--red);}
+  @keyframes slideIn{from{transform:translateX(20px);opacity:0;}to{transform:translateX(0);opacity:1;}}
 </style>
 </head>
 <body>
@@ -173,15 +167,8 @@
   <div class="sidebar-header">
     <div class="event-badge">第32回</div>
     <div class="event-title">横浜経済人会議<br>運営管理システム</div>
-    <div class="event-meta">
-      2026年8月28日（金）17:00〜20:00<br>
-      関東学院大学 関内キャンパス<br>
-      テンネー記念ホール
-    </div>
-    <div class="sync-status">
-      <span class="sync-dot" id="sync-dot"></span>
-      <span id="sync-label">接続中...</span>
-    </div>
+    <div class="event-meta">2026年8月28日（金）17:00〜20:00<br>関東学院大学 関内キャンパス<br>テンネー記念ホール</div>
+    <div class="sync-status"><span class="sync-dot" id="sync-dot"></span><span id="sync-label">接続中...</span></div>
   </div>
   <div class="sidebar-nav">
     <div class="nav-section">メイン</div>
@@ -189,20 +176,15 @@
     <button class="nav-item" onclick="showPage('tasks')"><span class="nav-icon">✅</span> タスク管理<span class="nav-badge" id="badge-tasks" style="display:none">0</span></button>
     <button class="nav-item" onclick="showPage('runbook')"><span class="nav-icon">📋</span> 進行表</button>
     <div class="nav-section">当日運営</div>
-    <button class="nav-item" onclick="showPage('reception')"><span class="nav-icon">🎫</span> 受付・チェックイン</button>
+    <button class="nav-item" onclick="showPage('roles')"><span class="nav-icon">👤</span> 役割分担表</button>
     <button class="nav-item" onclick="showPage('incidents')"><span class="nav-icon">⚠️</span> インシデント<span class="nav-badge" id="badge-incidents" style="display:none">0</span></button>
     <div class="nav-section">情報共有</div>
     <button class="nav-item" onclick="showPage('announcements')"><span class="nav-icon">📢</span> お知らせ</button>
-    <div class="nav-section">管理</div>
-    <button class="nav-item" onclick="showPage('members')"><span class="nav-icon">👥</span> メンバー管理</button>
   </div>
   <div class="sidebar-footer">
     <div class="user-chip">
       <div class="user-avatar">福</div>
-      <div>
-        <div class="user-name">福田 雄太郎</div>
-        <div class="user-role">副委員長 / 議案作成者</div>
-      </div>
+      <div><div class="user-name">福田 雄太郎</div><div class="user-role">副委員長 / 議案作成者</div></div>
     </div>
   </div>
 </nav>
@@ -221,40 +203,24 @@
     <!-- DASHBOARD -->
     <div id="page-dashboard" class="page active">
       <div class="grid-4 mb-20">
-        <div class="stat-card gold">
-          <div class="stat-label">来場目標</div>
-          <div class="stat-value">509</div>
-          <div class="stat-sub">対外140名 / 対内369名</div>
-          <div class="stat-icon">👥</div>
-        </div>
-        <div class="stat-card blue">
-          <div class="stat-label">タスク完了率</div>
-          <div class="stat-value" id="dash-task-rate">—</div>
-          <div class="stat-sub" id="dash-task-sub">読込中...</div>
-          <div class="stat-icon">✅</div>
-        </div>
-        <div class="stat-card red">
-          <div class="stat-label">未対応インシデント</div>
-          <div class="stat-value" id="dash-incident-count">—</div>
-          <div class="stat-sub">件</div>
-          <div class="stat-icon">🚨</div>
-        </div>
-        <div class="stat-card green">
-          <div class="stat-label">開催まで</div>
-          <div class="stat-value" id="days-left">—</div>
-          <div class="stat-sub">2026年8月28日（金）</div>
-          <div class="stat-icon">📅</div>
-        </div>
+        <div class="stat-card gold"><div class="stat-label">来場目標</div><div class="stat-value">509</div><div class="stat-sub">対外140名 / 対内369名</div><div class="stat-icon">👥</div></div>
+        <div class="stat-card blue"><div class="stat-label">タスク完了率</div><div class="stat-value" id="dash-task-rate">—</div><div class="stat-sub" id="dash-task-sub">読込中...</div><div class="stat-icon">✅</div></div>
+        <div class="stat-card red"><div class="stat-label">未対応インシデント</div><div class="stat-value" id="dash-inc-count">—</div><div class="stat-sub">件</div><div class="stat-icon">🚨</div></div>
+        <div class="stat-card green"><div class="stat-label">開催まで</div><div class="stat-value" id="days-left">—</div><div class="stat-sub">2026年8月28日（金）</div><div class="stat-icon">📅</div></div>
       </div>
       <div class="grid-2 mb-18">
         <div class="card">
-          <div class="card-header"><div class="card-title">🚨 期限超過・要対応タスク</div><button class="btn btn-outline btn-sm" onclick="showPage('tasks')">すべて見る</button></div>
-          <div style="padding:0 18px"><table class="tbl"><tbody id="dash-overdue-tasks"><tr><td class="loading">読込中...</td></tr></tbody></table></div>
+          <div class="card-header"><div class="card-title">🚨 期限超過タスク</div><button class="btn btn-outline btn-sm" onclick="showPage('tasks')">すべて見る</button></div>
+          <div style="padding:0 18px"><table class="tbl"><tbody id="dash-overdue"></tbody></table></div>
         </div>
         <div class="card">
           <div class="card-header"><div class="card-title">📢 最新お知らせ</div><button class="btn btn-outline btn-sm" onclick="showPage('announcements')">すべて見る</button></div>
-          <div style="padding:6px 4px" id="dash-announces"><div class="loading">読込中...</div></div>
+          <div style="padding:6px 4px" id="dash-ann"><div class="loading">読込中...</div></div>
         </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">👤 役割分担（サマリー）</div><button class="btn btn-outline btn-sm" onclick="showPage('roles')">編集する</button></div>
+        <div style="padding:0 18px"><table class="tbl"><tbody id="dash-roles"></tbody></table></div>
       </div>
     </div>
 
@@ -271,7 +237,7 @@
     <!-- RUNBOOK -->
     <div id="page-runbook" class="page">
       <div class="flex-center gap-12 mb-16">
-        <div style="flex:1;font-size:12px;color:var(--gray-600)"><strong>2026年8月28日（金）</strong>　関東学院大学 関内キャンパス テンネー記念ホール　|　受付 16:30〜 / 本番 17:00〜20:00</div>
+        <div style="flex:1;font-size:12px;color:var(--gray-600)"><strong>2026年8月28日（金）</strong>　関東学院大学 関内キャンパス テンネー記念ホール　|　受付16:30〜 / 本番17:00〜20:00</div>
         <button class="btn btn-primary" onclick="openModal('modal-new-runbook')">＋ 項目追加</button>
       </div>
       <div class="card">
@@ -280,34 +246,29 @@
       </div>
     </div>
 
-    <!-- RECEPTION -->
-    <div id="page-reception" class="page">
-      <div class="grid-4 mb-18">
-        <div class="stat-card green"><div class="stat-label">チェックイン済</div><div class="stat-value" id="checked-count">0</div><div class="stat-sub">/ 509名（目標）</div><div class="stat-icon">✅</div></div>
-        <div class="stat-card blue"><div class="stat-label">未チェックイン</div><div class="stat-value" id="unchecked-count">—</div><div class="stat-sub">名</div></div>
-        <div class="stat-card gold"><div class="stat-label">チェックイン率</div><div class="stat-value" id="checkin-rate">0<span style="font-size:18px">%</span></div></div>
-        <div class="stat-card red"><div class="stat-label">VIP・来賓確認待ち</div><div class="stat-value" id="vip-pending">—</div><div class="stat-sub">名</div></div>
+    <!-- ROLES -->
+    <div id="page-roles" class="page">
+      <div class="flex-center gap-12 mb-16">
+        <div style="flex:1;font-size:13px;color:var(--gray-600)">セルをクリックして直接編集できます。変更は自動的に全メンバーに反映されます。</div>
+        <button class="btn btn-primary" onclick="openModal('modal-new-role')">＋ 担当者を追加</button>
       </div>
-      <div class="card mb-16"><div class="card-body"><div class="checkin-bar-wrap"><div class="checkin-bar" id="checkin-bar" style="width:0%"></div></div><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--gray-400)"><span>0%</span><span>50%</span><span>100%</span></div></div></div>
-      <div class="grid-2">
-        <div class="card">
-          <div class="card-header"><div class="card-title">🔍 参加者検索・受付</div></div>
-          <div class="card-body">
-            <div class="search-wrap mb-16"><span class="search-icon">🔍</span><input class="form-input" type="text" placeholder="名前・会社名で検索..." id="attendee-search" oninput="filterAttendees(this.value)"></div>
-            <div id="attendee-list" style="max-height:380px;overflow-y:auto;border:1px solid var(--gray-100);border-radius:4px"><div class="loading">読込中...</div></div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-header"><div class="card-title">＋ 参加者を登録</div></div>
-          <div class="card-body">
-            <div class="form-row"><label class="form-label">氏名 *</label><input class="form-input" type="text" id="new-att-name" placeholder="山田 太郎"></div>
-            <div class="form-row"><label class="form-label">会社・団体名</label><input class="form-input" type="text" id="new-att-company" placeholder="株式会社〇〇"></div>
-            <div class="form-row"><label class="form-label">区分</label>
-              <select class="form-select" id="new-att-type"><option>正会員</option><option>ゲスト・特別会員</option><option>対外一般</option><option>来賓・行政</option><option>登壇関係者</option><option>メディア</option></select>
-            </div>
-            <div class="form-row"><label class="form-label"><input type="checkbox" id="new-att-vip"> VIP・来賓フラグ</label></div>
-            <button class="btn btn-primary" style="width:100%" onclick="addAttendee()">登録してチェックイン</button>
-          </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">👤 役割分担表</div><div class="text-muted" id="role-updated"></div></div>
+        <div style="overflow-x:auto">
+          <table class="tbl" id="role-table">
+            <thead>
+              <tr>
+                <th style="width:130px">氏名</th>
+                <th style="width:160px">役職・委員会</th>
+                <th style="width:130px">担当エリア</th>
+                <th style="width:130px">当日役割</th>
+                <th>連絡先・備考</th>
+                <th style="width:80px">ステータス</th>
+                <th style="width:40px"></th>
+              </tr>
+            </thead>
+            <tbody id="role-tbody"><tr><td colspan="7" class="loading">読込中...</td></tr></tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -322,23 +283,6 @@
     <div id="page-announcements" class="page">
       <div class="flex-center gap-12 mb-16"><div style="flex:1"></div><button class="btn btn-primary" onclick="openModal('modal-new-announce')">＋ お知らせ投稿</button></div>
       <div class="card" id="announce-full-list"><div class="loading">読込中...</div></div>
-    </div>
-
-    <!-- MEMBERS -->
-    <div id="page-members" class="page">
-      <div class="card">
-        <table class="tbl">
-          <thead><tr><th>氏名</th><th>役職</th><th>担当</th></tr></thead>
-          <tbody>
-            <tr><td><strong>川本 泰之</strong></td><td>横浜JC 理事長</td><td>全体統括・政策提言</td></tr>
-            <tr><td><strong>長谷川 圭一</strong></td><td>経済政策室 室長</td><td>趣旨説明・全体進行</td></tr>
-            <tr><td><strong>荒井 亮一</strong></td><td>地域開発創造委員会 委員長</td><td>第2部ファシリテーター</td></tr>
-            <tr><td><strong>弘中 義之</strong></td><td>国際観光活性化委員会 委員長</td><td>第3部担当</td></tr>
-            <tr><td><strong>永井 嵩久</strong></td><td>副理事長</td><td>第1部ファシリテーター</td></tr>
-            <tr><td><strong>福田 雄太郎</strong></td><td>副委員長</td><td>議案作成・閉会宣言</td></tr>
-          </tbody>
-        </table>
-      </div>
     </div>
 
   </div>
@@ -378,6 +322,29 @@
   </div>
 </div>
 
+<div class="modal-overlay" id="modal-new-role">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">担当者を追加</div><button class="modal-close" onclick="closeModal('modal-new-role')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-row"><label class="form-label">氏名 *</label><input class="form-input" type="text" id="new-role-name" placeholder="山田 太郎"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="form-row"><label class="form-label">役職・委員会</label><input class="form-input" type="text" id="new-role-position" placeholder="地域開発創造委員会"></div>
+        <div class="form-row"><label class="form-label">担当エリア</label><select class="form-select" id="new-role-area">
+          <option>全体統括</option><option>MC・司会</option><option>受付</option><option>登壇者アテンド</option>
+          <option>来賓アテンド</option><option>映像・音響</option><option>どんでん</option><option>会場誘導</option>
+          <option>広報・記録</option><option>その他</option>
+        </select></div>
+        <div class="form-row"><label class="form-label">当日役割</label><input class="form-input" type="text" id="new-role-role" placeholder="第1部ファシリテーターなど"></div>
+        <div class="form-row"><label class="form-label">ステータス</label><select class="form-select" id="new-role-status">
+          <option value="confirmed">確定</option><option value="pending">調整中</option><option value="absent">欠席</option>
+        </select></div>
+      </div>
+      <div class="form-row"><label class="form-label">連絡先・備考</label><textarea class="form-textarea" id="new-role-note" style="min-height:55px" placeholder="090-XXXX-XXXX / 注意事項など"></textarea></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-new-role')">キャンセル</button><button class="btn btn-primary" onclick="addRole()">追加する</button></div>
+  </div>
+</div>
+
 <div class="modal-overlay" id="modal-new-incident">
   <div class="modal">
     <div class="modal-header"><div class="modal-title">🚨 インシデント登録</div><button class="modal-close" onclick="closeModal('modal-new-incident')">✕</button></div>
@@ -408,132 +375,108 @@
 <div id="toast-container"></div>
 
 <script>
-// ===== SUPABASE =====
-const SUPABASE_URL = 'https://kukckeksvbdgosneezdh.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt1a2NrZWtzdmJkZ29zbmVlemRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1Nzg2MjksImV4cCI6MjA5NjE1NDYyOX0.zM264r67WV4YI7_7cqC53rx5dYYoc77VncKydfNHQUY';
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const SUPABASE_URL='https://kukckeksvbdgosneezdh.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt1a2NrZWtzdmJkZ29zbmVlemRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1Nzg2MjksImV4cCI6MjA5NjE1NDYyOX0.zM264r67WV4YI7_7cqC53rx5dYYoc77VncKydfNHQUY';
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
-// ===== STATE =====
-let tasks = [], runbook = [], attendees = [], incidents = [], announcements = [];
+let tasks=[],runbook=[],roles=[],incidents=[],announcements=[];
+let currentPage='dashboard';
 
-// ===== SYNC STATUS =====
-function setSyncStatus(state) {
-  const dot = document.getElementById('sync-dot');
-  const label = document.getElementById('sync-label');
-  if (state === 'connected') { dot.className='sync-dot connected'; label.textContent='リアルタイム同期中'; }
-  else if (state === 'syncing') { dot.className='sync-dot syncing'; label.textContent='同期中...'; }
-  else { dot.className='sync-dot error'; label.textContent='接続エラー'; }
+// SYNC STATUS
+function setSyncStatus(s){
+  const dot=document.getElementById('sync-dot'),label=document.getElementById('sync-label');
+  if(s==='connected'){dot.className='sync-dot connected';label.textContent='リアルタイム同期中';}
+  else if(s==='syncing'){dot.className='sync-dot syncing';label.textContent='同期中...';}
+  else{dot.className='sync-dot error';label.textContent='接続エラー';}
 }
 
-// ===== NAV =====
-const pageTitles = { dashboard:'ダッシュボード', tasks:'タスク管理', runbook:'進行表', reception:'受付・チェックイン', incidents:'インシデント記録', announcements:'お知らせ', members:'メンバー管理' };
-let currentPage = 'dashboard';
-
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('page-' + id).classList.add('active');
-  document.querySelectorAll('.nav-item').forEach(n => { if (n.getAttribute('onclick') && n.getAttribute('onclick').includes("'"+id+"'")) n.classList.add('active'); });
-  document.getElementById('page-title').textContent = pageTitles[id] || id;
-  currentPage = id;
-  if (id === 'tasks') renderTasks();
-  else if (id === 'runbook') renderRunbook();
-  else if (id === 'reception') { renderAttendees(); updateCheckinStats(); }
-  else if (id === 'incidents') renderIncidents();
-  else if (id === 'announcements') renderAnnouncements();
-  else if (id === 'dashboard') renderDashboard();
+// NAV
+const pageTitles={dashboard:'ダッシュボード',tasks:'タスク管理',runbook:'進行表',roles:'役割分担表',incidents:'インシデント記録',announcements:'お知らせ'};
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>{if(n.getAttribute('onclick')&&n.getAttribute('onclick').includes("'"+id+"'"))n.classList.add('active');});
+  document.getElementById('page-title').textContent=pageTitles[id]||id;
+  currentPage=id;
+  if(id==='tasks')renderTasks();
+  else if(id==='runbook')renderRunbook();
+  else if(id==='roles')renderRoles();
+  else if(id==='incidents')renderIncidents();
+  else if(id==='announcements')renderAnnouncements();
+  else if(id==='dashboard')renderDashboard();
 }
 
-// ===== DAYS LEFT =====
-function calcDaysLeft() {
-  const target = new Date('2026-08-28');
-  const today = new Date(); today.setHours(0,0,0,0);
-  const diff = Math.ceil((target - today) / 86400000);
-  const el = document.getElementById('days-left');
-  if (el) el.innerHTML = diff + '<span style="font-size:18px">日</span>';
+// DAYS LEFT
+function calcDaysLeft(){
+  const d=new Date('2026-08-28'),t=new Date();t.setHours(0,0,0,0);
+  const el=document.getElementById('days-left');
+  if(el)el.innerHTML=Math.ceil((d-t)/86400000)+'<span style="font-size:18px">日</span>';
 }
 
-// ===== BADGES =====
-function pBadge(p) { return p==='high'?'<span class="badge badge-high">高</span>':p==='mid'?'<span class="badge badge-mid">中</span>':'<span class="badge badge-low">低</span>'; }
-function sBadge(s) {
-  if(s==='done') return '<span class="badge badge-done">✓ 完了</span>';
-  if(s==='doing') return '<span class="badge badge-doing">進行中</span>';
-  if(s==='overdue') return '<span class="badge badge-overdue">期限超過</span>';
-  return '<span class="badge badge-todo">未着手</span>';
+// BADGES
+function pBadge(p){return p==='high'?'<span class="badge badge-high">高</span>':p==='mid'?'<span class="badge badge-mid">中</span>':'<span class="badge badge-low">低</span>';}
+function sBadge(s){
+  if(s==='done')return'<span class="badge badge-done">✓ 完了</span>';
+  if(s==='doing')return'<span class="badge badge-doing">進行中</span>';
+  if(s==='overdue')return'<span class="badge badge-overdue">期限超過</span>';
+  return'<span class="badge badge-todo">未着手</span>';
 }
-function rbBadge(s) {
-  if(s==='done') return '<span class="badge badge-done">✓ 完了</span>';
-  if(s==='doing') return '<span class="badge badge-doing" style="background:var(--orange-light);color:var(--orange)">🔴 進行中</span>';
-  return '<span class="badge badge-todo">待機</span>';
+function rbBadge(s){
+  if(s==='done')return'<span class="badge badge-done">✓ 完了</span>';
+  if(s==='doing')return'<span class="badge badge-doing" style="background:var(--orange-light);color:var(--orange)">🔴 進行中</span>';
+  return'<span class="badge badge-todo">待機</span>';
 }
+function roleBadge(s){
+  if(s==='confirmed')return'<span class="badge" style="background:var(--green-light);color:var(--green)">確定</span>';
+  if(s==='absent')return'<span class="badge" style="background:var(--red-light);color:var(--red)">欠席</span>';
+  return'<span class="badge" style="background:var(--orange-light);color:var(--orange)">調整中</span>';
+}
+const AREA_COLORS={'全体統括':'#0d1b3e','MC・司会':'#1a4a8a','受付':'#1a7a4a','登壇者アテンド':'#7d3c98','来賓アテンド':'#c9a84c','映像・音響':'#c76b0a','どんでん':'#566573','会場誘導':'#2980b9','広報・記録':'#c0392b','その他':'#7f8c8d'};
+function areaBadge(a){const c=AREA_COLORS[a]||'#7f8c8d';return`<span class="role-area-badge" style="background:${c}18;color:${c}">${a||''}</span>`;}
 
-// ===== DASHBOARD =====
-function renderDashboard() {
-  // task stats
-  const done = tasks.filter(t=>t.status==='done').length;
-  const total = tasks.length;
-  const rate = total ? Math.round(done/total*100) : 0;
-  const el = document.getElementById('dash-task-rate');
-  if(el) el.innerHTML = rate+'<span style="font-size:18px">%</span>';
-  const sub = document.getElementById('dash-task-sub');
-  if(sub) sub.textContent = `完了 ${done} / 全${total}件`;
+// DASHBOARD
+function renderDashboard(){
+  const done=tasks.filter(t=>t.status==='done').length,total=tasks.length;
+  const rate=total?Math.round(done/total*100):0;
+  const el=n=>document.getElementById(n);
+  if(el('dash-task-rate'))el('dash-task-rate').innerHTML=rate+'<span style="font-size:18px">%</span>';
+  if(el('dash-task-sub'))el('dash-task-sub').textContent=`完了 ${done} / 全${total}件`;
+  if(el('dash-inc-count'))el('dash-inc-count').textContent=incidents.filter(i=>!i.resolved).length;
 
-  // incident count
-  const openInc = incidents.filter(i=>!i.resolved).length;
-  const incEl = document.getElementById('dash-incident-count');
-  if(incEl) incEl.textContent = openInc;
+  const overdue=tasks.filter(t=>t.status==='overdue');
+  const tbody=el('dash-overdue');
+  if(tbody)tbody.innerHTML=overdue.length?overdue.slice(0,4).map(t=>`<tr><td><div style="font-weight:500">${t.title}</div><div class="text-muted">${t.assignee||''}</div></td><td>${sBadge(t.status)}</td><td class="text-muted" style="font-size:11px">${t.due||''}</td></tr>`).join(''):'<tr><td colspan="3" style="text-align:center;padding:16px;color:var(--gray-400)">期限超過タスクはありません ✅</td></tr>';
 
-  // overdue tasks
-  const overdue = tasks.filter(t=>t.status==='overdue'||t.status==='high').slice(0,5);
-  const tbody = document.getElementById('dash-overdue-tasks');
-  if(tbody) {
-    const urgent = tasks.filter(t=>t.status==='overdue');
-    if(!urgent.length) { tbody.innerHTML='<tr><td colspan="3" style="text-align:center;color:var(--gray-400);padding:16px">期限超過タスクはありません ✅</td></tr>'; }
-    else tbody.innerHTML = urgent.slice(0,4).map(t=>`<tr><td><div style="font-weight:500">${t.title}</div><div class="text-muted">${t.assignee||''}</div></td><td>${sBadge(t.status)}</td><td class="text-muted" style="font-size:11px">${t.due||''}</td></tr>`).join('');
-  }
+  const annEl=el('dash-ann');
+  if(annEl)annEl.innerHTML=announcements.length?announcements.slice(0,3).map(a=>`<div class="announce-item ${a.priority}"><div><span class="badge badge-${a.priority==='urgent'?'urgent':a.priority==='normal'?'normal':'info'}" style="font-size:10px">${a.priority==='urgent'?'緊急':a.priority==='normal'?'通知':'情報'}</span> <strong style="font-size:13px">${a.title}</strong></div><div class="announce-meta">${a.author||''} · ${fmtTime(a.created_at)}</div></div>`).join(''):'<div style="text-align:center;padding:20px;color:var(--gray-400)">お知らせはありません</div>';
 
-  // announces
-  const annEl = document.getElementById('dash-announces');
-  if(annEl) {
-    if(!announcements.length) { annEl.innerHTML='<div style="text-align:center;padding:20px;color:var(--gray-400)">お知らせはありません</div>'; }
-    else annEl.innerHTML = announcements.slice(0,3).map(a=>`<div class="announce-item ${a.priority}" onclick="showPage('announcements')">
-      <div><span class="badge badge-${a.priority==='urgent'?'urgent':a.priority==='normal'?'normal':'info'}" style="font-size:10px">${a.priority==='urgent'?'緊急':a.priority==='normal'?'通知':'情報'}</span> <strong style="font-size:13px">${a.title}</strong></div>
-      <div class="announce-meta">${a.author||''} · ${fmtTime(a.created_at)}</div>
-    </div>`).join('');
-  }
+  const rolesEl=el('dash-roles');
+  if(rolesEl)rolesEl.innerHTML=roles.length?roles.slice(0,6).map(r=>`<tr><td style="font-weight:500">${r.name}</td><td>${areaBadge(r.area)}</td><td style="font-size:12px;color:var(--gray-600)">${r.role||''}</td><td>${roleBadge(r.status)}</td></tr>`).join(''):'<tr><td colspan="4" style="text-align:center;padding:16px;color:var(--gray-400)">役割分担表に担当者を追加してください</td></tr>';
 }
 
-// ===== TASKS =====
-async function loadTasks() {
-  const { data, error } = await sb.from('tasks').select('*').order('created_at', { ascending: false });
-  if (error) { showToast('タスク読込エラー', 'error'); return; }
-  tasks = data || [];
-  updateTaskBadge();
-  if (currentPage === 'tasks') renderTasks();
-  if (currentPage === 'dashboard') renderDashboard();
+// TASKS
+async function loadTasks(){
+  const{data,error}=await sb.from('tasks').select('*').order('created_at',{ascending:false});
+  if(error)return;
+  tasks=data||[];
+  const overdue=tasks.filter(t=>t.status==='overdue').length;
+  const badge=document.getElementById('badge-tasks');
+  if(overdue>0){badge.style.display='';badge.textContent=overdue;}else badge.style.display='none';
+  if(currentPage==='tasks')renderTasks();
+  if(currentPage==='dashboard')renderDashboard();
 }
-
-function updateTaskBadge() {
-  const overdue = tasks.filter(t=>t.status==='overdue').length;
-  const badge = document.getElementById('badge-tasks');
-  if (overdue > 0) { badge.style.display=''; badge.textContent=overdue; }
-  else badge.style.display='none';
-}
-
-function renderTasks(q='') {
-  const tbody = document.getElementById('task-tbody');
-  if (!tbody) return;
-  const sf = document.getElementById('status-filter');
-  const sfv = sf ? sf.value : '全ステータス';
-  const smap = {'全ステータス':null,'未着手':'todo','進行中':'doing','完了':'done','期限超過':'overdue'};
-  const sv = smap[sfv];
-  const filtered = tasks.filter(t => {
-    if (q && !t.title.includes(q) && !(t.assignee||'').includes(q)) return false;
-    if (sv && t.status !== sv) return false;
-    return true;
+function renderTasks(q=''){
+  const tbody=document.getElementById('task-tbody');if(!tbody)return;
+  const sf=document.getElementById('status-filter');
+  const smap={'全ステータス':null,'未着手':'todo','進行中':'doing','完了':'done','期限超過':'overdue'};
+  const sv=smap[sf?sf.value:'全ステータス'];
+  const filtered=tasks.filter(t=>{
+    if(q&&!t.title.includes(q)&&!(t.assignee||'').includes(q))return false;
+    if(sv&&t.status!==sv)return false;return true;
   });
-  if (!filtered.length) { tbody.innerHTML='<tr><td colspan="8" class="empty-state"><div class="empty-icon">📭</div><p>タスクがありません</p></td></tr>'; return; }
-  tbody.innerHTML = filtered.map(t=>`<tr>
+  if(!filtered.length){tbody.innerHTML='<tr><td colspan="8" class="empty-state"><div class="empty-icon">📭</div><p>タスクがありません</p></td></tr>';return;}
+  tbody.innerHTML=filtered.map(t=>`<tr>
     <td onclick="cycleTask('${t.id}')" style="cursor:pointer"><div style="width:16px;height:16px;border:2px solid ${t.status==='done'?'var(--green)':'var(--gray-200)'};border-radius:3px;background:${t.status==='done'?'var(--green)':'white'};display:flex;align-items:center;justify-content:center;font-size:10px;color:white">${t.status==='done'?'✓':''}</div></td>
     <td><div style="font-weight:500;${t.status==='done'?'text-decoration:line-through;opacity:0.5':''}">${t.title}</div>${t.memo?`<div class="text-muted">${t.memo}</div>`:''}</td>
     <td style="white-space:nowrap">${t.assignee||''}</td>
@@ -544,56 +487,36 @@ function renderTasks(q='') {
     <td><button class="btn btn-outline btn-sm" onclick="cycleTask('${t.id}')">→ 次へ</button></td>
   </tr>`).join('');
 }
-
-async function cycleTask(id) {
-  const t = tasks.find(x=>x.id===id);
-  if(!t) return;
-  const o = ['todo','doing','done'];
-  const next = o[(o.indexOf(t.status)+1)%o.length];
+async function cycleTask(id){
+  const t=tasks.find(x=>x.id===id);if(!t)return;
+  const o=['todo','doing','done'];
   setSyncStatus('syncing');
-  const { error } = await sb.from('tasks').update({ status: next }).eq('id', id);
-  if (error) { showToast('更新に失敗しました', 'error'); setSyncStatus('connected'); return; }
-  showToast('ステータスを更新しました', 'success');
+  await sb.from('tasks').update({status:o[(o.indexOf(t.status)+1)%o.length]}).eq('id',id);
+  showToast('ステータスを更新しました','success');
 }
-
-async function addTask() {
-  const title = document.getElementById('new-task-title').value.trim();
-  if(!title){ showToast('タスク名を入力してください','error'); return; }
+async function addTask(){
+  const title=document.getElementById('new-task-title').value.trim();
+  if(!title){showToast('タスク名を入力してください','error');return;}
   setSyncStatus('syncing');
-  const { error } = await sb.from('tasks').insert({
-    title, assignee: document.getElementById('new-task-assignee').value,
-    due: document.getElementById('new-task-due').value,
-    priority: document.getElementById('new-task-priority').value,
-    status: 'todo', cat: document.getElementById('new-task-cat').value,
-    memo: document.getElementById('new-task-memo').value
-  });
-  if(error){ showToast('追加に失敗しました','error'); setSyncStatus('error'); return; }
-  closeModal('modal-new-task');
-  showToast('タスクを追加しました — 全メンバーに反映されます', 'success');
-  document.getElementById('new-task-title').value=''; document.getElementById('new-task-memo').value='';
+  await sb.from('tasks').insert({title,assignee:document.getElementById('new-task-assignee').value,due:document.getElementById('new-task-due').value,priority:document.getElementById('new-task-priority').value,status:'todo',cat:document.getElementById('new-task-cat').value,memo:document.getElementById('new-task-memo').value});
+  closeModal('modal-new-task');showToast('タスクを追加しました — 全メンバーに反映','success');
+  document.getElementById('new-task-title').value='';document.getElementById('new-task-memo').value='';
 }
 
-// ===== RUNBOOK =====
-async function loadRunbook() {
-  const { data, error } = await sb.from('runbook').select('*').order('time');
-  if (error) return;
-  runbook = data || [];
-  document.getElementById('rb-count').textContent = runbook.length;
-  if (currentPage === 'runbook') renderRunbook();
+// RUNBOOK
+async function loadRunbook(){
+  const{data,error}=await sb.from('runbook').select('*').order('time');
+  if(error)return;runbook=data||[];
+  document.getElementById('rb-count').textContent=runbook.length;
+  if(currentPage==='runbook')renderRunbook();
 }
-
-function renderRunbook() {
-  const el = document.getElementById('runbook-list');
-  if(!el) return;
-  if(!runbook.length){ el.innerHTML='<div class="empty-state"><div class="empty-icon">📋</div><p>進行項目を追加してください</p></div>'; return; }
-  let html='';
-  let nowShown=false;
+function renderRunbook(){
+  const el=document.getElementById('runbook-list');if(!el)return;
+  if(!runbook.length){el.innerHTML='<div class="empty-state"><div class="empty-icon">📋</div><p>進行項目を追加してください</p></div>';return;}
+  let html='';let nowShown=false;
   runbook.forEach((r,i)=>{
-    const isCurrent = r.status==='doing';
-    if(!nowShown && r.status==='todo' && i>0 && runbook[i-1].status==='done'){
-      html+=`<div class="now-line"><div class="now-line-bar"></div><div class="now-line-label">▶ 現在</div><div class="now-line-bar"></div></div>`;
-      nowShown=true;
-    }
+    const isCurrent=r.status==='doing';
+    if(!nowShown&&r.status==='todo'&&i>0&&runbook[i-1].status==='done'){html+=`<div class="now-line"><div class="now-line-bar"></div><div class="now-line-label">▶ 現在</div><div class="now-line-bar"></div></div>`;nowShown=true;}
     html+=`<div class="runbook-item ${isCurrent?'current':''}">
       <div><div style="font-size:13px;font-weight:700;color:${isCurrent?'var(--gold)':'var(--navy)'}">${r.time}</div>${r.end_time?`<div style="font-size:10px;color:var(--gray-400)">〜${r.end_time}</div>`:''}</div>
       <div><div style="font-size:13px;font-weight:500">${r.title}</div>${r.team?`<div style="font-size:11px;color:var(--gray-400)">👤 ${r.team}</div>`:''}${r.note?`<div style="font-size:11px;color:var(--orange);margin-top:1px">💡 ${r.note}</div>`:''}</div>
@@ -603,221 +526,171 @@ function renderRunbook() {
   });
   el.innerHTML=html;
 }
-
-async function cycleRb(id) {
-  const r = runbook.find(x=>x.id===id);
-  if(!r) return;
-  const o=['todo','doing','done'];
-  const next = o[(o.indexOf(r.status)+1)%o.length];
-  setSyncStatus('syncing');
-  await sb.from('runbook').update({ status: next }).eq('id', id);
+async function cycleRb(id){
+  const r=runbook.find(x=>x.id===id);if(!r)return;
+  const o=['todo','doing','done'];setSyncStatus('syncing');
+  await sb.from('runbook').update({status:o[(o.indexOf(r.status)+1)%o.length]}).eq('id',id);
   showToast('ステータスを更新しました','success');
 }
-
-async function addRunbookItem() {
-  const title = document.getElementById('rb-title').value.trim();
-  if(!title){ showToast('内容を入力してください','error'); return; }
+async function addRunbookItem(){
+  const title=document.getElementById('rb-title').value.trim();
+  if(!title){showToast('内容を入力してください','error');return;}
   setSyncStatus('syncing');
-  await sb.from('runbook').insert({
-    time: document.getElementById('rb-time').value,
-    end_time: document.getElementById('rb-end').value,
-    title, team: document.getElementById('rb-team').value,
-    note: document.getElementById('rb-note').value,
-    status: 'todo', sort_order: runbook.length
-  });
-  closeModal('modal-new-runbook');
-  showToast('進行項目を追加しました','success');
+  await sb.from('runbook').insert({time:document.getElementById('rb-time').value,end_time:document.getElementById('rb-end').value,title,team:document.getElementById('rb-team').value,note:document.getElementById('rb-note').value,status:'todo',sort_order:runbook.length});
+  closeModal('modal-new-runbook');showToast('進行項目を追加しました','success');
 }
 
-// ===== ATTENDEES =====
-async function loadAttendees() {
-  const { data, error } = await sb.from('attendees').select('*').order('name');
-  if (error) return;
-  attendees = data || [];
-  if (currentPage === 'reception') { renderAttendees(); updateCheckinStats(); }
+// ROLES
+async function loadRoles(){
+  const{data,error}=await sb.from('roles').select('*').order('created_at');
+  if(error)return;roles=data||[];
+  if(currentPage==='roles')renderRoles();
+  if(currentPage==='dashboard')renderDashboard();
 }
-
-function renderAttendees(q='') {
-  const el = document.getElementById('attendee-list');
-  if(!el) return;
-  const list = q ? attendees.filter(a=>a.name.includes(q)||a.company.includes(q)) : attendees;
-  if(!list.length){ el.innerHTML='<div style="text-align:center;padding:20px;color:var(--gray-400)">参加者が登録されていません</div>'; return; }
-  el.innerHTML = list.map(a=>`<div class="attendee-row">
-    <div class="check-status ${a.checked?'in':'out'}">${a.checked?'✓':'○'}</div>
-    <div style="flex:1"><div style="font-weight:${a.vip?700:400}">${a.vip?'⭐ ':''}${a.name}</div><div style="font-size:11px;color:var(--gray-400)">${a.company||''}</div></div>
-    <div style="font-size:11px;color:var(--gray-400);margin-right:8px;white-space:nowrap">${a.type||''}</div>
-    <button class="btn btn-sm ${a.checked?'btn-outline':'btn-primary'}" onclick="toggleCheckin('${a.id}')">${a.checked?'取消':'チェックイン'}</button>
-  </div>`).join('');
+function renderRoles(){
+  const tbody=document.getElementById('role-tbody');if(!tbody)return;
+  if(!roles.length){tbody.innerHTML='<tr><td colspan="7" class="empty-state"><div class="empty-icon">👤</div><p>担当者を追加してください</p></td></tr>';return;}
+  tbody.innerHTML=roles.map(r=>`<tr>
+    <td><input class="inline-input" value="${r.name||''}" onchange="updateRole('${r.id}','name',this.value)" style="font-weight:600"></td>
+    <td><input class="inline-input" value="${r.position||''}" onchange="updateRole('${r.id}','position',this.value)"></td>
+    <td>
+      <select class="inline-select" onchange="updateRole('${r.id}','area',this.value)">
+        ${['全体統括','MC・司会','受付','登壇者アテンド','来賓アテンド','映像・音響','どんでん','会場誘導','広報・記録','その他'].map(a=>`<option ${r.area===a?'selected':''}>${a}</option>`).join('')}
+      </select>
+    </td>
+    <td><input class="inline-input" value="${r.role||''}" onchange="updateRole('${r.id}','role',this.value)"></td>
+    <td><input class="inline-input" value="${r.note||''}" onchange="updateRole('${r.id}','note',this.value)" placeholder="連絡先・備考..."></td>
+    <td>
+      <select class="inline-select" onchange="updateRole('${r.id}','status',this.value)">
+        <option value="confirmed" ${r.status==='confirmed'?'selected':''}>✅ 確定</option>
+        <option value="pending" ${r.status==='pending'?'selected':''}>🟡 調整中</option>
+        <option value="absent" ${r.status==='absent'?'selected':''}>❌ 欠席</option>
+      </select>
+    </td>
+    <td><button class="role-del-btn" onclick="deleteRole('${r.id}')" title="削除">🗑</button></td>
+  </tr>`).join('');
+  const el=document.getElementById('role-updated');
+  if(el)el.textContent=roles.length+'名登録';
 }
-
-function filterAttendees(q) { renderAttendees(q); }
-
-async function toggleCheckin(id) {
-  const a = attendees.find(x=>x.id===id);
-  if(!a) return;
+async function updateRole(id,field,value){
   setSyncStatus('syncing');
-  const { error } = await sb.from('attendees').update({ checked: !a.checked }).eq('id', id);
-  if(error){ showToast('更新に失敗しました','error'); return; }
-  showToast(a.checked?`${a.name}様のチェックインを取り消しました`:`${a.name}様のチェックインが完了しました — 全画面に反映`, a.checked?'info':'success');
+  const update={};update[field]=value;
+  await sb.from('roles').update(update).eq('id',id);
+  showToast('更新しました — 全メンバーに反映','success');
 }
-
-function updateCheckinStats() {
-  const checked = attendees.filter(a=>a.checked).length;
-  const total = attendees.length;
-  const rate = total ? Math.round(checked/total*100) : 0;
-  const vipPending = attendees.filter(a=>a.vip && !a.checked).length;
-  const el = n => document.getElementById(n);
-  if(el('checked-count')) el('checked-count').textContent=checked;
-  if(el('unchecked-count')) el('unchecked-count').textContent=total-checked;
-  if(el('checkin-rate')) el('checkin-rate').innerHTML=rate+'<span style="font-size:18px">%</span>';
-  if(el('checkin-bar')) el('checkin-bar').style.width=rate+'%';
-  if(el('vip-pending')) el('vip-pending').textContent=vipPending;
-}
-
-async function addAttendee() {
-  const name = document.getElementById('new-att-name').value.trim();
-  if(!name){ showToast('氏名を入力してください','error'); return; }
+async function deleteRole(id){
+  if(!confirm('この担当者を削除しますか？'))return;
   setSyncStatus('syncing');
-  const { error } = await sb.from('attendees').insert({
-    id: 'A'+Date.now(),
-    name, company: document.getElementById('new-att-company').value,
-    type: document.getElementById('new-att-type').value,
-    vip: document.getElementById('new-att-vip').checked,
-    checked: true
-  });
-  if(error){ showToast('登録に失敗しました','error'); return; }
-  showToast(`${name}様を登録・チェックインしました`, 'success');
-  document.getElementById('new-att-name').value='';
-  document.getElementById('new-att-company').value='';
-  document.getElementById('new-att-vip').checked=false;
+  await sb.from('roles').delete().eq('id',id);
+  showToast('削除しました','info');
+}
+async function addRole(){
+  const name=document.getElementById('new-role-name').value.trim();
+  if(!name){showToast('氏名を入力してください','error');return;}
+  setSyncStatus('syncing');
+  await sb.from('roles').insert({name,position:document.getElementById('new-role-position').value,area:document.getElementById('new-role-area').value,role:document.getElementById('new-role-role').value,note:document.getElementById('new-role-note').value,status:document.getElementById('new-role-status').value});
+  closeModal('modal-new-role');showToast('担当者を追加しました — 全メンバーに反映','success');
+  document.getElementById('new-role-name').value='';document.getElementById('new-role-position').value='';document.getElementById('new-role-note').value='';document.getElementById('new-role-role').value='';
 }
 
-// ===== INCIDENTS =====
-async function loadIncidents() {
-  const { data, error } = await sb.from('incidents').select('*').order('created_at', { ascending: false });
-  if(error) return;
-  incidents = data || [];
-  const badge = document.getElementById('badge-incidents');
-  const open = incidents.filter(i=>!i.resolved).length;
-  if(open>0){ badge.style.display=''; badge.textContent=open; } else badge.style.display='none';
-  if(currentPage==='incidents') renderIncidents();
-  if(currentPage==='dashboard') renderDashboard();
+// INCIDENTS
+async function loadIncidents(){
+  const{data,error}=await sb.from('incidents').select('*').order('created_at',{ascending:false});
+  if(error)return;incidents=data||[];
+  const open=incidents.filter(i=>!i.resolved).length;
+  const badge=document.getElementById('badge-incidents');
+  if(open>0){badge.style.display='';badge.textContent=open;}else badge.style.display='none';
+  if(currentPage==='incidents')renderIncidents();
+  if(currentPage==='dashboard')renderDashboard();
 }
-
-function renderIncidents() {
-  const el = document.getElementById('incident-list');
-  if(!el) return;
-  if(!incidents.length){ el.innerHTML='<div class="empty-state"><div class="empty-icon">✅</div><p>インシデントはありません</p></div>'; return; }
-  el.innerHTML = incidents.map(inc=>`<div class="incident-item ${inc.resolved?'resolved':''}">
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
-      <strong style="flex:1">🚨 ${inc.title}</strong>
-      <span class="badge ${inc.resolved?'badge-done':'badge-mid'}">${inc.resolved?'解決済':'対応中'}</span>
-    </div>
+function renderIncidents(){
+  const el=document.getElementById('incident-list');if(!el)return;
+  if(!incidents.length){el.innerHTML='<div class="empty-state"><div class="empty-icon">✅</div><p>インシデントはありません</p></div>';return;}
+  el.innerHTML=incidents.map(inc=>`<div class="incident-item ${inc.resolved?'resolved':''}">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><strong style="flex:1">🚨 ${inc.title}</strong><span class="badge ${inc.resolved?'badge-done':'badge-mid'}">${inc.resolved?'解決済':'対応中'}</span></div>
     <div style="font-size:11px;color:var(--gray-400)">📍 ${inc.location||''} · 担当: ${inc.assignee||''} · ${fmtTime(inc.created_at)}</div>
     <div style="font-size:13px;margin-top:5px;color:var(--gray-600)">${inc.detail||''}</div>
     <div style="margin-top:9px"><button class="btn btn-sm ${inc.resolved?'btn-outline':'btn-gold'}" onclick="toggleIncident('${inc.id}')">${inc.resolved?'再開':'✓ 解決済みにする'}</button></div>
   </div>`).join('');
 }
-
-async function toggleIncident(id) {
-  const inc = incidents.find(x=>x.id===id);
-  if(!inc) return;
+async function toggleIncident(id){
+  const inc=incidents.find(x=>x.id===id);if(!inc)return;
   setSyncStatus('syncing');
-  await sb.from('incidents').update({ resolved: !inc.resolved }).eq('id', id);
-  showToast(inc.resolved?'インシデントを再開しました':'解決済みにしました — 全画面に反映', 'success');
+  await sb.from('incidents').update({resolved:!inc.resolved}).eq('id',id);
+  showToast(inc.resolved?'再開しました':'解決済みにしました','success');
 }
-
-async function addIncident() {
-  const title = document.getElementById('inc-title').value.trim();
-  if(!title){ showToast('件名を入力してください','error'); return; }
+async function addIncident(){
+  const title=document.getElementById('inc-title').value.trim();
+  if(!title){showToast('件名を入力してください','error');return;}
   setSyncStatus('syncing');
-  await sb.from('incidents').insert({
-    title, location: document.getElementById('inc-loc').value,
-    assignee: document.getElementById('inc-assignee').value,
-    detail: document.getElementById('inc-detail').value,
-    resolved: false
-  });
-  closeModal('modal-new-incident');
-  showToast('インシデントを登録しました — 全メンバーに通知', 'error');
-  document.getElementById('inc-title').value=''; document.getElementById('inc-detail').value='';
+  await sb.from('incidents').insert({title,location:document.getElementById('inc-loc').value,assignee:document.getElementById('inc-assignee').value,detail:document.getElementById('inc-detail').value,resolved:false});
+  closeModal('modal-new-incident');showToast('インシデントを登録しました — 全メンバーに通知','error');
+  document.getElementById('inc-title').value='';document.getElementById('inc-detail').value='';
 }
 
-// ===== ANNOUNCEMENTS =====
-async function loadAnnouncements() {
-  const { data, error } = await sb.from('announcements').select('*').order('created_at', { ascending: false });
-  if(error) return;
-  announcements = data || [];
-  if(currentPage==='announcements') renderAnnouncements();
-  if(currentPage==='dashboard') renderDashboard();
+// ANNOUNCEMENTS
+async function loadAnnouncements(){
+  const{data,error}=await sb.from('announcements').select('*').order('created_at',{ascending:false});
+  if(error)return;announcements=data||[];
+  if(currentPage==='announcements')renderAnnouncements();
+  if(currentPage==='dashboard')renderDashboard();
 }
-
-function renderAnnouncements() {
-  const el = document.getElementById('announce-full-list');
-  if(!el) return;
-  if(!announcements.length){ el.innerHTML='<div class="empty-state"><div class="empty-icon">📢</div><p>お知らせはありません</p></div>'; return; }
-  el.innerHTML = '<div style="padding:0 4px">'+announcements.map(a=>`<div class="announce-item ${a.priority}">
-    <div style="display:flex;align-items:center;gap:7px">
-      <span class="badge badge-${a.priority==='urgent'?'urgent':a.priority==='normal'?'normal':'info'}" style="font-size:10px">${a.priority==='urgent'?'緊急':a.priority==='normal'?'通知':'情報'}</span>
-      <strong style="font-size:13px">${a.title}</strong>
-    </div>
+function renderAnnouncements(){
+  const el=document.getElementById('announce-full-list');if(!el)return;
+  if(!announcements.length){el.innerHTML='<div class="empty-state"><div class="empty-icon">📢</div><p>お知らせはありません</p></div>';return;}
+  el.innerHTML='<div style="padding:0 4px">'+announcements.map(a=>`<div class="announce-item ${a.priority}">
+    <div style="display:flex;align-items:center;gap:7px"><span class="badge badge-${a.priority==='urgent'?'urgent':a.priority==='normal'?'normal':'info'}" style="font-size:10px">${a.priority==='urgent'?'緊急':a.priority==='normal'?'通知':'情報'}</span><strong style="font-size:13px">${a.title}</strong></div>
     <div style="font-size:13px;color:var(--gray-600);margin-top:5px">${a.body||''}</div>
     <div class="announce-meta" style="margin-top:3px">${a.author||''} · ${fmtTime(a.created_at)}</div>
   </div>`).join('')+'</div>';
 }
-
-async function addAnnouncement() {
-  const title = document.getElementById('ann-title').value.trim();
-  if(!title){ showToast('タイトルを入力してください','error'); return; }
+async function addAnnouncement(){
+  const title=document.getElementById('ann-title').value.trim();
+  if(!title){showToast('タイトルを入力してください','error');return;}
   setSyncStatus('syncing');
-  await sb.from('announcements').insert({
-    title, body: document.getElementById('ann-body').value,
-    priority: document.getElementById('ann-priority').value,
-    author: '福田 雄太郎'
-  });
-  closeModal('modal-new-announce');
-  showToast('お知らせを投稿しました — 全メンバーに反映', 'success');
-  document.getElementById('ann-title').value=''; document.getElementById('ann-body').value='';
+  await sb.from('announcements').insert({title,body:document.getElementById('ann-body').value,priority:document.getElementById('ann-priority').value,author:'福田 雄太郎'});
+  closeModal('modal-new-announce');showToast('お知らせを投稿しました — 全メンバーに反映','success');
+  document.getElementById('ann-title').value='';document.getElementById('ann-body').value='';
 }
 
-// ===== REALTIME =====
-function setupRealtime() {
+// REALTIME
+function setupRealtime(){
   sb.channel('realtime-all')
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, () => loadTasks())
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'runbook' }, () => loadRunbook())
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'attendees' }, () => loadAttendees())
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'incidents' }, () => loadIncidents())
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'announcements' }, () => loadAnnouncements())
-    .subscribe(status => {
-      if (status === 'SUBSCRIBED') setSyncStatus('connected');
-      else setSyncStatus('error');
-    });
+    .on('postgres_changes',{event:'*',schema:'public',table:'tasks'},()=>loadTasks())
+    .on('postgres_changes',{event:'*',schema:'public',table:'runbook'},()=>loadRunbook())
+    .on('postgres_changes',{event:'*',schema:'public',table:'roles'},()=>loadRoles())
+    .on('postgres_changes',{event:'*',schema:'public',table:'incidents'},()=>loadIncidents())
+    .on('postgres_changes',{event:'*',schema:'public',table:'announcements'},()=>loadAnnouncements())
+    .subscribe(status=>{if(status==='SUBSCRIBED')setSyncStatus('connected');else setSyncStatus('error');});
 }
 
-// ===== UTILS =====
-function fmtTime(ts) {
-  if(!ts) return '';
-  const d = new Date(ts);
-  const now = new Date();
-  const diff = Math.floor((now - d) / 60000);
-  if (diff < 1) return 'たった今';
-  if (diff < 60) return diff+'分前';
-  if (diff < 1440) return Math.floor(diff/60)+'時間前';
-  return `${d.getMonth()+1}/${d.getDate()}`;
+// UTILS
+function fmtTime(ts){
+  if(!ts)return'';const d=new Date(ts),now=new Date();
+  const diff=Math.floor((now-d)/60000);
+  if(diff<1)return'たった今';if(diff<60)return diff+'分前';
+  if(diff<1440)return Math.floor(diff/60)+'時間前';
+  return`${d.getMonth()+1}/${d.getDate()}`;
 }
-function openModal(id) { document.getElementById(id).classList.add('open'); }
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-document.querySelectorAll('.modal-overlay').forEach(o=>{ o.addEventListener('click', e=>{ if(e.target===o) o.classList.remove('open'); }); });
-function showToast(msg, type='info') {
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.modal-overlay').forEach(o=>{o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');});});
+function showToast(msg,type='info'){
   const c=document.getElementById('toast-container');
-  const t=document.createElement('div'); t.className=`toast ${type}`; t.textContent=msg; c.appendChild(t);
-  setTimeout(()=>{ t.style.opacity='0'; t.style.transition='opacity 0.3s'; setTimeout(()=>t.remove(),300); }, 3500);
+  const t=document.createElement('div');t.className=`toast ${type}`;t.textContent=msg;c.appendChild(t);
+  setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity 0.3s';setTimeout(()=>t.remove(),300);},3500);
 }
 
-// ===== INIT =====
-async function init() {
-  calcDaysLeft();
-  setSyncStatus('syncing');
-  await Promise.all([loadTasks(), loadRunbook(), loadAttendees(), loadIncidents(), loadAnnouncements()]);
+// INIT — rolesテーブルをSupabaseに作成
+async function ensureRolesTable(){
+  // テーブルが存在するか確認するだけ（SQLはSupabase側で実行済み前提）
+  await sb.from('roles').select('id').limit(1);
+}
+
+async function init(){
+  calcDaysLeft();setSyncStatus('syncing');
+  await ensureRolesTable();
+  await Promise.all([loadTasks(),loadRunbook(),loadRoles(),loadIncidents(),loadAnnouncements()]);
   renderDashboard();
   setupRealtime();
 }
