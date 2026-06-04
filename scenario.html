@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第32回横浜経済人会議 | 進行シナリオ</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0d1b3e;--gold:#c9a84c;--gold-light:#e8c97d;
+  --white:#fff;--bg:#f5f3ee;
+  --gray-100:#ede9e2;--gray-200:#ddd8cf;--gray-400:#9e9488;--gray-600:#6b6358;--gray-800:#3a342c;
+  --red:#c0392b;--green:#1a7a4a;--blue:#1a4a8a;--orange:#c76b0a;--purple:#6d2e8a;
+  /* 発言者カラー */
+  --mc:#1a4a8a;        /* 司会者 */
+  --mc-bg:#e8eef8;
+  --rijicho:#7d3c98;   /* 理事長 */
+  --rijicho-bg:#f3eaf8;
+  --speaker:#1a7a4a;   /* 登壇者 */
+  --speaker-bg:#e8f5ed;
+  --staff:#c76b0a;     /* スタッフ */
+  --staff-bg:#fef3e2;
+  --note:#566573;      /* 備考 */
+  --note-bg:#f0f2f4;
+  --fasili:#c0392b;    /* ファシリテーター */
+  --fasili-bg:#fdecea;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--gray-800);font-size:14px;line-height:1.7;}
+
+/* NAV */
+#portal-nav-placeholder{}
+
+/* TOOLBAR */
+#toolbar{
+  background:var(--navy);color:#fff;
+  padding:10px 20px;
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  position:sticky;top:40px;z-index:80;
+  border-bottom:2px solid var(--gold);
+}
+.toolbar-title{font-family:'Noto Serif JP',serif;font-size:13px;color:var(--gold-light);font-weight:600;margin-right:8px;}
+.btn{display:inline-flex;align-items:center;gap:4px;padding:5px 12px;border-radius:4px;border:none;cursor:pointer;font-family:'Noto Sans JP',sans-serif;font-size:12px;font-weight:500;transition:all 0.15s;}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--navy);}
+.btn-outline{background:transparent;color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.25);}
+.btn-outline:hover{background:rgba(255,255,255,0.1);}
+.btn-red{background:var(--red);color:#fff;}
+.btn-sm{padding:3px 8px;font-size:11px;}
+.sep{width:1px;height:20px;background:rgba(255,255,255,0.15);}
+.font-ctrl{display:flex;align-items:center;gap:4px;}
+.font-val{color:#fff;font-size:12px;min-width:36px;text-align:center;}
+#search-box{padding:5px 10px;border:1px solid rgba(255,255,255,0.2);border-radius:4px;background:rgba(255,255,255,0.08);color:#fff;font-family:'Noto Sans JP',sans-serif;font-size:12px;width:180px;outline:none;}
+#search-box::placeholder{color:rgba(255,255,255,0.35);}
+#search-box:focus{border-color:var(--gold);}
+.print-btn{margin-left:auto;}
+
+/* SIDEBAR + CONTENT */
+#layout{display:flex;min-height:calc(100vh - 82px);}
+
+/* SIDEBAR */
+#toc{
+  width:220px;flex-shrink:0;
+  background:var(--navy);
+  padding:16px 0;
+  position:sticky;top:82px;
+  height:calc(100vh - 82px);
+  overflow-y:auto;
+}
+.toc-section{margin-bottom:4px;}
+.toc-item{
+  display:block;padding:7px 16px;
+  font-size:11.5px;color:rgba(255,255,255,0.5);
+  cursor:pointer;border:none;background:none;text-align:left;width:100%;
+  border-left:3px solid transparent;
+  transition:all 0.1s;line-height:1.4;
+}
+.toc-item:hover{background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.8);}
+.toc-item.active{background:rgba(201,168,76,0.12);color:var(--gold-light);border-left-color:var(--gold);}
+.toc-time{font-size:10px;color:rgba(255,255,255,0.3);display:block;margin-bottom:1px;font-variant-numeric:tabular-nums;}
+.toc-part{font-size:9px;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.25);padding:10px 16px 4px;font-weight:600;}
+
+/* MAIN CONTENT */
+#main-content{flex:1;padding:28px 32px;max-width:960px;}
+
+/* SECTION */
+.section{margin-bottom:48px;}
+.section-header{
+  display:flex;align-items:center;gap:12px;
+  margin-bottom:20px;padding-bottom:10px;
+  border-bottom:2px solid var(--gold);
+}
+.section-num{
+  background:linear-gradient(135deg,var(--gold),var(--gold-light));
+  color:var(--navy);font-size:11px;font-weight:700;
+  padding:2px 10px;border-radius:2px;letter-spacing:0.06em;white-space:nowrap;
+}
+.section-title{
+  font-family:'Noto Serif JP',serif;font-size:18px;font-weight:700;
+  color:var(--navy);flex:1;
+}
+.section-title[contenteditable="true"]:focus{outline:2px dashed var(--gold);border-radius:3px;padding:2px 4px;}
+.section-meta{font-size:11px;color:var(--gray-400);white-space:nowrap;}
+.section-add-btn{
+  margin-left:8px;background:rgba(201,168,76,0.15);border:1px dashed var(--gold);
+  color:var(--gold);border-radius:4px;padding:3px 10px;font-size:11px;cursor:pointer;
+}
+.section-add-btn:hover{background:rgba(201,168,76,0.25);}
+
+/* CUES */
+.cue-list{display:flex;flex-direction:column;gap:10px;}
+
+.cue{
+  border-radius:6px;border:1px solid;
+  overflow:hidden;
+  position:relative;
+}
+.cue:hover .cue-actions{opacity:1;}
+
+/* 発言者別カラー */
+.cue-mc      {background:var(--mc-bg);    border-color:#c8d8f0;}
+.cue-rijicho {background:var(--rijicho-bg);border-color:#dcc8f0;}
+.cue-speaker {background:var(--speaker-bg);border-color:#c0e0d0;}
+.cue-staff   {background:var(--staff-bg);  border-color:#f0dcc0;}
+.cue-note    {background:var(--note-bg);   border-color:#d8dde2;}
+.cue-fasili  {background:var(--fasili-bg); border-color:#f0c8c8;}
+
+.cue-header{
+  display:flex;align-items:center;gap:10px;
+  padding:7px 14px 6px;
+  border-bottom:1px solid rgba(0,0,0,0.06);
+}
+.cue-time{
+  font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;
+  color:var(--gray-600);min-width:44px;white-space:nowrap;
+}
+.cue-speaker-tag{
+  font-size:11px;font-weight:700;padding:1px 9px;border-radius:3px;white-space:nowrap;
+}
+.tag-mc      {background:var(--mc);      color:#fff;}
+.tag-rijicho {background:var(--rijicho); color:#fff;}
+.tag-speaker {background:var(--speaker); color:#fff;}
+.tag-staff   {background:var(--staff);   color:#fff;}
+.tag-note    {background:var(--note);    color:#fff;}
+.tag-fasili  {background:var(--fasili);  color:#fff;}
+
+.cue-label{font-size:12px;color:var(--gray-600);flex:1;}
+.cue-duration{font-size:10px;color:var(--gray-400);white-space:nowrap;}
+
+.cue-body{padding:10px 14px 12px;}
+.cue-text{
+  font-size:13.5px;line-height:1.85;color:var(--gray-800);
+  white-space:pre-wrap;
+}
+.cue-text[contenteditable="true"]:focus{
+  outline:2px dashed var(--gold);border-radius:3px;padding:4px;
+}
+.cue-remark{
+  margin-top:8px;padding:6px 10px;
+  background:rgba(0,0,0,0.04);border-left:3px solid var(--gray-200);
+  border-radius:0 3px 3px 0;font-size:11.5px;color:var(--gray-600);
+  white-space:pre-wrap;
+}
+
+/* ACTION BUTTONS */
+.cue-actions{
+  position:absolute;right:8px;top:8px;
+  display:flex;gap:4px;
+  opacity:0;transition:opacity 0.15s;
+}
+.cue-act-btn{
+  padding:3px 7px;border-radius:3px;border:none;cursor:pointer;
+  font-size:10px;font-weight:600;
+}
+.cue-edit-btn{background:var(--navy);color:#fff;}
+.cue-del-btn{background:var(--red);color:#fff;}
+
+/* ADD CUE */
+.add-cue-btn{
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  width:100%;padding:10px;
+  border:1.5px dashed var(--gray-200);border-radius:6px;
+  background:transparent;color:var(--gray-400);
+  font-family:'Noto Sans JP',sans-serif;font-size:12px;cursor:pointer;
+  transition:all 0.15s;margin-top:6px;
+}
+.add-cue-btn:hover{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,0.05);}
+
+/* ADD SECTION */
+.add-section-btn{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  width:100%;padding:16px;
+  border:2px dashed var(--gray-200);border-radius:8px;
+  background:transparent;color:var(--gray-400);
+  font-family:'Noto Sans JP',sans-serif;font-size:13px;cursor:pointer;
+  transition:all 0.15s;margin-top:8px;
+}
+.add-section-btn:hover{border-color:var(--gold);color:var(--gold);}
+
+/* HIGHLIGHT */
+.highlight{background:rgba(201,168,76,0.3);border-radius:2px;}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:300;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:#fff;border-radius:8px;width:560px;max-width:96vw;max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.2);}
+.modal-header{padding:16px 20px 12px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between;}
+.modal-title{font-family:'Noto Serif JP',serif;font-size:15px;font-weight:600;color:var(--navy);}
+.modal-close{background:none;border:none;cursor:pointer;font-size:18px;color:var(--gray-400);}
+.modal-body{padding:18px 20px;}
+.modal-footer{padding:12px 20px;border-top:1px solid var(--gray-100);display:flex;justify-content:flex-end;gap:8px;}
+.form-row{margin-bottom:14px;}
+.form-label{font-size:11.5px;font-weight:600;color:var(--gray-600);margin-bottom:5px;display:block;}
+.form-input,.form-select,.form-textarea{width:100%;padding:7px 10px;border:1px solid var(--gray-200);border-radius:4px;font-family:'Noto Sans JP',sans-serif;font-size:13px;color:var(--gray-800);background:#fff;outline:none;}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,0.12);}
+.form-textarea{resize:vertical;min-height:100px;line-height:1.7;}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
+/* PRINT */
+@media print{
+  #toolbar,#toc,.cue-actions,.add-cue-btn,.add-section-btn,.section-add-btn,#portal-nav{display:none!important;}
+  #layout{display:block;}
+  #main-content{padding:16px;max-width:100%;}
+  .cue{page-break-inside:avoid;border:1px solid #ccc!important;background:#fff!important;}
+  .cue-header{background:#f5f5f5!important;}
+  .section{page-break-before:auto;}
+  body{background:#fff;font-size:12px;}
+}
+
+/* TOAST */
+#toast-c{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:999;display:flex;flex-direction:column;align-items:center;gap:6px;}
+.toast{background:var(--navy);color:#fff;padding:8px 18px;border-radius:20px;font-size:12px;border:1px solid var(--gold);animation:tin 0.2s ease;}
+@keyframes tin{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+</style>
+</head>
+<body>
+
+<!-- 共通ナビ（後で挿入） -->
+<!-- SHARED NAV -->
+<nav id="portal-nav" style="background:#060f22;border-bottom:1px solid rgba(201,168,76,0.25);padding:0 20px;height:40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:999;font-family:'Noto Sans JP',sans-serif;">
+  <div style="display:flex;align-items:center;gap:16px;">
+    <a href="index.html" style="font-family:'Noto Serif JP',serif;font-size:12px;color:#c9a84c;text-decoration:none;font-weight:600;letter-spacing:0.04em;white-space:nowrap;">第32回 横浜経済人会議</a>
+    <span style="color:rgba(255,255,255,0.15);font-size:12px;">|</span>
+    <div style="display:flex;gap:4px;" id="portal-nav-links"></div>
+  </div>
+  <a href="index.html" style="font-size:11px;color:rgba(255,255,255,0.35);text-decoration:none;white-space:nowrap;">← ポータルへ</a>
+</nav>
+<script>
+(function(){
+  var pages=[
+    {href:"yokohama_keizaijin_32.html",label:"📊 運営管理"},
+    {href:"sekijihyo.html",label:"🪑 席次表"},
+    {href:"scenario.html",label:"📜 シナリオ"}
+  ];
+  var cur=location.pathname.split("/").pop();
+  var nav=document.getElementById("portal-nav-links");
+  if(!nav)return;
+  pages.forEach(function(p){
+    var a=document.createElement("a");
+    a.href=p.href;a.textContent=p.label;
+    var active=cur===p.href;
+    a.style.cssText="padding:4px 10px;border-radius:4px;font-size:11px;text-decoration:none;"
+      +"font-weight:"+(active?"600":"400")+";"
+      +"background:"+(active?"rgba(201,168,76,0.2)":"transparent")+";"
+      +"color:"+(active?"#e8c97d":"rgba(255,255,255,0.45)")+";"
+      +"border:"+(active?"1px solid rgba(201,168,76,0.3)":"1px solid transparent")+";";
+    nav.appendChild(a);
+  });
+})();
+</script>
+<!-- END NAV -->
+
+<!-- TOOLBAR -->
+<div id="toolbar">
+  <span class="toolbar-title">📜 進行シナリオ</span>
+  <div class="sep"></div>
+  <input id="search-box" type="text" placeholder="🔍 シナリオを検索..." oninput="doSearch(this.value)">
+  <div class="sep"></div>
+  <div class="font-ctrl">
+    <span style="font-size:11px;color:rgba(255,255,255,0.5)">文字</span>
+    <button class="btn btn-outline btn-sm" onclick="changeFontSize(-1)">－</button>
+    <span class="font-val" id="font-val">14px</span>
+    <button class="btn btn-outline btn-sm" onclick="changeFontSize(1)">＋</button>
+  </div>
+  <div class="sep"></div>
+  <button class="btn btn-outline btn-sm" onclick="toggleEditMode()">✏️ <span id="edit-mode-label">編集モード OFF</span></button>
+  <button class="btn btn-gold btn-sm" onclick="openModal('modal-add-cue');setAddTarget(null,null)">＋ セリフ追加</button>
+  <button class="btn btn-outline btn-sm print-btn" onclick="window.print()">🖨 印刷</button>
+</div>
+
+<!-- LAYOUT -->
+<div id="layout">
+  <!-- TOC -->
+  <nav id="toc" id="toc-nav">
+    <div id="toc-inner"></div>
+  </nav>
+
+  <!-- MAIN -->
+  <div id="main-content">
+    <div id="sections-wrap"></div>
+    <button class="add-section-btn" onclick="openAddSection()">＋ セクションを追加（新しいシナリオ）</button>
+  </div>
+</div>
+
+<!-- CUE EDIT MODAL -->
+<div class="modal-overlay" id="modal-edit-cue">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="edit-cue-title">セリフを編集</div>
+      <button class="modal-close" onclick="closeModal('modal-edit-cue')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="grid-2">
+        <div class="form-row">
+          <label class="form-label">時刻</label>
+          <input class="form-input" id="cue-time" type="text" placeholder="17:00">
+        </div>
+        <div class="form-row">
+          <label class="form-label">所要時間</label>
+          <input class="form-input" id="cue-duration" type="text" placeholder="2分">
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="form-row">
+          <label class="form-label">発言者</label>
+          <select class="form-select" id="cue-speaker-sel">
+            <option value="mc">🎤 司会者</option>
+            <option value="rijicho">👔 理事長（川本泰之君）</option>
+            <option value="fasili">🎙 ファシリテーター</option>
+            <option value="speaker">🏛 登壇者</option>
+            <option value="staff">⚙️ スタッフ・全員</option>
+            <option value="note">📋 備考・ト書き</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label class="form-label">発言者の名前（詳細）</label>
+          <input class="form-input" id="cue-speaker-name" placeholder="例: 永井副理事長">
+        </div>
+      </div>
+      <div class="form-row">
+        <label class="form-label">内容ラベル（短い見出し）</label>
+        <input class="form-input" id="cue-label" placeholder="例: 来賓紹介">
+      </div>
+      <div class="form-row">
+        <label class="form-label">シナリオ本文（カンペテキスト）</label>
+        <textarea class="form-textarea" id="cue-text" rows="6" placeholder="読み上げるテキストをここに入力..."></textarea>
+      </div>
+      <div class="form-row">
+        <label class="form-label">備考・ト書き（スタッフ向けメモ）</label>
+        <textarea class="form-textarea" id="cue-remark" rows="2" placeholder="例: 拍手が静まってから読む / 照明下げる"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-red btn-sm" id="cue-del-modal-btn" onclick="deleteCueFromModal()" style="margin-right:auto;display:none">削除</button>
+      <button class="btn btn-outline" onclick="closeModal('modal-edit-cue')">キャンセル</button>
+      <button class="btn btn-gold" onclick="saveCue()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD CUE (alias same modal) -->
+<div class="modal-overlay" id="modal-add-cue">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">セリフ・ト書きを追加</div>
+      <button class="modal-close" onclick="closeModal('modal-add-cue')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="grid-2">
+        <div class="form-row">
+          <label class="form-label">時刻</label>
+          <input class="form-input" id="add-cue-time" type="text" placeholder="17:00">
+        </div>
+        <div class="form-row">
+          <label class="form-label">所要時間</label>
+          <input class="form-input" id="add-cue-duration" type="text" placeholder="2分">
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="form-row">
+          <label class="form-label">発言者</label>
+          <select class="form-select" id="add-cue-speaker-sel">
+            <option value="mc">🎤 司会者</option>
+            <option value="rijicho">👔 理事長（川本泰之君）</option>
+            <option value="fasili">🎙 ファシリテーター</option>
+            <option value="speaker">🏛 登壇者</option>
+            <option value="staff">⚙️ スタッフ・全員</option>
+            <option value="note">📋 備考・ト書き</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label class="form-label">発言者の名前（詳細）</label>
+          <input class="form-input" id="add-cue-speaker-name" placeholder="例: 永井副理事長">
+        </div>
+      </div>
+      <div class="form-row">
+        <label class="form-label">内容ラベル（短い見出し）</label>
+        <input class="form-input" id="add-cue-label" placeholder="例: 来賓紹介">
+      </div>
+      <div class="form-row">
+        <label class="form-label">シナリオ本文（カンペテキスト）</label>
+        <textarea class="form-textarea" id="add-cue-text" rows="6" placeholder="読み上げるテキストをここに入力..."></textarea>
+      </div>
+      <div class="form-row">
+        <label class="form-label">備考・ト書き</label>
+        <textarea class="form-textarea" id="add-cue-remark" rows="2" placeholder="スタッフ向けメモ"></textarea>
+      </div>
+      <div class="form-row">
+        <label class="form-label">追加先セクション</label>
+        <select class="form-select" id="add-cue-section"></select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-add-cue')">キャンセル</button>
+      <button class="btn btn-gold" onclick="addCue()">追加する</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD SECTION MODAL -->
+<div class="modal-overlay" id="modal-add-section">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">セクションを追加</div>
+      <button class="modal-close" onclick="closeModal('modal-add-section')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <label class="form-label">セクション名 *</label>
+        <input class="form-input" id="sec-name" placeholder="例: 第1部パネルディスカッション 詳細シナリオ">
+      </div>
+      <div class="grid-2">
+        <div class="form-row">
+          <label class="form-label">時刻帯</label>
+          <input class="form-input" id="sec-time" placeholder="例: 17:37〜18:07">
+        </div>
+        <div class="form-row">
+          <label class="form-label">カテゴリ</label>
+          <select class="form-select" id="sec-cat">
+            <option value="main">全体進行</option>
+            <option value="panel">パネルディスカッション</option>
+            <option value="teigen">政策提言</option>
+            <option value="other">その他</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-add-section')">キャンセル</button>
+      <button class="btn btn-gold" onclick="addSection()">追加する</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-c"></div>
+
+<script>
+// ===== DATA =====
+// 発言者タグ設定
+const SPEAKER_MAP = {
+  mc:      { label:'司会者',          tag:'tag-mc',      cls:'cue-mc' },
+  rijicho: { label:'理事長',          tag:'tag-rijicho', cls:'cue-rijicho' },
+  fasili:  { label:'ファシリテーター', tag:'tag-fasili',  cls:'cue-fasili' },
+  speaker: { label:'登壇者',          tag:'tag-speaker', cls:'cue-speaker' },
+  staff:   { label:'スタッフ',        tag:'tag-staff',   cls:'cue-staff' },
+  note:    { label:'備考',            tag:'tag-note',    cls:'cue-note' },
+};
+
+// シナリオデータ（PDFから全文入力）
+let sections = [
+  {
+    id: 'sec-main',
+    name: '全体進行シナリオ',
+    time: '16:30〜21:00',
+    cat: 'main',
+    cues: [
+      { id:'c01', time:'16:30', duration:'30分', speaker:'staff', speakerName:'各員', label:'受付開始・配置スタンバイ',
+        text:'各員、配置についてスタンバイ。',
+        remark:'受付班は来場者対応。アテンド班は来賓動線確認。' },
+
+      { id:'c02', time:'16:50', duration:'1分', speaker:'mc', speakerName:'司会者', label:'開会前アナウンス（10分前）',
+        text:'本日は第32回横浜経済人会議〜横浜の価値を、未来の力に〜へご来場いただき誠にありがとうございます。開会10分前となりました。開会に先立ちまして、注意事項についてご説明させていただきます。\n\n携帯電話など音の出る電子機器はマナーモードに設定していただくか、電源をお切りください。',
+        remark:'★注意事項を読み上げる' },
+
+      { id:'c03', time:'16:55', duration:'1分', speaker:'mc', speakerName:'司会者', label:'開会前アナウンス（5分前）',
+        text:'開会5分前となりました。繰り返し、注意事項についてご説明させていただきます。\n\n携帯電話など音の出る電子機器はマナーモードに設定していただくか、電源をお切りください。\n\nまもなく開会致します。',
+        remark:'' },
+
+      { id:'c04', time:'17:00', duration:'2分', speaker:'note', speakerName:'映像班（Re-Vision）', label:'オープニング動画放映',
+        text:'【オープニング動画 スタート】',
+        remark:'Re-Vision社がPC操作。暗転後に動画再生。' },
+
+      { id:'c05', time:'17:02', duration:'2分', speaker:'mc', speakerName:'司会者', label:'開会宣言・主催者挨拶アナウンス',
+        text:'只今より、第32回横浜経済人会議を開会致します。\n\n本日司会を務めさせていただきます、一般社団法人横浜青年会議所 経済政策室 地域開発創造委員会の〇〇と〇〇です。どうぞ宜しくお願い致します。\n\n（拍手が静まったら）\n\nまず初めに、一般社団法人横浜青年会議所 第75代理事長 川本泰之君より、主催者挨拶をさせていただきます。川本理事長、宜しくお願い致します。',
+        remark:'拍手が静まってから理事長をご紹介する' },
+
+      { id:'c06', time:'17:04', duration:'1分', speaker:'staff', speakerName:'アテンド担当', label:'川本理事長 登壇',
+        text:'【川本理事長 登壇】',
+        remark:'永井副理事長がアテンド' },
+
+      { id:'c07', time:'17:05', duration:'4分', speaker:'rijicho', speakerName:'川本泰之君（理事長）', label:'主催者挨拶',
+        text:'【川本理事長 挨拶】\n\n（本文は別途）',
+        remark:'' },
+
+      { id:'c08', time:'17:09', duration:'1分', speaker:'mc', speakerName:'司会者', label:'理事長降壇',
+        text:'川本理事長、ありがとうございました。ご降壇ください。',
+        remark:'' },
+
+      { id:'c09', time:'17:10', duration:'2分', speaker:'mc', speakerName:'司会者', label:'来賓紹介',
+        text:'ここで、本日お越しいただきましたご来賓の皆様をご紹介させていただきます。\n\n・神奈川県知事　　　　黒岩　祐治　様\n・横浜市長　　　　　　山中　竹春　様\n・横浜市会議長　　　　渡邊　忠則　様\n・横浜商工会議所会頭　上野　孝　様\n\nです。',
+        remark:'来賓の方々は前方席にてお待ちいただいている' },
+
+      { id:'c10', time:'17:12', duration:'15分', speaker:'mc', speakerName:'司会者・来賓各位', label:'来賓挨拶（登壇・降壇含む）',
+        text:'それでは、ご来賓の皆様からご挨拶を賜りたいと存じます。\n\n【黒岩知事】まず初めに、神奈川県 知事 黒岩祐治様、よろしくお願いいたします。\n【挨拶〜降壇】黒岩知事、ありがとうございました。\n\n【山中市長】続きまして、横浜市長 山中竹春様、よろしくお願いいたします。\n【挨拶〜降壇】山中市長、ありがとうございました。\n\n【渡邊議長】続きまして、横浜市会議長 渡邊忠則様、よろしくお願いいたします。\n【挨拶〜降壇】渡邊議長、ありがとうございました。\n\n【上野会頭】続きまして、横浜商工会議所会頭 上野孝様、よろしくお願いいたします。\n【挨拶〜降壇】上野会頭、ありがとうございました。\n\nご来賓の皆様ありがとうございました。',
+        remark:'来賓ごとにアテンド担当が動線誘導。遅参時は担当ラインで正副確認。' },
+
+      { id:'c11', time:'17:27', duration:'1分', speaker:'mc', speakerName:'司会者', label:'趣旨説明アナウンス',
+        text:'それではここで、一般社団法人横浜青年会議所 経済政策室 室長 長谷川圭一君より、趣旨説明を行わせていただきます。長谷川室長、よろしくお願いいたします。',
+        remark:'' },
+
+      { id:'c12', time:'17:28', duration:'1分', speaker:'staff', speakerName:'アテンド担当', label:'長谷川室長 登壇',
+        text:'【長谷川室長 登壇】',
+        remark:'' },
+
+      { id:'c13', time:'17:29', duration:'4分', speaker:'speaker', speakerName:'長谷川圭一君（室長）', label:'趣旨説明',
+        text:'【登壇】\n\n（自己紹介）只今ご紹介にあずかりました、横浜青年会議所 経済政策室 室長の長谷川圭一でございます。\n\n（趣旨説明本文 ※別途シナリオ参照）',
+        remark:'趣旨説明シナリオは「趣旨説明シナリオ」セクション参照' },
+
+      { id:'c14', time:'17:33', duration:'1分', speaker:'mc', speakerName:'司会者', label:'長谷川室長 降壇',
+        text:'長谷川室長、ありがとうございました。ご降壇ください。',
+        remark:'' },
+
+      { id:'c15', time:'17:34', duration:'2分', speaker:'mc', speakerName:'司会者', label:'第1部アナウンス・登壇者紹介（舞台転換）',
+        text:'これより、第1部 パネルディスカッション\n「横浜の歴史資産を、動かす〜実践事例から導く公民連携モデルの可能性〜」\nを始めさせていただきます。\n\n（羽毛田実様 プロフィールご紹介：OMO7横浜 by 星野リゾート 総支配人）\n（廣瀬正美様 プロフィールご紹介：株式会社竹中工務店 開発事業部 事業企画グループ 専任副部長）\n（鈴木和宏様 プロフィールご紹介：横浜市 副市長）\n\nファシリテーターとして、一般社団法人横浜青年会議所 副理事長 永井嵩久君に進行いただきます。\n\n登壇者の皆様、どうぞ宜しくお願い致します。〜拍手〜',
+        remark:'顔写真スライドを投影しながら読み上げる。どんでん（舞台転換）実施中。' },
+
+      { id:'c16', time:'17:36', duration:'1分', speaker:'staff', speakerName:'アテンド担当', label:'第1部登壇者 登壇',
+        text:'【登壇者・永井副理事長 登壇】',
+        remark:'' },
+
+      { id:'c17', time:'17:37', duration:'30分', speaker:'fasili', speakerName:'永井嵩久君（副理事長・ファシリ）', label:'第1部 パネルディスカッション',
+        text:'【第1部 パネルディスカッション】\n\n登壇者①〔民〕羽毛田実様（OMO7横浜 by 星野リゾート 総支配人）\n登壇者②〔民〕廣瀬正美様（株式会社竹中工務店 開発事業部 事業企画グループ 専任副部長）\n登壇者③〔官〕鈴木和宏様（横浜市 副市長）\n\nテーマ：横浜の歴史資産を、動かす〜実践事例から導く公民連携モデルの可能性〜\n\n（詳細トークシナリオは「第1部シナリオ」セクション参照）',
+        remark:'第1部パネルディスカッション詳細シナリオを別途参照' },
+
+      { id:'c18', time:'18:07', duration:'1分', speaker:'mc', speakerName:'司会者', label:'第1部終了・降壇',
+        text:'羽毛田様、廣瀬様、鈴木様、永井副理事長、貴重なお話をいただき誠にありがとうございました。\n\nここで、登壇者の皆様がご降壇されます。皆様、今一度盛大な拍手をお送りください。',
+        remark:'1名ずつ降壇。アテンド担当は動線誘導。' },
+
+      { id:'c19', time:'18:08', duration:'2分', speaker:'mc', speakerName:'司会者', label:'第2部アナウンス・登壇者紹介（舞台転換）',
+        text:'続きまして、第2部 パネルディスカッション\n「小さく始めて、大きく変える〜パークラボ制度が拓く都市部の公園のにぎわい創出〜」\nを始めさせていただきます。\n\n（尾崎浩司様 プロフィールご紹介：三井不動産株式会社 横浜支店支店長）\n（細野徳重様 プロフィールご紹介：三菱地所株式会社 横浜支店支店長）\n（中村郁博様 プロフィールご紹介：東洋大学 専攻長 兼 教授・東洋大学国際PPP研究所長）\n\nファシリテーターとして、一般社団法人横浜青年会議所 地域開発創造委員会 委員長 荒井亮一君に進行いただきます。\n\n登壇者の皆様、どうぞ宜しくお願い致します。〜拍手〜',
+        remark:'どんでん（舞台転換）実施中。' },
+
+      { id:'c20', time:'18:12', duration:'1分', speaker:'staff', speakerName:'アテンド担当', label:'第2部登壇者 登壇',
+        text:'【登壇者・荒井委員長 登壇】',
+        remark:'' },
+
+      { id:'c21', time:'18:13', duration:'30分', speaker:'fasili', speakerName:'荒井亮一君（委員長・ファシリ）', label:'第2部 パネルディスカッション',
+        text:'【第2部 パネルディスカッション】\n\n登壇者①〔民〕尾崎浩司様（三井不動産株式会社 横浜支店支店長）\n登壇者②〔民〕細野徳重様（三菱地所株式会社 横浜支店支店長）\n登壇者③〔学〕中村郁博様（東洋大学 専攻長 兼 教授・東洋大学国際PPP研究所長）\n\nテーマ：小さく始めて、大きく変える〜スモールスケールPPPが拓く都市公園の賑わい創出〜\n\n（詳細トークシナリオは「第2部シナリオ」セクション参照）',
+        remark:'第2部パネルディスカッション詳細シナリオを別途参照' },
+
+      { id:'c22', time:'18:43', duration:'1分', speaker:'mc', speakerName:'司会者', label:'第2部終了・降壇',
+        text:'尾崎様、細野様、中村様、荒井委員長、貴重なお話をいただき誠にありがとうございました。\n\nここで、登壇者の皆様がご降壇されます。皆様、今一度盛大な拍手をお送りください。',
+        remark:'1名ずつ降壇。' },
+
+      { id:'c23', time:'18:44', duration:'10分', speaker:'mc', speakerName:'司会者', label:'休憩・舞台転換',
+        text:'これより、10分間の休憩に入ります。\n\nお手洗いは〇〇でございます。\n館内は禁煙・飲食禁止です。',
+        remark:'GREEN×EXPO2027 CM放映。どんでん実施。' },
+
+      { id:'c24', time:'18:54', duration:'1分', speaker:'mc', speakerName:'司会者', label:'再開前アナウンス',
+        text:'只今より、再開いたします。',
+        remark:'' },
+
+      { id:'c25', time:'18:55', duration:'2分', speaker:'mc', speakerName:'司会者', label:'第3部アナウンス・登壇者紹介',
+        text:'大変お待たせ致しました。\n\n只今より、第3部 パネルディスカッション\n「観光を地域経済へ変える〜インバウンドによる横浜型経済循環モデル〜」\nを始めさせていただきます。\n\n（三渕卓様 プロフィールご紹介：東急株式会社 不動産運用事業部 価値創造グループ 統括部長）\n（佐々木忠弘様 プロフィールご紹介：京浜急行電鉄株式会社 新しい価値共創室 担当部長）\n（加藤努様 プロフィールご紹介：相鉄ホールディングス株式会社 執行役員 経営戦略室 事業創造担当部長）\n（江崎貴昭様 プロフィールご紹介：公益財団法人日本交通公社 観光研究部 副主任研究員）\n\nファシリテーターとして、江崎貴昭様に進行いただきます。\n\n登壇者の皆様、どうぞ宜しくお願い致します。〜拍手〜',
+        remark:'' },
+
+      { id:'c26', time:'18:57', duration:'1分', speaker:'staff', speakerName:'アテンド担当', label:'第3部登壇者 登壇',
+        text:'【登壇者・江崎様 登壇】',
+        remark:'' },
+
+      { id:'c27', time:'18:58', duration:'30分', speaker:'fasili', speakerName:'江崎貴昭様（ファシリ）', label:'第3部 パネルディスカッション',
+        text:'【第3部 パネルディスカッション】\n\n登壇者①　三渕卓様（東急株式会社 不動産運用事業部 価値創造グループ 統括部長）\n登壇者②　佐々木忠弘様（京浜急行電鉄株式会社 新しい価値共創室 担当部長）\n登壇者③　加藤努様（相鉄ホールディングス株式会社 執行役員 経営戦略室 事業創造担当部長）\n\nテーマ：人はなぜ横浜を訪れ、通過してしまうのか〜インバウンドを都市全体の価値へ変える人流戦略〜\n\n（詳細トークシナリオは「第3部シナリオ」セクション参照）',
+        remark:'第3部パネルディスカッション詳細シナリオを別途参照' },
+
+      { id:'c28', time:'19:28', duration:'1分', speaker:'mc', speakerName:'司会者', label:'第3部終了・降壇',
+        text:'三渕様、佐々木様、加藤様、江崎様、貴重なお話をいただき誠にありがとうございました。\n\nここで、登壇者の皆様がご降壇されます。皆様、今一度盛大な拍手をお送りください。',
+        remark:'1名ずつ降壇。' },
+
+      { id:'c29', time:'19:29', duration:'2分', speaker:'mc', speakerName:'司会者', label:'政策提言アナウンス（舞台転換）',
+        text:'それでは只今より、一般社団法人横浜青年会議所 第75代理事長 川本泰之君より、第32回横浜経済人会議の政策提言を発表させていただきます。',
+        remark:'舞台転換。暗転準備。' },
+
+      { id:'c30', time:'19:31', duration:'6分', speaker:'note', speakerName:'映像班（Re-Vision）', label:'暗転・事業紹介動画放映',
+        text:'【暗転 → 事業紹介動画 スタート】\n（地域開発創造委員会・国際観光活性化委員会の事業紹介動画）',
+        remark:'暗転中に川本理事長スタンバイ' },
+
+      { id:'c31', time:'19:37', duration:'1分', speaker:'staff', speakerName:'川本理事長・アテンド', label:'川本理事長スタンバイ',
+        text:'【川本理事長 暗転中にスタンバイ・登壇】',
+        remark:'暗転中のため静かに' },
+
+      { id:'c32', time:'19:38', duration:'5分', speaker:'rijicho', speakerName:'川本泰之君（理事長）', label:'政策提言①',
+        text:'【政策提言① 動画→理事長演説】\n\n政策提言① 一等馬見所を、横浜の稼ぐ力に変える\n\n（本文は政策提言シナリオ参照）',
+        remark:'動画終了後すぐに演説開始' },
+
+      { id:'c33', time:'19:43', duration:'5分', speaker:'rijicho', speakerName:'川本泰之君（理事長）', label:'政策提言②',
+        text:'【政策提言② 動画→理事長演説】\n\n政策提言② 横浜の公園を、民間の力で動かす\n\n（本文は政策提言シナリオ参照）',
+        remark:'' },
+
+      { id:'c34', time:'19:48', duration:'5分', speaker:'rijicho', speakerName:'川本泰之君（理事長）', label:'政策提言③',
+        text:'【政策提言③ 動画→理事長演説】\n\n政策提言③ 観光・インバウンドを起点とした地域経済循環モデルの構築\n\n（本文は政策提言シナリオ参照）',
+        remark:'' },
+
+      { id:'c35', time:'19:53', duration:'1分', speaker:'note', speakerName:'映像班・アテンド', label:'理事長降壇・エンディング動画',
+        text:'【川本理事長 降壇】\n【エンディング動画 スタート】\n「横浜は、変わる。」「未来は、すでに動き出している。」',
+        remark:'エンディング動画は約1分' },
+
+      { id:'c36', time:'19:54', duration:'3分', speaker:'mc', speakerName:'司会者', label:'アンケート',
+        text:'ありがとうございました。閉会前に皆様にお願いがございます。\n\n只今、スクリーンにアンケートのQRコードを投影させていただいております。\n皆様からいただきましたご意見を今後の活動に活かしてまいりますので、ご協力いただきますよう宜しくお願い申し上げます。\n\nしばらく、ご回答のお時間を設けさせていただきます。',
+        remark:'QRコード投影。場内数箇所でスタッフがQRコードを提示。4分間確保。' },
+
+      { id:'c37', time:'19:57', duration:'1分', speaker:'mc', speakerName:'司会者', label:'閉会宣言アナウンス',
+        text:'本日は長時間に渡り、第32回横浜経済人会議にご参加いただき、誠にありがとうございます。\n\nこれより、一般社団法人横浜青年会議所 地域開発創造委員会 副委員長 福田雄太郎君より、閉会宣言をさせていただきます。\n\n福田副委員長、よろしくお願いいたします。',
+        remark:'' },
+
+      { id:'c38', time:'19:58', duration:'1分', speaker:'staff', speakerName:'アテンド担当', label:'福田副委員長 登壇',
+        text:'【福田副委員長 登壇】',
+        remark:'' },
+
+      { id:'c39', time:'19:59', duration:'1分', speaker:'speaker', speakerName:'福田雄太郎君（副委員長）', label:'閉会宣言',
+        text:'本日は、（閉会宣言本文）\n\n誠にありがとうございました。',
+        remark:'' },
+
+      { id:'c40', time:'20:00', duration:'1分', speaker:'mc', speakerName:'司会者', label:'降壇・退場アナウンス',
+        text:'ご退場にあたり、皆様にお願いがございます。混雑を避ける為、後方のお席の方より順にご退場いただきますようお願い致します。また、横浜青年会議所会員の皆様は、お席にて暫くお待ちください。\n\n（頃合いをみて）会場前方の皆様、大変お待たせ致しました。どうぞ、ご退場ください。\n\n（頃合いをみて）それでは横浜青年会議所会員の皆様も、どうぞご退場ください。',
+        remark:'席次ごとに誘導。横浜JCメンバーは最後。' },
+
+      { id:'c41', time:'20:00', duration:'60分', speaker:'staff', speakerName:'全スタッフ', label:'退場・お見送り・片付け・撤収',
+        text:'【退場・お見送り・片付け・終礼・撤収】\n\n21:00 会場完全撤収完了',
+        remark:'国旗・JC旗の撤収。GREEN×EXPO2027 CM停止。' },
+    ]
+  },
+  {
+    id: 'sec-p1',
+    name: '第1部 パネルディスカッション 詳細シナリオ',
+    time: '17:37〜18:07',
+    cat: 'panel',
+    cues: [
+      { id:'p1-01', time:'17:37', duration:'', speaker:'fasili', speakerName:'永井嵩久君', label:'第1部 開始・自己紹介',
+        text:'皆様、改めまして、ファシリテーターを務めます横浜青年会議所 副理事長の永井嵩久です。\n\nそれでは早速、登壇者の皆様に一言ずつ自己紹介をいただきたいと思います。\n\n（羽毛田様から順に各2分程度）',
+        remark:'自己紹介は各2分を目安' },
+      { id:'p1-02', time:'', duration:'', speaker:'note', speakerName:'', label:'【トークテーマ①】歴史資産活用の成立条件',
+        text:'【トークテーマ①】歴史資産活用の成立条件 〜制度・事業・実装の視点から〜\n\n（詳細な質問・トークシナリオを追記予定）',
+        remark:'登壇者ごとに具体的な問いを設定すること' },
+      { id:'p1-03', time:'', duration:'', speaker:'note', speakerName:'', label:'【トークテーマ②】一等馬見所の可能性',
+        text:'【トークテーマ②】一等馬見所の可能性\n\n（詳細な質問・トークシナリオを追記予定）',
+        remark:'' },
+    ]
+  },
+  {
+    id: 'sec-p2',
+    name: '第2部 パネルディスカッション 詳細シナリオ',
+    time: '18:13〜18:43',
+    cat: 'panel',
+    cues: [
+      { id:'p2-01', time:'18:13', duration:'', speaker:'fasili', speakerName:'荒井亮一君', label:'第2部 開始・自己紹介',
+        text:'ファシリテーターを務めます荒井亮一です。\n\nそれでは登壇者の皆様に自己紹介をいただきます。\n\n（尾崎様→細野様→中村様、各2分）',
+        remark:'' },
+      { id:'p2-02', time:'', duration:'', speaker:'note', speakerName:'', label:'【トークテーマ①】大通公園Park-PFIと都心部公園の可能性',
+        text:'【トークテーマ①】\n\n（詳細な質問・トークシナリオを追記予定）',
+        remark:'' },
+      { id:'p2-03', time:'', duration:'', speaker:'note', speakerName:'', label:'【トークテーマ②】横浜の公園で、小さく始めるために必要なこと',
+        text:'【トークテーマ②】\n\n（詳細な質問・トークシナリオを追記予定）',
+        remark:'' },
+    ]
+  },
+  {
+    id: 'sec-p3',
+    name: '第3部 パネルディスカッション 詳細シナリオ',
+    time: '18:58〜19:28',
+    cat: 'panel',
+    cues: [
+      { id:'p3-01', time:'18:58', duration:'', speaker:'fasili', speakerName:'江崎貴昭様', label:'第3部 開始・自己紹介',
+        text:'ファシリテーターを務めます江崎貴昭でございます。\n\nそれでは登壇者の皆様に自己紹介をいただきます。\n\n（三渕様→佐々木様→加藤様、各2分）',
+        remark:'' },
+      { id:'p3-02', time:'', duration:'', speaker:'note', speakerName:'', label:'【トークテーマ①】なぜ横浜では観光経済効果が市内全域に波及しにくいのか',
+        text:'【トークテーマ①】\n\n（詳細な質問・トークシナリオを追記予定）',
+        remark:'' },
+      { id:'p3-03', time:'', duration:'', speaker:'note', speakerName:'', label:'【トークテーマ②】観光を地域経済循環へ繋げるために必要な仕組み',
+        text:'【トークテーマ②】\n\n（詳細な質問・トークシナリオを追記予定）',
+        remark:'' },
+    ]
+  },
+  {
+    id: 'sec-teigen',
+    name: '政策提言 シナリオ',
+    time: '19:38〜19:53',
+    cat: 'teigen',
+    cues: [
+      { id:'t01', time:'19:38', duration:'5分', speaker:'rijicho', speakerName:'川本泰之君（理事長）', label:'政策提言① 本文',
+        text:'【政策提言①】\n一等馬見所を、横浜の稼ぐ力に変える。\n\n（演説本文を追記予定）',
+        remark:'政策提言①動画終了後すぐに演説開始' },
+      { id:'t02', time:'19:43', duration:'5分', speaker:'rijicho', speakerName:'川本泰之君（理事長）', label:'政策提言② 本文',
+        text:'【政策提言②】\n横浜の公園を、民間の力で動かす。\n\n（演説本文を追記予定）',
+        remark:'' },
+      { id:'t03', time:'19:48', duration:'5分', speaker:'rijicho', speakerName:'川本泰之君（理事長）', label:'政策提言③ 本文',
+        text:'【政策提言③】\n観光・インバウンドを起点とした地域経済循環モデルの構築\n\n（演説本文を追記予定）',
+        remark:'' },
+    ]
+  },
+];
+
+// ===== STATE =====
+let editMode = false;
+let editingCueId = null;
+let editingSectionId = null;
+let addTargetSectionId = null;
+let fontSize = 14;
+
+// ===== RENDER =====
+function render() {
+  const wrap = document.getElementById('sections-wrap');
+  wrap.innerHTML = '';
+  sections.forEach(sec => {
+    wrap.appendChild(renderSection(sec));
+  });
+  renderTOC();
+  populateSectionSelect();
+}
+
+function renderSection(sec) {
+  const div = document.createElement('div');
+  div.className = 'section';
+  div.id = 'sec-' + sec.id;
+
+  const catColors = { main:'#c9a84c', panel:'#1a7a4a', teigen:'#7d3c98', other:'#566573' };
+  const catLabels = { main:'全体進行', panel:'パネル', teigen:'政策提言', other:'その他' };
+
+  div.innerHTML = `
+    <div class="section-header">
+      <span class="section-num" style="background:${catColors[sec.cat]||'#c9a84c'}">${catLabels[sec.cat]||'その他'}</span>
+      <div class="section-title" ${editMode?'contenteditable="true"':''} onblur="updateSectionName('${sec.id}',this.textContent)">${sec.name}</div>
+      <span class="section-meta">${sec.time||''}</span>
+      ${editMode?`<button class="section-add-btn" onclick="openModal('modal-add-cue');setAddTarget('${sec.id}',null)">＋ 追加</button>`:''}
+    </div>
+    <div class="cue-list" id="cuelist-${sec.id}">
+      ${sec.cues.map(c => renderCue(c, sec.id)).join('')}
+    </div>
+    ${editMode?`<button class="add-cue-btn" onclick="openModal('modal-add-cue');setAddTarget('${sec.id}',null)">＋ このセクションにセリフ・ト書きを追加</button>`:''}
+  `;
+  return div;
+}
+
+function renderCue(c, secId) {
+  const sp = SPEAKER_MAP[c.speaker] || SPEAKER_MAP.note;
+  const nameStr = c.speakerName ? ` — ${c.speakerName}` : '';
+  return `
+    <div class="cue ${sp.cls}" id="cue-${c.id}" style="font-size:${fontSize}px">
+      <div class="cue-header">
+        <span class="cue-time">${c.time||''}</span>
+        <span class="cue-speaker-tag ${sp.tag}">${sp.label}${nameStr}</span>
+        <span class="cue-label">${c.label}</span>
+        <span class="cue-duration">${c.duration||''}</span>
+      </div>
+      <div class="cue-body">
+        <div class="cue-text" ${editMode?'contenteditable="true"':''} onblur="updateCueText('${secId}','${c.id}',this.textContent)">${escHtml(c.text)}</div>
+        ${c.remark?`<div class="cue-remark">📋 ${escHtml(c.remark)}</div>`:''}
+      </div>
+      ${editMode?`<div class="cue-actions">
+        <button class="cue-act-btn cue-edit-btn" onclick="openEditCue('${secId}','${c.id}')">編集</button>
+        <button class="cue-act-btn cue-del-btn" onclick="deleteCue('${secId}','${c.id}')">削除</button>
+      </div>`:''}
+    </div>`;
+}
+
+function renderTOC() {
+  const toc = document.getElementById('toc-inner');
+  toc.innerHTML = '';
+  sections.forEach(sec => {
+    const part = document.createElement('div');
+    part.className = 'toc-section';
+    part.innerHTML = `<div class="toc-part">${sec.name}</div>` +
+      sec.cues.map(c => `
+        <button class="toc-item" onclick="scrollToCue('${c.id}')" id="toc-${c.id}">
+          ${c.time?`<span class="toc-time">${c.time}</span>`:''}
+          ${c.label}
+        </button>`).join('');
+    toc.appendChild(part);
+  });
+}
+
+function scrollToCue(id) {
+  const el = document.getElementById('cue-' + id);
+  if (el) { el.scrollIntoView({ behavior:'smooth', block:'center' }); el.style.outline='2px solid var(--gold)'; setTimeout(()=>el.style.outline='',1500); }
+}
+
+// ===== EDIT MODE =====
+function toggleEditMode() {
+  editMode = !editMode;
+  document.getElementById('edit-mode-label').textContent = editMode ? '編集モード ON' : '編集モード OFF';
+  render();
+  toast(editMode ? '✏️ 編集モード ON — セルをクリックして直接編集できます' : '編集モードを終了しました');
+}
+
+function updateSectionName(secId, val) {
+  const sec = sections.find(s => s.id === secId);
+  if (sec && val.trim()) sec.name = val.trim();
+}
+function updateCueText(secId, cueId, val) {
+  const sec = sections.find(s => s.id === secId);
+  if (!sec) return;
+  const c = sec.cues.find(x => x.id === cueId);
+  if (c) c.text = val;
+}
+
+// ===== CUE EDIT MODAL =====
+function openEditCue(secId, cueId) {
+  const sec = sections.find(s => s.id === secId);
+  if (!sec) return;
+  const c = sec.cues.find(x => x.id === cueId);
+  if (!c) return;
+  editingCueId = cueId;
+  editingSectionId = secId;
+  document.getElementById('edit-cue-title').textContent = c.label + ' を編集';
+  document.getElementById('cue-time').value = c.time || '';
+  document.getElementById('cue-duration').value = c.duration || '';
+  document.getElementById('cue-speaker-sel').value = c.speaker || 'mc';
+  document.getElementById('cue-speaker-name').value = c.speakerName || '';
+  document.getElementById('cue-label').value = c.label || '';
+  document.getElementById('cue-text').value = c.text || '';
+  document.getElementById('cue-remark').value = c.remark || '';
+  document.getElementById('cue-del-modal-btn').style.display = 'inline-flex';
+  openModal('modal-edit-cue');
+}
+function saveCue() {
+  const sec = sections.find(s => s.id === editingSectionId);
+  if (!sec) return;
+  const c = sec.cues.find(x => x.id === editingCueId);
+  if (!c) return;
+  c.time = document.getElementById('cue-time').value;
+  c.duration = document.getElementById('cue-duration').value;
+  c.speaker = document.getElementById('cue-speaker-sel').value;
+  c.speakerName = document.getElementById('cue-speaker-name').value;
+  c.label = document.getElementById('cue-label').value;
+  c.text = document.getElementById('cue-text').value;
+  c.remark = document.getElementById('cue-remark').value;
+  closeModal('modal-edit-cue');
+  render();
+  toast('保存しました');
+}
+function deleteCueFromModal() {
+  if (!confirm('削除しますか？')) return;
+  deleteCue(editingSectionId, editingCueId);
+  closeModal('modal-edit-cue');
+}
+function deleteCue(secId, cueId) {
+  const sec = sections.find(s => s.id === secId);
+  if (!sec) return;
+  sec.cues = sec.cues.filter(x => x.id !== cueId);
+  render();
+  toast('削除しました');
+}
+
+// ===== ADD CUE =====
+function setAddTarget(secId, cueId) {
+  addTargetSectionId = secId;
+  populateSectionSelect();
+  if (secId) {
+    const sel = document.getElementById('add-cue-section');
+    if (sel) sel.value = secId;
+  }
+}
+function addCue() {
+  const secId = document.getElementById('add-cue-section').value;
+  const sec = sections.find(s => s.id === secId);
+  if (!sec) { toast('セクションを選択してください'); return; }
+  const label = document.getElementById('add-cue-label').value.trim();
+  if (!label) { toast('内容ラベルを入力してください'); return; }
+  sec.cues.push({
+    id: 'c_' + Date.now(),
+    time: document.getElementById('add-cue-time').value,
+    duration: document.getElementById('add-cue-duration').value,
+    speaker: document.getElementById('add-cue-speaker-sel').value,
+    speakerName: document.getElementById('add-cue-speaker-name').value,
+    label,
+    text: document.getElementById('add-cue-text').value,
+    remark: document.getElementById('add-cue-remark').value,
+  });
+  closeModal('modal-add-cue');
+  render();
+  toast('追加しました');
+  ['add-cue-time','add-cue-duration','add-cue-speaker-name','add-cue-label','add-cue-text','add-cue-remark'].forEach(id=>{
+    const el=document.getElementById(id); if(el)el.value='';
+  });
+}
+
+// ===== ADD SECTION =====
+function openAddSection() { openModal('modal-add-section'); }
+function addSection() {
+  const name = document.getElementById('sec-name').value.trim();
+  if (!name) { toast('セクション名を入力してください'); return; }
+  sections.push({
+    id: 'sec_' + Date.now(),
+    name,
+    time: document.getElementById('sec-time').value,
+    cat: document.getElementById('sec-cat').value,
+    cues: []
+  });
+  closeModal('modal-add-section');
+  render();
+  toast(name + ' を追加しました');
+  document.getElementById('sec-name').value='';
+  document.getElementById('sec-time').value='';
+}
+
+function populateSectionSelect() {
+  const sel = document.getElementById('add-cue-section');
+  if (!sel) return;
+  sel.innerHTML = sections.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+  if (addTargetSectionId) sel.value = addTargetSectionId;
+}
+
+// ===== SEARCH =====
+function doSearch(q) {
+  document.querySelectorAll('.cue').forEach(el => {
+    el.querySelectorAll('.highlight').forEach(h => {
+      h.outerHTML = h.textContent;
+    });
+  });
+  if (!q.trim()) return;
+  document.querySelectorAll('.cue-text, .cue-remark, .cue-label').forEach(el => {
+    const text = el.textContent;
+    if (text.includes(q)) {
+      el.innerHTML = el.innerHTML.replace(new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'g'), `<span class="highlight">${q}</span>`);
+    }
+  });
+}
+
+// ===== FONT SIZE =====
+function changeFontSize(d) {
+  fontSize = Math.max(10, Math.min(22, fontSize + d));
+  document.getElementById('font-val').textContent = fontSize + 'px';
+  document.querySelectorAll('.cue').forEach(el => el.style.fontSize = fontSize + 'px');
+}
+
+// ===== UTILS =====
+function escHtml(s) {
+  if (!s) return '';
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+}
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => { if(e.target===o) o.classList.remove('open'); }));
+function toast(msg) {
+  const c=document.getElementById('toast-c');
+  const t=document.createElement('div');t.className='toast';t.textContent=msg;c.appendChild(t);
+  setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity 0.3s';setTimeout(()=>t.remove(),300);},2500);
+}
+
+// ===== INIT =====
+render();
+</script>
+</body>
+</html>

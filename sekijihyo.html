@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第32回横浜経済人会議 席次表</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:#0d1b3e; --gold:#c9a84c; --gold-light:#e8c97d;
+  --white:#fff; --gray-100:#f0ede6; --gray-200:#e2ddd4; --gray-400:#9e9488; --gray-600:#6b6358;
+  --red:#c0392b; --green:#1a7a4a; --blue:#1a4a8a; --orange:#c76b0a;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans JP',sans-serif;background:#1a1a2e;color:#fff;min-height:100vh;}
+
+/* HEADER */
+#header{background:linear-gradient(135deg,var(--navy),#1a2a5e);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--gold);}
+.header-left{}
+.event-title{font-family:'Noto Serif JP',serif;font-size:18px;font-weight:700;color:var(--gold-light);}
+.event-sub{font-size:11px;color:rgba(255,255,255,0.5);margin-top:2px;}
+.header-right{display:flex;align-items:center;gap:12px;}
+.total-badge{background:rgba(201,168,76,0.15);border:1px solid var(--gold);border-radius:6px;padding:8px 16px;text-align:center;}
+.total-num{font-size:24px;font-weight:700;color:var(--gold-light);line-height:1;}
+.total-label{font-size:10px;color:rgba(255,255,255,0.5);margin-top:2px;}
+
+/* CONTROLS */
+#controls{background:#0d1b3e;padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;border-bottom:1px solid rgba(255,255,255,0.1);}
+.ctrl-group{display:flex;align-items:center;gap:8px;}
+.ctrl-label{font-size:11px;color:rgba(255,255,255,0.5);}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:4px;border:none;cursor:pointer;font-family:'Noto Sans JP',sans-serif;font-size:12px;font-weight:500;transition:all 0.15s;}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--navy);}
+.btn-outline{background:transparent;color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.2);}
+.btn-outline:hover{background:rgba(255,255,255,0.1);}
+.btn-red{background:var(--red);color:white;}
+.zoom-val{color:white;font-size:13px;min-width:40px;text-align:center;}
+
+/* MAIN */
+#main{display:flex;gap:0;height:calc(100vh - 120px);}
+
+/* SIDEBAR */
+#sidebar{width:260px;background:#0a1128;border-right:1px solid rgba(255,255,255,0.08);overflow-y:auto;flex-shrink:0;}
+.side-section{border-bottom:1px solid rgba(255,255,255,0.06);}
+.side-section-header{padding:10px 14px;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.35);font-weight:600;background:rgba(0,0,0,0.2);}
+.side-item{padding:8px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.04);cursor:pointer;transition:background 0.1s;}
+.side-item:hover{background:rgba(255,255,255,0.04);}
+.side-item-left{display:flex;align-items:center;gap:8px;}
+.side-color{width:10px;height:10px;border-radius:2px;flex-shrink:0;}
+.side-name{font-size:12px;color:rgba(255,255,255,0.8);}
+.side-right{display:flex;align-items:center;gap:6px;}
+.side-count{font-size:11px;color:rgba(255,255,255,0.4);}
+.side-stepper{display:flex;align-items:center;gap:2px;}
+.step-btn{width:20px;height:20px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.7);border-radius:3px;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;line-height:1;}
+.step-btn:hover{background:rgba(255,255,255,0.15);}
+.step-val{font-size:12px;min-width:28px;text-align:center;color:white;font-weight:600;}
+.fill-bar{height:3px;margin:0 14px 8px;border-radius:2px;background:rgba(255,255,255,0.08);overflow:hidden;}
+.fill-bar-inner{height:100%;border-radius:2px;transition:width 0.3s;}
+
+/* CANVAS AREA */
+#canvas-wrap{flex:1;overflow:auto;position:relative;background:#12122a;}
+#canvas{position:relative;transform-origin:top left;}
+
+/* HALL */
+.hall{position:absolute;border-radius:8px;}
+
+/* STAGE */
+.stage-box{position:absolute;background:linear-gradient(135deg,#2a1a00,#3d2800);border:2px solid var(--gold);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;}
+.stage-label{font-family:'Noto Serif JP',serif;font-size:13px;font-weight:700;color:var(--gold-light);letter-spacing:0.05em;}
+.stage-sub{font-size:10px;color:rgba(255,204,51,0.6);}
+
+/* SEAT BLOCK */
+.seat-block{position:absolute;border-radius:5px;border:1.5px solid;cursor:pointer;transition:filter 0.15s,transform 0.1s;overflow:hidden;}
+.seat-block:hover{filter:brightness(1.15);transform:scale(1.02);}
+.seat-block-inner{padding:5px 7px;height:100%;display:flex;flex-direction:column;justify-content:space-between;}
+.block-name{font-size:10px;font-weight:700;color:rgba(255,255,255,0.95);line-height:1.2;word-break:break-all;}
+.block-count-row{display:flex;align-items:center;justify-content:space-between;margin-top:2px;}
+.block-seats{display:flex;flex-wrap:wrap;gap:2px;margin-top:2px;flex:1;align-content:flex-start;}
+.seat{width:10px;height:10px;border-radius:2px;transition:background 0.2s;}
+.seat.occupied{opacity:1;}
+.seat.empty{opacity:0.25;}
+.block-stats{font-size:9px;color:rgba(255,255,255,0.55);white-space:nowrap;}
+
+/* AISLE */
+.aisle{position:absolute;background:rgba(255,255,255,0.04);border:1px dashed rgba(255,255,255,0.12);border-radius:4px;display:flex;align-items:center;justify-content:center;}
+.aisle-label{font-size:9px;color:rgba(255,255,255,0.25);letter-spacing:0.05em;}
+
+/* LABEL */
+.area-label{position:absolute;font-size:9px;color:rgba(255,255,255,0.25);letter-spacing:0.05em;text-transform:uppercase;}
+
+/* LEGEND */
+#legend{position:fixed;bottom:16px;right:16px;background:rgba(10,17,40,0.95);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:10px 14px;font-size:11px;}
+.legend-title{color:rgba(255,255,255,0.5);margin-bottom:6px;font-size:10px;text-transform:uppercase;letter-spacing:0.08em;}
+.legend-row{display:flex;align-items:center;gap:6px;margin-bottom:3px;color:rgba(255,255,255,0.7);}
+.legend-dot{width:10px;height:10px;border-radius:2px;}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:#0d1b3e;border:1px solid rgba(201,168,76,0.3);border-radius:10px;width:380px;max-width:95vw;}
+.modal-header{padding:16px 20px 12px;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:space-between;}
+.modal-title{font-family:'Noto Serif JP',serif;font-size:15px;font-weight:600;color:var(--gold-light);}
+.modal-close{background:none;border:none;cursor:pointer;font-size:18px;color:rgba(255,255,255,0.4);}
+.modal-body{padding:16px 20px;}
+.modal-footer{padding:12px 20px;border-top:1px solid rgba(255,255,255,0.08);display:flex;justify-content:flex-end;gap:8px;}
+.form-label{font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:4px;display:block;font-weight:600;}
+.form-input,.form-select{width:100%;padding:7px 10px;border:1px solid rgba(255,255,255,0.15);border-radius:4px;background:rgba(255,255,255,0.05);color:white;font-family:'Noto Sans JP',sans-serif;font-size:13px;outline:none;margin-bottom:12px;}
+.form-input:focus,.form-select:focus{border-color:var(--gold);}
+.form-select option{background:#0d1b3e;}
+
+/* TOAST */
+#toast-container{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:999;display:flex;flex-direction:column;gap:6px;align-items:center;}
+.toast{background:var(--navy);color:white;padding:9px 18px;border-radius:20px;font-size:12px;border:1px solid var(--gold);animation:fadeIn 0.2s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+</style>
+</head>
+<body>
+<!-- SHARED NAV -->
+<nav id="portal-nav" style="background:#060f22;border-bottom:1px solid rgba(201,168,76,0.25);padding:0 20px;height:40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:999;font-family:'Noto Sans JP',sans-serif;">
+  <div style="display:flex;align-items:center;gap:16px;">
+    <a href="index.html" style="font-family:'Noto Serif JP',serif;font-size:12px;color:#c9a84c;text-decoration:none;font-weight:600;letter-spacing:0.04em;white-space:nowrap;">第32回 横浜経済人会議</a>
+    <span style="color:rgba(255,255,255,0.15);font-size:12px;">|</span>
+    <div style="display:flex;gap:4px;" id="portal-nav-links"></div>
+  </div>
+  <a href="index.html" style="font-size:11px;color:rgba(255,255,255,0.35);text-decoration:none;white-space:nowrap;">← ポータルへ</a>
+</nav>
+<script>
+(function(){
+  var pages=[
+    {href:"yokohama_keizaijin_32.html",label:"📊 運営管理"},
+    {href:"sekijihyo.html",label:"🪑 席次表"},
+    {href:"scenario.html",label:"📜 シナリオ"}
+  ];
+  var cur=location.pathname.split("/").pop();
+  var nav=document.getElementById("portal-nav-links");
+  if(!nav)return;
+  pages.forEach(function(p){
+    var a=document.createElement("a");
+    a.href=p.href; a.textContent=p.label;
+    var active=cur===p.href;
+    a.style.cssText="padding:4px 10px;border-radius:4px;font-size:11px;text-decoration:none;"
+      +"font-weight:"+(active?"600":"400")+";"
+      +"background:"+(active?"rgba(201,168,76,0.2)":"transparent")+";"
+      +"color:"+(active?"#e8c97d":"rgba(255,255,255,0.45)")+";"
+      +"border:"+(active?"1px solid rgba(201,168,76,0.3)":"1px solid transparent")+";";
+    nav.appendChild(a);
+  });
+})();
+</script>
+<!-- END NAV -->
+
+<div id="header">
+  <div class="header-left">
+    <div class="event-title">第32回 横浜経済人会議 — 席次表</div>
+    <div class="event-sub">2026年8月28日（金）17:00〜20:00 ｜ テンネー記念ホール（関東学院大学 関内キャンパス2F）</div>
+  </div>
+  <div class="header-right">
+    <div class="total-badge">
+      <div class="total-num" id="total-occupied">0</div>
+      <div class="total-label">着席 / <span id="total-cap">0</span>名</div>
+    </div>
+    <div class="total-badge" style="border-color:var(--green)">
+      <div class="total-num" id="total-pct" style="color:#4aba7a">0%</div>
+      <div class="total-label">充填率</div>
+    </div>
+  </div>
+</div>
+
+<div id="controls">
+  <div class="ctrl-group">
+    <span class="ctrl-label">ズーム</span>
+    <button class="btn btn-outline" onclick="zoom(-0.1)">－</button>
+    <span class="zoom-val" id="zoom-label">100%</span>
+    <button class="btn btn-outline" onclick="zoom(0.1)">＋</button>
+    <button class="btn btn-outline" onclick="resetZoom()">リセット</button>
+  </div>
+  <div style="flex:1"></div>
+  <button class="btn btn-gold" onclick="openModal('modal-add')">＋ ブロック追加</button>
+  <button class="btn btn-outline" onclick="fillAll()">全席着席</button>
+  <button class="btn btn-red" onclick="clearAll()">全席クリア</button>
+</div>
+
+<div id="main">
+  <div id="sidebar">
+    <div class="side-section">
+      <div class="side-section-header">ブロック一覧 — クリックで編集</div>
+      <div id="sidebar-list"></div>
+    </div>
+  </div>
+  <div id="canvas-wrap">
+    <div id="canvas"></div>
+  </div>
+</div>
+
+<div id="legend">
+  <div class="legend-title">凡例</div>
+  <div class="legend-row"><div class="legend-dot" style="background:#c9a84c"></div>着席</div>
+  <div class="legend-row"><div class="legend-dot" style="background:rgba(255,255,255,0.15)"></div>空席</div>
+</div>
+
+<!-- 編集モーダル -->
+<div class="modal-overlay" id="modal-edit">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="edit-modal-title">ブロック編集</div>
+      <button class="modal-close" onclick="closeModal('modal-edit')">✕</button>
+    </div>
+    <div class="modal-body">
+      <label class="form-label">ブロック名</label>
+      <input class="form-input" id="edit-name" type="text">
+      <label class="form-label">定員</label>
+      <input class="form-input" id="edit-cap" type="number" min="0">
+      <label class="form-label">現在の着席数</label>
+      <input class="form-input" id="edit-occ" type="number" min="0">
+      <label class="form-label">カラー</label>
+      <input class="form-input" id="edit-color" type="color">
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-red" id="edit-delete-btn" onclick="deleteBlock()">削除</button>
+      <button class="btn btn-outline" onclick="closeModal('modal-edit')">キャンセル</button>
+      <button class="btn btn-gold" onclick="saveEdit()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- 追加モーダル -->
+<div class="modal-overlay" id="modal-add">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">ブロックを追加</div>
+      <button class="modal-close" onclick="closeModal('modal-add')">✕</button>
+    </div>
+    <div class="modal-body">
+      <label class="form-label">ブロック名 *</label>
+      <input class="form-input" id="add-name" type="text" placeholder="例: 新規委員会">
+      <label class="form-label">定員</label>
+      <input class="form-input" id="add-cap" type="number" value="20" min="1">
+      <label class="form-label">カラー</label>
+      <input class="form-input" id="add-color" type="color" value="#4a90d9">
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-add')">キャンセル</button>
+      <button class="btn btn-gold" onclick="addBlock()">追加する</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+
+<script>
+// ===== 席次データ（PPTXレイアウト準拠）=====
+// ホールサイズ: 幅1200px × 高さ900px（スケール比 1cm ≈ 50px）
+
+const SCALE = 48; // px per cm
+
+const HALL_W = 1250;
+const HALL_H = 960;
+
+// カラーパレット
+const COLORS = {
+  vip:    '#c9a84c',
+  gov:    '#8b5e3c',
+  guest:  '#7d3c98',
+  member: '#1a4a8a',
+  invite: '#c0392b',
+  media:  '#2980b9',
+  general:'#27ae60',
+  staff:  '#566573',
+  committee:'#1a6a4a',
+  reserve:'#4a4a6a',
+  sp:     '#5d4037',
+};
+
+// ブロック定義（PPTXの位置情報を元に配置）
+// x,y,w,h は px（SCALE=48基準で換算）
+let blocks = [
+  // ===== ステージ前方エリア =====
+  { id:'stage_left',    name:'登壇関係者',      cap:31, occ:0, color:COLORS.vip,    x:60,  y:520, w:100, h:240, fixed:false },
+  { id:'vip_front',     name:'来賓',            cap:20, occ:0, color:COLORS.vip,    x:170, y:460, w:140, h:130, fixed:false },
+  { id:'invite_1',      name:'招待席①',         cap:16, occ:0, color:COLORS.invite, x:170, y:600, w:140, h:120, fixed:false },
+  { id:'vip_right',     name:'来賓（右）',       cap:12, occ:0, color:COLORS.vip,    x:320, y:460, w:120, h:120, fixed:false },
+  { id:'invite_2',      name:'招待席②',         cap:16, occ:0, color:COLORS.invite, x:320, y:590, w:120, h:110, fixed:false },
+  { id:'media',         name:'メディア',         cap:5,  occ:0, color:COLORS.media,  x:310, y:380, w:65,  h:70,  fixed:false },
+  { id:'kanseki',       name:'監事',             cap:3,  occ:0, color:COLORS.staff,  x:875, y:540, w:70,  h:55,  fixed:false },
+
+  // ===== 正副理事長・常任理事エリア =====
+  { id:'seidan',        name:'正副理事長・直理・出常', cap:12, occ:0, color:'#8e24aa', x:390, y:490, w:130, h:160, fixed:false },
+  { id:'senmu',         name:'専務室（専務室長含む）', cap:6,  occ:0, color:'#6a1b9a', x:530, y:490, w:100, h:80,  fixed:false },
+  { id:'zaimu',         name:'常任理事（財務・法務等）',cap:8, occ:0, color:'#4527a0', x:530, y:575, w:100, h:80,  fixed:false },
+
+  // ===== 来訪JC =====
+  { id:'raiko',         name:'来訪JC',           cap:30, occ:0, color:COLORS.sp,     x:290, y:350, w:170, h:80,  fixed:false },
+
+  // ===== 各委員会 =====
+  { id:'chiiki',        name:'地域開発創造委員会',      cap:25, occ:0, color:COLORS.committee, x:570, y:230, w:140, h:160, fixed:false },
+  { id:'kokusai_k',     name:'国際観光活性化委員会',    cap:25, occ:0, color:'#1a7a5a',         x:720, y:230, w:140, h:160, fixed:false },
+  { id:'reikai',        name:'例会式典委員会',          cap:15, occ:0, color:'#2e7d32',         x:650, y:520, w:130, h:100, fixed:false },
+  { id:'soumu',         name:'総務委員会',              cap:20, occ:0, color:'#1565c0',         x:790, y:310, w:130, h:120, fixed:false },
+  { id:'brand',         name:'ブランディング委員会',    cap:20, occ:0, color:'#6a1b9a',         x:600, y:660, w:140, h:100, fixed:false },
+  { id:'leader',        name:'リーダーシップ推進委員会',cap:40, occ:0, color:'#0277bd',         x:570, y:640, w:120, h:160, fixed:false }, // 新入会員多め
+  { id:'member_sp',     name:'メンバーシップ促進特別委員会', cap:15, occ:0, color:'#00838f', x:660, y:390, w:120, h:110, fixed:false },
+  { id:'mice',          name:'MICE推進委員会',          cap:15, occ:0, color:'#2e7d32',         x:790, y:200, w:120, h:100, fixed:false },
+  { id:'nihon',         name:'日本渉外委員会',          cap:15, occ:0, color:'#1565c0',         x:800, y:430, w:120, h:130, fixed:false },
+  { id:'kokusai_g',     name:'国際渉外委員会',          cap:15, occ:0, color:'#1a237e',         x:800, y:580, w:120, h:110, fixed:false },
+  { id:'kaiko_s',       name:'横浜開港祭 総務委員会',   cap:15, occ:0, color:'#bf360c',         x:930, y:200, w:120, h:110, fixed:false },
+  { id:'kaiko_k',       name:'横浜開港祭 企画運営委員会',cap:15, occ:0, color:'#e65100',        x:930, y:320, w:120, h:110, fixed:false },
+  { id:'kaiko_p',       name:'横浜開港祭 広報渉外委員会',cap:15, occ:0, color:'#f57f17',        x:930, y:440, w:120, h:110, fixed:false },
+
+  // ===== 一般・対外席 =====
+  { id:'general_l',     name:'一般席（左）',     cap:40, occ:0, color:COLORS.general, x:60,  y:230, w:130, h:210, fixed:false },
+  { id:'general_c',     name:'一般席（中央）',   cap:60, occ:0, color:COLORS.general, x:200, y:165, w:220, h:180, fixed:false },
+  { id:'kouensha',      name:'後援先団体',        cap:30, occ:0, color:'#558b2f',      x:420, y:165, w:140, h:180, fixed:false },
+  { id:'guest_member',  name:'ゲスト会員・特別会員',cap:30,occ:0, color:COLORS.guest,  x:480, y:640, w:130, h:130, fixed:false },
+
+  // ===== 予備席 =====
+  { id:'yobi',          name:'予備席',           cap:20, occ:0, color:COLORS.reserve, x:1060,y:260, w:120, h:90,  fixed:false },
+  { id:'wheelchair',    name:'車椅子席',          cap:6,  occ:0, color:'#78909c',      x:1060,y:190, w:120, h:65,  fixed:false },
+];
+
+let currentScale = 1.0;
+let editingId = null;
+
+// ===== RENDER =====
+function render() {
+  const canvas = document.getElementById('canvas');
+  canvas.style.width  = HALL_W + 'px';
+  canvas.style.height = HALL_H + 'px';
+  canvas.style.transform = `scale(${currentScale})`;
+  canvas.style.transformOrigin = 'top left';
+  canvas.innerHTML = '';
+
+  // 背景（ホール外壁）
+  const hall = document.createElement('div');
+  hall.style.cssText = `position:absolute;left:0;top:0;width:${HALL_W}px;height:${HALL_H}px;background:#0e0e24;border-radius:8px;`;
+  canvas.appendChild(hall);
+
+  // ステージ
+  const stage = document.createElement('div');
+  stage.className = 'stage-box';
+  stage.style.cssText = `left:60px;top:40px;width:${HALL_W-120}px;height:140px;`;
+  stage.innerHTML = `<div class="stage-label">STAGE ｜ スクリーン</div><div class="stage-sub">第32回横浜経済人会議 ～横浜の価値を、未来の力に～</div>`;
+  canvas.appendChild(stage);
+
+  // 通路ライン
+  const aisles = [
+    {x:50,y:180,w:HALL_W-100,h:40,label:'前方通路'},
+    {x:50,y:200+540,w:HALL_W-100,h:35,label:'後方通路'},
+    {x:50,y:180,w:50,h:HALL_H-220,label:''},
+    {x:HALL_W-100,y:180,w:50,h:HALL_H-220,label:''},
+  ];
+  aisles.forEach(a=>{
+    const el=document.createElement('div');
+    el.className='aisle';
+    el.style.cssText=`left:${a.x}px;top:${a.y}px;width:${a.w}px;height:${a.h}px;`;
+    if(a.label){el.innerHTML=`<span class="aisle-label">${a.label}</span>`;}
+    canvas.appendChild(el);
+  });
+
+  // 各ブロック
+  blocks.forEach(b=>{
+    const el=document.createElement('div');
+    el.className='seat-block';
+    el.style.cssText=`left:${b.x}px;top:${b.y}px;width:${b.w}px;height:${b.h}px;background:${b.color}22;border-color:${b.color}88;`;
+    el.onclick=()=>openEdit(b.id);
+
+    const occ=Math.min(b.occ,b.cap);
+    const pct=b.cap>0?Math.round(occ/b.cap*100):0;
+
+    // 座席ドット
+    const dotSize=10;const gap=2;
+    const dotsPerRow=Math.max(1,Math.floor((b.w-12)/(dotSize+gap)));
+    const dots=[];
+    for(let i=0;i<b.cap;i++){
+      dots.push(`<div class="seat ${i<occ?'occupied':'empty'}" style="width:${dotSize}px;height:${dotSize}px;background:${b.color};border-radius:2px;"></div>`);
+    }
+
+    el.innerHTML=`<div class="seat-block-inner">
+      <div>
+        <div class="block-name" style="color:${b.color};filter:brightness(1.8)">${b.name}</div>
+        <div class="block-stats">${occ}/${b.cap}名 (${pct}%)</div>
+      </div>
+      <div class="block-seats" style="display:flex;flex-wrap:wrap;gap:2px;margin-top:3px;">${dots.slice(0,Math.min(b.cap,40)).join('')}${b.cap>40?`<div style="font-size:9px;color:rgba(255,255,255,0.4)">+${b.cap-40}</div>`:''}</div>
+    </div>`;
+
+    // 充填度バー
+    const barEl=document.createElement('div');
+    barEl.style.cssText=`position:absolute;bottom:0;left:0;right:0;height:4px;border-radius:0 0 4px 4px;background:rgba(255,255,255,0.06);overflow:hidden;`;
+    barEl.innerHTML=`<div style="width:${pct}%;height:100%;background:${b.color};transition:width 0.3s;"></div>`;
+    el.appendChild(barEl);
+
+    canvas.appendChild(el);
+  });
+
+  renderSidebar();
+  updateTotals();
+  document.getElementById('canvas-wrap').style.width=(HALL_W*currentScale+40)+'px';
+  document.getElementById('canvas-wrap').style.minHeight=(HALL_H*currentScale+40)+'px';
+}
+
+function renderSidebar() {
+  const list=document.getElementById('sidebar-list');
+  list.innerHTML=blocks.map(b=>{
+    const pct=b.cap>0?Math.round(Math.min(b.occ,b.cap)/b.cap*100):0;
+    return`<div class="side-item" onclick="openEdit('${b.id}')">
+      <div class="side-item-left">
+        <div class="side-color" style="background:${b.color}"></div>
+        <div class="side-name">${b.name}</div>
+      </div>
+      <div class="side-right">
+        <div class="side-stepper">
+          <button class="step-btn" onclick="event.stopPropagation();stepOcc('${b.id}',-1)">－</button>
+          <span class="step-val">${Math.min(b.occ,b.cap)}</span>
+          <button class="step-btn" onclick="event.stopPropagation();stepOcc('${b.id}',1)">＋</button>
+        </div>
+        <div class="side-count">/${b.cap}</div>
+      </div>
+    </div>
+    <div class="fill-bar"><div class="fill-bar-inner" style="width:${pct}%;background:${b.color};"></div></div>`;
+  }).join('');
+}
+
+function updateTotals() {
+  const totalCap=blocks.reduce((s,b)=>s+b.cap,0);
+  const totalOcc=blocks.reduce((s,b)=>s+Math.min(b.occ,b.cap),0);
+  const pct=totalCap>0?Math.round(totalOcc/totalCap*100):0;
+  document.getElementById('total-occupied').textContent=totalOcc;
+  document.getElementById('total-cap').textContent=totalCap;
+  document.getElementById('total-pct').textContent=pct+'%';
+}
+
+// ===== CONTROLS =====
+let zoomLevel=1.0;
+function zoom(delta){
+  zoomLevel=Math.min(2.5,Math.max(0.3,zoomLevel+delta));
+  currentScale=zoomLevel;
+  document.getElementById('zoom-label').textContent=Math.round(zoomLevel*100)+'%';
+  render();
+}
+function resetZoom(){zoomLevel=1.0;currentScale=1.0;document.getElementById('zoom-label').textContent='100%';render();}
+
+function stepOcc(id,delta){
+  const b=blocks.find(x=>x.id===id);if(!b)return;
+  b.occ=Math.max(0,Math.min(b.cap,b.occ+delta));
+  render();
+  toast(`${b.name}: ${b.occ}/${b.cap}名`);
+}
+
+function fillAll(){blocks.forEach(b=>b.occ=b.cap);render();toast('全席着席にしました');}
+function clearAll(){blocks.forEach(b=>b.occ=0);render();toast('全席クリアしました');}
+
+// ===== EDIT MODAL =====
+function openEdit(id){
+  const b=blocks.find(x=>x.id===id);if(!b)return;
+  editingId=id;
+  document.getElementById('edit-modal-title').textContent=b.name+' を編集';
+  document.getElementById('edit-name').value=b.name;
+  document.getElementById('edit-cap').value=b.cap;
+  document.getElementById('edit-occ').value=b.occ;
+  document.getElementById('edit-color').value=b.color;
+  openModal('modal-edit');
+}
+function saveEdit(){
+  const b=blocks.find(x=>x.id===editingId);if(!b)return;
+  b.name=document.getElementById('edit-name').value||b.name;
+  b.cap=parseInt(document.getElementById('edit-cap').value)||b.cap;
+  b.occ=Math.min(parseInt(document.getElementById('edit-occ').value)||0,b.cap);
+  b.color=document.getElementById('edit-color').value;
+  closeModal('modal-edit');
+  render();
+  toast('更新しました');
+}
+function deleteBlock(){
+  if(!confirm('このブロックを削除しますか？'))return;
+  blocks=blocks.filter(x=>x.id!==editingId);
+  closeModal('modal-edit');
+  render();
+  toast('削除しました');
+}
+
+// ===== ADD MODAL =====
+function addBlock(){
+  const name=document.getElementById('add-name').value.trim();
+  if(!name){toast('名前を入力してください');return;}
+  const cap=parseInt(document.getElementById('add-cap').value)||20;
+  const color=document.getElementById('add-color').value;
+  blocks.push({
+    id:'block_'+Date.now(),
+    name,cap,occ:0,color,
+    x:Math.random()*(HALL_W-200)+100,
+    y:Math.random()*(HALL_H-200)+200,
+    w:140,h:120,fixed:false
+  });
+  closeModal('modal-add');
+  render();
+  toast(name+'を追加しました');
+  document.getElementById('add-name').value='';
+}
+
+// ===== MODAL =====
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+
+// ===== TOAST =====
+function toast(msg){
+  const c=document.getElementById('toast-container');
+  const t=document.createElement('div');t.className='toast';t.textContent=msg;c.appendChild(t);
+  setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity 0.3s';setTimeout(()=>t.remove(),300);},2500);
+}
+
+// ===== INIT =====
+render();
+</script>
+</body>
+</html>

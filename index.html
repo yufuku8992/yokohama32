@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第32回 横浜経済人会議 | 運営ポータル</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans JP',sans-serif;background:#0d1b3e;color:#fff;min-height:100vh;}
+
+/* HERO */
+.hero{
+  background:linear-gradient(160deg,#0d1b3e 0%,#162a5e 50%,#0d1b3e 100%);
+  padding:60px 40px 48px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+  border-bottom:2px solid rgba(201,168,76,0.3);
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(201,168,76,0.08) 0%,transparent 70%);
+}
+.hero-badge{
+  display:inline-block;
+  background:linear-gradient(135deg,#c9a84c,#e8c97d);
+  color:#0d1b3e;font-size:11px;font-weight:700;
+  padding:3px 14px;border-radius:2px;letter-spacing:0.12em;
+  margin-bottom:16px;
+}
+.hero-title{
+  font-family:'Noto Serif JP',serif;
+  font-size:32px;font-weight:700;
+  color:#fff;letter-spacing:0.04em;
+  line-height:1.4;
+  margin-bottom:10px;
+  position:relative;
+}
+.hero-theme{
+  font-size:14px;color:rgba(201,168,76,0.8);
+  margin-bottom:16px;letter-spacing:0.06em;
+  position:relative;
+}
+.hero-meta{
+  font-size:13px;color:rgba(255,255,255,0.45);
+  position:relative;
+  line-height:1.8;
+}
+
+/* GRID */
+.grid-wrap{
+  max-width:1000px;margin:0 auto;
+  padding:48px 32px;
+}
+.section-title{
+  font-family:'Noto Serif JP',serif;
+  font-size:13px;font-weight:600;
+  color:rgba(255,255,255,0.35);
+  text-transform:uppercase;letter-spacing:0.12em;
+  margin-bottom:20px;
+  padding-bottom:8px;
+  border-bottom:1px solid rgba(255,255,255,0.08);
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:16px;
+  margin-bottom:48px;
+}
+
+/* CARD */
+.card{
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:10px;
+  padding:24px;
+  text-decoration:none;
+  color:#fff;
+  display:block;
+  transition:all 0.2s;
+  position:relative;
+  overflow:hidden;
+}
+.card::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--card-color,#c9a84c);
+  border-radius:10px 10px 0 0;
+}
+.card:hover{
+  background:rgba(255,255,255,0.08);
+  border-color:rgba(255,255,255,0.15);
+  transform:translateY(-2px);
+  box-shadow:0 8px 32px rgba(0,0,0,0.3);
+}
+.card-icon{font-size:28px;margin-bottom:12px;display:block;}
+.card-name{
+  font-family:'Noto Serif JP',serif;
+  font-size:16px;font-weight:600;
+  margin-bottom:6px;
+  color:#fff;
+}
+.card-desc{font-size:12px;color:rgba(255,255,255,0.45);line-height:1.6;}
+.card-badge{
+  display:inline-block;margin-top:12px;
+  font-size:10px;padding:2px 8px;border-radius:3px;
+  font-weight:600;
+}
+.badge-live{background:rgba(26,122,74,0.3);color:#4aba7a;border:1px solid rgba(26,122,74,0.4);}
+.badge-static{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.4);border:1px solid rgba(255,255,255,0.1);}
+.card-arrow{
+  position:absolute;right:16px;bottom:16px;
+  font-size:18px;color:rgba(255,255,255,0.2);
+  transition:all 0.2s;
+}
+.card:hover .card-arrow{color:rgba(255,255,255,0.6);right:12px;}
+
+/* ADD CARD */
+.card-add{
+  background:transparent;
+  border:1px dashed rgba(255,255,255,0.15);
+  border-radius:10px;
+  padding:24px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  gap:8px;
+  color:rgba(255,255,255,0.25);
+  font-size:13px;
+  min-height:140px;
+}
+.card-add-icon{font-size:24px;}
+
+/* FOOTER */
+footer{
+  text-align:center;padding:24px;
+  font-size:11px;color:rgba(255,255,255,0.2);
+  border-top:1px solid rgba(255,255,255,0.06);
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-badge">第32回 横浜経済人会議</div>
+  <div class="hero-title">運営ポータル</div>
+  <div class="hero-theme">〜横浜の価値を、未来の力に〜</div>
+  <div class="hero-meta">
+    2026年8月28日（金）17:00〜20:00<br>
+    関東学院大学 関内キャンパス2階 テンネー記念ホール
+  </div>
+</div>
+
+<div class="grid-wrap">
+
+  <!-- 運営管理 -->
+  <div class="section-title">運営管理ツール</div>
+  <div class="grid">
+
+    <a class="card" href="yokohama_keizaijin_32.html" style="--card-color:#c9a84c">
+      <span class="card-icon">📊</span>
+      <div class="card-name">運営管理システム</div>
+      <div class="card-desc">タスク管理・進行表・役割分担・インシデント・お知らせをリアルタイムで共有</div>
+      <span class="card-badge badge-live">● リアルタイム同期</span>
+      <div class="card-arrow">→</div>
+    </a>
+
+    <a class="card" href="sekijihyo.html" style="--card-color:#4a90d9">
+      <span class="card-icon">🪑</span>
+      <div class="card-name">席次表</div>
+      <div class="card-desc">ホール全体の座席配置・着席状況をビジュアルで管理。各ブロックの増減をリアルタイム更新</div>
+      <span class="card-badge badge-static">ローカル管理</span>
+      <div class="card-arrow">→</div>
+    </a>
+
+
+    <a class="card" href="scenario.html" style="--card-color:#7d3c98">
+      <span class="card-icon">📜</span>
+      <div class="card-name">進行シナリオ</div>
+      <div class="card-desc">当日カンペ。全体進行・各パネルディスカッション・政策提言のシナリオを一元管理。発言者ごとに色分け表示・印刷対応</div>
+      <span class="card-badge badge-static">カンペ / 印刷対応</span>
+      <div class="card-arrow">→</div>
+    </a>
+
+    <!-- ここに新しいページを追加 -->
+    <div class="card-add">
+      <div class="card-add-icon">＋</div>
+      <div>ページを追加予定</div>
+    </div>
+
+  </div>
+
+  <!-- 外部リンク -->
+  <div class="section-title">外部リソース</div>
+  <div class="grid">
+
+    <a class="card" href="https://forms.gle" target="_blank" style="--card-color:#34a853">
+      <span class="card-icon">📝</span>
+      <div class="card-name">参加申込フォーム</div>
+      <div class="card-desc">Google フォーム（対外向け事前申込）</div>
+      <span class="card-badge badge-static">Google Forms</span>
+      <div class="card-arrow">↗</div>
+    </a>
+
+    <a class="card" href="https://supabase.com/dashboard/project/kukckeksvbdgosneezdh" target="_blank" style="--card-color:#3ecf8e">
+      <span class="card-icon">🗄️</span>
+      <div class="card-name">Supabase DB</div>
+      <div class="card-desc">データベース管理画面（管理者のみ）</div>
+      <span class="card-badge badge-static">管理者専用</span>
+      <div class="card-arrow">↗</div>
+    </a>
+
+    <a class="card" href="https://github.com/yufuku8992/yokohama32" target="_blank" style="--card-color:#fff">
+      <span class="card-icon">💻</span>
+      <div class="card-name">GitHub リポジトリ</div>
+      <div class="card-desc">このポータルのソースコード管理</div>
+      <span class="card-badge badge-static">GitHub</span>
+      <div class="card-arrow">↗</div>
+    </a>
+
+  </div>
+
+</div>
+
+<footer>
+  第32回横浜経済人会議 運営ポータル ｜ 横浜青年会議所 地域開発創造委員会・国際観光活性化委員会
+</footer>
+
+</body>
+</html>
