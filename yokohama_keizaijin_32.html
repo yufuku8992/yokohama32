@@ -162,6 +162,39 @@
 </style>
 </head>
 <body>
+<!-- SHARED NAV -->
+<nav id="portal-nav" style="background:#060f22;border-bottom:1px solid rgba(201,168,76,0.25);padding:0 20px;height:40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:999;font-family:'Noto Sans JP',sans-serif;">
+  <div style="display:flex;align-items:center;gap:16px;">
+    <a href="index.html" style="font-family:'Noto Serif JP',serif;font-size:12px;color:#c9a84c;text-decoration:none;font-weight:600;letter-spacing:0.04em;white-space:nowrap;">第32回 横浜経済人会議</a>
+    <span style="color:rgba(255,255,255,0.15);font-size:12px;">|</span>
+    <div style="display:flex;gap:4px;" id="portal-nav-links"></div>
+  </div>
+  <a href="index.html" style="font-size:11px;color:rgba(255,255,255,0.35);text-decoration:none;white-space:nowrap;">← ポータルへ</a>
+</nav>
+<script>
+(function(){
+  var pages=[
+    {href:"yokohama_keizaijin_32.html",label:"📊 運営管理"},
+    {href:"sekijihyo.html",label:"🪑 席次表"},
+    {href:"scenario.html",label:"📜 シナリオ"}
+  ];
+  var cur=location.pathname.split("/").pop();
+  var nav=document.getElementById("portal-nav-links");
+  if(!nav)return;
+  pages.forEach(function(p){
+    var a=document.createElement("a");
+    a.href=p.href; a.textContent=p.label;
+    var active=cur===p.href;
+    a.style.cssText="padding:4px 10px;border-radius:4px;font-size:11px;text-decoration:none;"
+      +"font-weight:"+(active?"600":"400")+";"
+      +"background:"+(active?"rgba(201,168,76,0.2)":"transparent")+";"
+      +"color:"+(active?"#e8c97d":"rgba(255,255,255,0.45)")+";"
+      +"border:"+(active?"1px solid rgba(201,168,76,0.3)":"1px solid transparent")+";";
+    nav.appendChild(a);
+  });
+})();
+</script>
+<!-- END NAV -->
 
 <nav id="sidebar">
   <div class="sidebar-header">
