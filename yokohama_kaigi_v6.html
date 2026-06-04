@@ -10280,6 +10280,49 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
 
   <main class="main">
 
+
+    <!-- 集計・分析 -->
+    <div id="panel-analytics" class="panel">
+      <div class="section-title">集計・分析
+        <button class="btn btn-ghost" style="font-size:11px;padding:5px 12px" onclick="syncFromGAS();setTimeout(renderAnalytics,1500)">🔄 更新</button>
+      </div>
+
+      <!-- サマリーカード -->
+      <div class="metrics" id="analytics-metrics" style="grid-template-columns:repeat(2,1fr)"></div>
+
+      <!-- 申込数・来場数の推移 -->
+      <div class="card">
+        <div class="card-title">申込数・来場数の推移（日別）</div>
+        <div style="position:relative;height:200px"><canvas id="trendChart"></canvas></div>
+      </div>
+
+      <!-- 来場率の時間帯別推移 -->
+      <div class="card">
+        <div class="card-title">来場率の時間帯別推移（当日）</div>
+        <div style="position:relative;height:180px"><canvas id="hourChart"></canvas></div>
+        <div style="font-size:10px;color:var(--text3);margin-top:6px">※ チェックイン時刻が記録されたデータのみ集計</div>
+      </div>
+
+      <!-- 知ったきっかけ -->
+      <div class="card">
+        <div class="card-title">会議を知ったきっかけ（詳細）</div>
+        <div id="analytics-source"></div>
+        <div style="position:relative;height:200px;margin-top:12px"><canvas id="sourceChart"></canvas></div>
+      </div>
+
+      <!-- 所属組織・役職分布 -->
+      <div class="card">
+        <div class="card-title">所属組織ランキング（上位15）</div>
+        <div id="analytics-org"></div>
+      </div>
+
+      <!-- 役職キーワード -->
+      <div class="card">
+        <div class="card-title">役職キーワード分布</div>
+        <div id="analytics-title"></div>
+      </div>
+    </div>
+
     <!-- ダッシュボード -->
     <div id="panel-dashboard" class="panel active">
       <div class="section-title">申込・来場状況
@@ -10506,6 +10549,7 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
       <button class="btn btn-ghost btn-full" onclick="switchNavMobile('qrprint',null);closeMobileMenu()">🖨️ QR印刷</button>
       <button class="btn btn-ghost btn-full" onclick="switchNavMobile('email',null);closeMobileMenu()">✉️ 送信状況</button>
+      <button class="btn btn-ghost btn-full" onclick="switchNavMobile('analytics',null);closeMobileMenu()">📈 集計・分析</button>
       <button class="btn btn-ghost btn-full" onclick="switchNavMobile('gas',null);closeMobileMenu()">⚡ Google連携</button>
       <button class="btn btn-ghost btn-full" onclick="exportCSV()">📤 CSV出力</button>
     </div>
@@ -10635,6 +10679,7 @@ function syncFromGAS(silent){
         if(active){
           var id=active.id.replace('panel-','');
           if(id==='dashboard')renderDashboard();
+  if(id==='analytics')renderAnalytics();
           if(id==='list')renderList();
           if(id==='email')renderEmailPanel();
           if(id==='checkin')renderCheckinLog();
@@ -10677,6 +10722,7 @@ function _switchPanel(id){
   document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
   document.getElementById('panel-'+id).classList.add('active');
   if(id==='dashboard')renderDashboard();
+  if(id==='analytics')renderAnalytics();
   if(id==='list')renderList();
   if(id==='email')renderEmailPanel();
   if(id==='gas')setupGAS();
@@ -11097,6 +11143,109 @@ function renderEmailList(){
     function flag(t,label){return'<span class="email-flag '+(log.indexOf(t)>=0?'flag-ok':'flag-ng')+'">'+(log.indexOf(t)>=0?'✓ ':'')+label+'</span>';}
     return '<div class="email-card"><div style="font-weight:500;font-size:14px;margin-bottom:2px">'+e.name+'</div><div style="font-size:11px;color:var(--text2);margin-bottom:4px">'+e.org+'</div><div style="font-size:11px;color:var(--text3);word-break:break-all;margin-bottom:8px">'+e.email+'</div><div class="email-flags">'+flag('immediate','即時')+flag('month_pre','1ヶ月前')+flag('two_weeks','2週間前')+flag('week_pre','1週間前')+flag('day_pre','前日')+'</div>'+(log?'<div style="font-size:9px;color:var(--text3);margin-top:6px">'+log+'</div>':'')+'</div>';
   }).join('');
+}
+
+
+// ── 集計・分析 ──
+var trendChartInst=null, hourChartInst=null, sourceChartInst=null;
+
+function renderAnalytics(){
+  var total=entries.length;
+  var consented=entries.filter(function(e){return e.consent==='同意';}).length;
+  var checked=entries.filter(function(e){return e.checkedIn;}).length;
+  var unchecked=total-checked;
+  var ciRate=total?Math.round(checked/total*100):0;
+
+  // サマリー
+  document.getElementById('analytics-metrics').innerHTML=
+    '<div class="metric-card"><div class="metric-label">総申込数</div><div class="metric-value">'+total+'</div><div class="metric-sub">名</div></div>'+
+    '<div class="metric-card ci"><div class="metric-label">来場済み</div><div class="metric-value" style="color:var(--success)">'+checked+'</div><div class="metric-sub">来場率 '+ciRate+'%</div></div>'+
+    '<div class="metric-card"><div class="metric-label">未来場</div><div class="metric-value">'+unchecked+'</div><div class="metric-sub">名</div></div>'+
+    '<div class="metric-card"><div class="metric-label">同意済み</div><div class="metric-value">'+consented+'</div><div class="metric-sub">'+(total?Math.round(consented/total*100):0)+'%</div></div>';
+
+  // 申込・来場推移（日別 直近14日）
+  var tLabels=[],tApply=[],tCheckin=[];
+  for(var i=13;i>=0;i--){
+    var d=new Date();d.setDate(d.getDate()-i);
+    var ds=d.toLocaleDateString('ja-JP');
+    tLabels.push((d.getMonth()+1)+'/'+(d.getDate()));
+    tApply.push(entries.filter(function(e){return e.ts&&(e.ts.startsWith(ds)||e.ts.indexOf(ds)>=0);}).length);
+    tCheckin.push(entries.filter(function(e){
+      if(!e.checkedIn||!e.checkinTime)return false;
+      var today=new Date();today.setDate(today.getDate()-i);
+      return e.checkinTime.indexOf(today.toLocaleDateString('ja-JP'))>=0||
+             (i===0&&e.checkedIn); // 当日分
+    }).length);
+  }
+  if(trendChartInst)trendChartInst.destroy();
+  trendChartInst=new Chart(document.getElementById('trendChart'),{
+    type:'line',
+    data:{labels:tLabels,datasets:[
+      {label:'申込数',data:tApply,borderColor:'#b8962e',backgroundColor:'rgba(184,150,46,0.1)',tension:.3,fill:true},
+      {label:'来場数',data:tCheckin,borderColor:'#1a7a45',backgroundColor:'rgba(26,122,69,0.1)',tension:.3,fill:true}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}}},scales:{y:{beginAtZero:true,ticks:{stepSize:1},grid:{color:'rgba(0,0,0,0.05)'}},x:{grid:{display:false},ticks:{font:{size:10}}}}}
+  });
+
+  // 来場率時間帯別（当日チェックイン時刻をHH単位で集計）
+  var hourCount={};
+  for(var h=16;h<=20;h++)hourCount[h]=0;
+  entries.forEach(function(e){
+    if(!e.checkedIn||!e.checkinTime)return;
+    var match=e.checkinTime.match(/(\d+):/);
+    if(match){var h=parseInt(match[1]);if(h>=16&&h<=20)hourCount[h]=(hourCount[h]||0)+1;}
+  });
+  var hLabels=['16時台','17時台','18時台','19時台','20時台'];
+  var hData=[hourCount[16]||0,hourCount[17]||0,hourCount[18]||0,hourCount[19]||0,hourCount[20]||0];
+  if(hourChartInst)hourChartInst.destroy();
+  hourChartInst=new Chart(document.getElementById('hourChart'),{
+    type:'bar',
+    data:{labels:hLabels,datasets:[{label:'来場数',data:hData,backgroundColor:'#1a7a9a',borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{stepSize:1},grid:{color:'rgba(0,0,0,0.05)'}},x:{grid:{display:false}}}}
+  });
+
+  // きっかけ詳細
+  var SOURCES=['公式SNS','メンバー紹介','所属団体内広報','プレスリリース等','その他'];
+  var SRC_C=['#1a7a9a','#1a7a45','#b8962e','#8a3a1a','#5a5a7a'];
+  var sc={};SOURCES.forEach(function(s){sc[s]=0;});
+  entries.forEach(function(e){var k=SOURCES.indexOf(e.source)>=0?e.source:'その他';sc[k]=(sc[k]||0)+1;});
+  var mx=Math.max.apply(null,[1].concat(Object.values(sc)));
+  document.getElementById('analytics-source').innerHTML=SOURCES.map(function(s,i){
+    var pct=total?Math.round(sc[s]/total*100):0;
+    return '<div class="bar-row"><div class="bar-label">'+s+'</div><div class="bar-track"><div class="bar-fill" style="width:'+Math.round(sc[s]/mx*100)+'%;background:'+SRC_C[i]+'"></div></div><div class="bar-count">'+sc[s]+'</div><div style="font-size:10px;color:var(--text3);width:28px;text-align:right">'+pct+'%</div></div>';
+  }).join('');
+  if(sourceChartInst)sourceChartInst.destroy();
+  sourceChartInst=new Chart(document.getElementById('sourceChart'),{
+    type:'doughnut',
+    data:{labels:SOURCES,datasets:[{data:SOURCES.map(function(s){return sc[s];}),backgroundColor:SRC_C,borderWidth:2,borderColor:'#fff'}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},padding:8}}}}
+  });
+
+  // 所属組織ランキング（上位15）
+  var oc={};entries.forEach(function(e){if(e.org)oc[e.org]=(oc[e.org]||0)+1;});
+  var sorted=Object.entries(oc).sort(function(a,b){return b[1]-a[1];}).slice(0,15);
+  var mxO=Math.max.apply(null,[1].concat(sorted.map(function(x){return x[1];})));
+  document.getElementById('analytics-org').innerHTML=sorted.length?sorted.map(function(x,i){
+    return '<div class="bar-row">'
+      +'<div style="width:18px;text-align:right;color:var(--text3);font-size:10px;flex-shrink:0">'+(i+1)+'</div>'
+      +'<div class="bar-label" title="'+x[0]+'" style="width:140px">'+x[0]+'</div>'
+      +'<div class="bar-track"><div class="bar-fill" style="width:'+Math.round(x[1]/mxO*100)+'%;background:#1a4a7a"></div></div>'
+      +'<div class="bar-count">'+x[1]+'</div>'
+      +'</div>';
+  }).join(''):'<div class="empty">データなし</div>';
+
+  // 役職キーワード分布
+  var keywords=['代表取締役','取締役','社長','部長','課長','理事','会長','副会長','委員長','教授','准教授','所長','局長','センター長'];
+  var kc={};
+  keywords.forEach(function(k){
+    var cnt=entries.filter(function(e){return e.org&&e.org.indexOf(k)>=0;}).length;
+    if(cnt>0)kc[k]=cnt;
+  });
+  var ksorted=Object.entries(kc).sort(function(a,b){return b[1]-a[1];});
+  var mxK=Math.max.apply(null,[1].concat(ksorted.map(function(x){return x[1];})));
+  document.getElementById('analytics-title').innerHTML=ksorted.length?ksorted.map(function(x){
+    return '<div class="bar-row"><div class="bar-label">'+x[0]+'</div><div class="bar-track"><div class="bar-fill" style="width:'+Math.round(x[1]/mxK*100)+'%;background:#5a3a7a"></div></div><div class="bar-count">'+x[1]+'</div></div>';
+  }).join(''):'<div class="empty">データなし</div>';
 }
 
 // ── CSV出力 ──
