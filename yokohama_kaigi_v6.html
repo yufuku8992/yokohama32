@@ -10748,6 +10748,7 @@ function renderList(){
       +(e.note?'<div class="entry-row" style="color:var(--gold)">📝 '+e.note+'</div>':'')
       +'<div class="entry-actions">'+ciBtn
         +'<button class="btn-sm btn-edit" onclick="openEditModal(\''+e.id+'\')">編集</button>'
+        +'<button class="btn-sm btn-del" onclick="deleteEntry(\''+e.id+'\')">削除</button>'
         +'<span style="font-size:10px;color:var(--text3);margin-left:auto">'+e.ts+'</span>'
       +'</div></div>';
   }).join('');
@@ -10782,6 +10783,33 @@ function doCheckin(id){
       }
     })
     .catch(function(){showCheckinResult('error','通信エラー');});
+}
+
+function deleteEntry(id){
+  if(!confirm('この申込を削除しますか？\nスプレッドシートからも削除されます。この操作は取り消せません。'))return;
+
+  // ローカルから即削除
+  entries=entries.filter(function(e){return e.id!==id;});
+  checkinLog=checkinLog.filter(function(l){return l.id!==id;});
+  saveLocal();
+  renderList();
+  showToast('削除しました');
+
+  // GASからも削除
+  if(GAS_URL){
+    fetch(GAS_URL+'?action=delete&id='+encodeURIComponent(id)+'&t='+Date.now(),{method:'GET',mode:'cors'})
+      .then(function(r){return r.json();})
+      .then(function(data){
+        if(data.status==='ok'){
+          showToast('スプレッドシートからも削除しました');
+        } else {
+          showToast('スプレッドシートの削除に失敗しました: '+(data.message||'不明なエラー'),4000);
+        }
+      })
+      .catch(function(){
+        showToast('通信エラー: スプレッドシートの削除に失敗しました',4000);
+      });
+  }
 }
 
 function undoCheckin(id){
