@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第32回横浜経済人会議 | 役割分担表</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+  --navy:#0d1b3e;--gold:#c9a84c;--gold-light:#e8c97d;
+  --white:#fff;--bg:#f5f3ee;--gray-100:#f0ede6;--gray-200:#e2ddd4;
+  --gray-400:#9e9488;--gray-600:#6b6358;--gray-800:#3a342c;
+  --green:#1a7a4a;--red:#c0392b;--blue:#1a4a8a;--orange:#c76b0a;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--gray-800);min-height:100vh;}
+
+/* TOOLBAR */
+#toolbar{background:var(--navy);padding:10px 24px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;position:sticky;top:40px;z-index:80;border-bottom:2px solid var(--gold);}
+.toolbar-title{font-family:'Noto Serif JP',serif;font-size:13px;color:var(--gold-light);font-weight:600;}
+.sync-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#9e9488;margin-right:4px;}
+.sync-dot.on{background:#4aba7a;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.sync-label{font-size:11px;color:rgba(255,255,255,0.4);}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:4px;border:none;cursor:pointer;font-family:'Noto Sans JP',sans-serif;font-size:12.5px;font-weight:500;transition:all 0.15s;}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--navy);}
+.btn-outline{background:transparent;color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.2);}
+.btn-outline:hover{background:rgba(255,255,255,0.1);}
+.btn-sm{padding:4px 9px;font-size:11.5px;}
+.btn-red{background:var(--red);color:#fff;}
+
+/* MAIN */
+#main{padding:24px 28px;max-width:1200px;margin:0 auto;}
+
+/* FILTER */
+.filter-row{display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap;}
+.filter-btn{padding:5px 14px;border-radius:20px;border:1px solid var(--gray-200);background:#fff;color:var(--gray-600);font-family:'Noto Sans JP',sans-serif;font-size:12px;cursor:pointer;transition:all 0.15s;}
+.filter-btn.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+
+/* TABLE */
+.table-wrap{background:#fff;border-radius:8px;border:1px solid var(--gray-200);overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.06);}
+.tbl{width:100%;border-collapse:collapse;}
+.tbl thead tr{background:var(--navy);color:#fff;}
+.tbl th{padding:10px 14px;text-align:left;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;white-space:nowrap;}
+.tbl td{padding:0;border-bottom:1px solid var(--gray-100);vertical-align:middle;}
+.tbl tbody tr:hover td{background:var(--gray-50,#f9f8f6);}
+.tbl tbody tr:last-child td{border-bottom:none;}
+
+/* INLINE EDIT */
+.cell-input{width:100%;border:none;background:transparent;font-family:'Noto Sans JP',sans-serif;font-size:13px;color:var(--gray-800);padding:9px 12px;outline:none;}
+.cell-input:focus{background:rgba(201,168,76,0.08);outline:2px solid var(--gold);outline-offset:-2px;}
+.cell-select{width:100%;border:none;background:transparent;font-family:'Noto Sans JP',sans-serif;font-size:12px;color:var(--gray-800);padding:9px 10px;cursor:pointer;outline:none;}
+.cell-select:focus{background:rgba(201,168,76,0.08);}
+
+/* AREA BADGE */
+.area-badge{display:inline-block;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:600;white-space:nowrap;}
+
+/* STATUS BADGE */
+.status-badge{display:inline-block;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:600;}
+.s-confirmed{background:#e8f5ed;color:#1a7a4a;}
+.s-pending{background:#fef3e2;color:#c76b0a;}
+.s-absent{background:#fdecea;color:#c0392b;}
+
+/* DELETE BTN */
+.del-btn{opacity:0;padding:4px 8px;border-radius:3px;border:none;background:var(--red);color:#fff;font-size:11px;cursor:pointer;margin:0 8px;}
+.tbl tbody tr:hover .del-btn{opacity:1;}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(13,27,62,0.5);z-index:200;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:#fff;border-radius:8px;width:520px;max-width:95vw;max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.2);}
+.modal-header{padding:16px 20px 12px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between;}
+.modal-title{font-family:'Noto Serif JP',serif;font-size:15px;font-weight:600;color:var(--navy);}
+.modal-close{background:none;border:none;cursor:pointer;font-size:18px;color:var(--gray-400);}
+.modal-body{padding:16px 20px;}
+.modal-footer{padding:12px 20px;border-top:1px solid var(--gray-100);display:flex;justify-content:flex-end;gap:8px;}
+.form-row{margin-bottom:13px;}
+.form-label{font-size:11.5px;font-weight:600;color:var(--gray-600);margin-bottom:4px;display:block;}
+.form-input,.form-select{width:100%;padding:7px 10px;border:1px solid var(--gray-200);border-radius:4px;font-family:'Noto Sans JP',sans-serif;font-size:13px;color:var(--gray-800);outline:none;}
+.form-input:focus,.form-select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,0.12);}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
+#toast-c{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:999;display:flex;flex-direction:column;align-items:center;gap:6px;}
+.toast{background:var(--navy);color:#fff;padding:9px 18px;border-radius:20px;font-size:12px;border:1px solid var(--gold);animation:tin 0.2s;}
+@keyframes tin{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.loading{text-align:center;padding:40px;color:var(--gray-400);}
+</style>
+</head>
+<body>
+
+<nav id="portal-nav" style="background:#060f22;border-bottom:1px solid rgba(201,168,76,0.25);padding:0 20px;height:40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:999;font-family:'Noto Sans JP',sans-serif;">
+  <div style="display:flex;align-items:center;gap:16px;">
+    <a href="index.html" style="font-family:'Noto Serif JP',serif;font-size:12px;color:#c9a84c;text-decoration:none;font-weight:600;">第32回 横浜経済人会議</a>
+    <span style="color:rgba(255,255,255,0.15);">|</span>
+    <div id="portal-nav-links" style="display:flex;gap:4px;"></div>
+  </div>
+  <a href="index.html" style="font-size:11px;color:rgba(255,255,255,0.35);text-decoration:none;">← ポータルへ</a>
+</nav>
+
+<div id="toolbar">
+  <span class="toolbar-title">👤 役割分担表</span>
+  <span style="color:rgba(255,255,255,0.2);margin:0 4px;">|</span>
+  <span class="sync-dot" id="sync-dot"></span><span class="sync-label" id="sync-label">接続中...</span>
+  <div style="flex:1"></div>
+  <span style="font-size:11px;color:rgba(255,255,255,0.4);">セルをクリックして直接編集 · 変更は自動保存</span>
+  <button class="btn btn-gold" onclick="openModal('modal-add')">＋ 担当者を追加</button>
+</div>
+
+<div id="main">
+  <div class="filter-row">
+    <button class="filter-btn active" onclick="setFilter('all',this)">すべて</button>
+    <button class="filter-btn" onclick="setFilter('全体統括',this)">全体統括</button>
+    <button class="filter-btn" onclick="setFilter('MC・司会',this)">MC・司会</button>
+    <button class="filter-btn" onclick="setFilter('登壇者アテンド',this)">登壇者アテンド</button>
+    <button class="filter-btn" onclick="setFilter('来賓アテンド',this)">来賓アテンド</button>
+    <button class="filter-btn" onclick="setFilter('映像・音響',this)">映像・音響</button>
+    <button class="filter-btn" onclick="setFilter('どんでん',this)">どんでん</button>
+    <button class="filter-btn" onclick="setFilter('会場誘導',this)">会場誘導</button>
+    <button class="filter-btn" onclick="setFilter('受付',this)">受付</button>
+    <button class="filter-btn" onclick="setFilter('広報・記録',this)">広報・記録</button>
+  </div>
+
+  <div class="table-wrap">
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th style="width:130px">氏名</th>
+          <th style="width:160px">役職・委員会</th>
+          <th style="width:130px">担当エリア</th>
+          <th style="width:180px">当日役割</th>
+          <th>連絡先・備考</th>
+          <th style="width:90px">ステータス</th>
+          <th style="width:50px"></th>
+        </tr>
+      </thead>
+      <tbody id="roles-tbody"><tr><td colspan="7" class="loading">読込中...</td></tr></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ADD MODAL -->
+<div class="modal-overlay" id="modal-add">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">担当者を追加</div><button class="modal-close" onclick="closeModal('modal-add')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-row"><label class="form-label">氏名 *</label><input class="form-input" id="add-name" placeholder="山田 太郎"></div>
+      <div class="grid-2">
+        <div class="form-row"><label class="form-label">役職・委員会</label><input class="form-input" id="add-position" placeholder="地域開発創造委員会"></div>
+        <div class="form-row"><label class="form-label">担当エリア</label>
+          <select class="form-select" id="add-area">
+            <option>全体統括</option><option>MC・司会</option><option>登壇者アテンド</option>
+            <option>来賓アテンド</option><option>映像・音響</option><option>どんでん</option>
+            <option>会場誘導</option><option>受付</option><option>広報・記録</option><option>その他</option>
+          </select>
+        </div>
+        <div class="form-row"><label class="form-label">当日役割</label><input class="form-input" id="add-role" placeholder="例: 第1部ファシリテーター"></div>
+        <div class="form-row"><label class="form-label">ステータス</label>
+          <select class="form-select" id="add-status">
+            <option value="confirmed">✅ 確定</option>
+            <option value="pending">🟡 調整中</option>
+            <option value="absent">❌ 欠席</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row"><label class="form-label">連絡先・備考</label><input class="form-input" id="add-note" placeholder="090-XXXX-XXXX / 注意事項"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" style="color:var(--gray-600);border-color:var(--gray-200);" onclick="closeModal('modal-add')">キャンセル</button>
+      <button class="btn btn-gold" onclick="addRole()">追加する</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-c"></div>
+
+<script>
+const SB_URL='https://kukckeksvbdgosneezdh.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt1a2NrZWtzdmJkZ29zbmVlemRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1Nzg2MjksImV4cCI6MjA5NjE1NDYyOX0.zM264r67WV4YI7_7cqC53rx5dYYoc77VncKydfNHQUY';
+const sb=supabase.createClient(SB_URL,SB_KEY);
+
+let roles=[];
+let currentFilter='all';
+
+const AREA_COLORS={
+  '全体統括':'#0d1b3e','MC・司会':'#1a4a8a','登壇者アテンド':'#7d3c98',
+  '来賓アテンド':'#c9a84c','映像・音響':'#c76b0a','どんでん':'#566573',
+  '会場誘導':'#2980b9','受付':'#1a7a4a','広報・記録':'#c0392b','その他':'#7f8c8d'
+};
+
+(function(){
+  var pages=[{href:"yokohama_keizaijin_32.html",label:"📊 運営管理"},{href:"sekijihyo.html",label:"🪑 席次表"},{href:"scenario.html",label:"📜 シナリオ"},{href:"roles.html",label:"👤 役割分担"},{href:"arrivals.html",label:"✅ 到着管理"}];
+  var cur=location.pathname.split("/").pop();
+  var nav=document.getElementById("portal-nav-links");
+  pages.forEach(function(p){var a=document.createElement("a");a.href=p.href;a.textContent=p.label;var active=cur===p.href;a.style.cssText="padding:4px 10px;border-radius:4px;font-size:11px;text-decoration:none;font-weight:"+(active?"600":"400")+";background:"+(active?"rgba(201,168,76,0.2)":"transparent")+";color:"+(active?"#e8c97d":"rgba(255,255,255,0.45)")+";border:"+(active?"1px solid rgba(201,168,76,0.3)":"1px solid transparent")+";";nav.appendChild(a);});
+})();
+
+function setSyncStatus(s){
+  const dot=document.getElementById('sync-dot'),label=document.getElementById('sync-label');
+  if(s==='on'){dot.className='sync-dot on';label.textContent='リアルタイム同期中';}
+  else{dot.className='sync-dot';label.textContent='接続中...';}
+}
+
+async function loadRoles(){
+  const{data,error}=await sb.from('roles').select('*').order('created_at');
+  if(error)return;
+  roles=data||[];
+  render();
+}
+
+function setFilter(f,btn){
+  currentFilter=f;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+
+function render(){
+  const tbody=document.getElementById('roles-tbody');
+  const filtered=currentFilter==='all'?roles:roles.filter(r=>r.area===currentFilter);
+  if(!filtered.length){tbody.innerHTML='<tr><td colspan="7" class="loading">担当者がいません。「＋ 担当者を追加」から追加してください。</td></tr>';return;}
+  tbody.innerHTML=filtered.map(r=>{
+    const c=AREA_COLORS[r.area]||'#7f8c8d';
+    const sMap={confirmed:'s-confirmed',pending:'s-pending',absent:'s-absent'};
+    const sLabel={confirmed:'✅ 確定',pending:'🟡 調整中',absent:'❌ 欠席'};
+    const areas=['全体統括','MC・司会','登壇者アテンド','来賓アテンド','映像・音響','どんでん','会場誘導','受付','広報・記録','その他'];
+    return`<tr>
+      <td><input class="cell-input" value="${esc(r.name)}" onchange="updateField('${r.id}','name',this.value)" style="font-weight:600;"></td>
+      <td><input class="cell-input" value="${esc(r.position||'')}" onchange="updateField('${r.id}','position',this.value)"></td>
+      <td>
+        <select class="cell-select" onchange="updateField('${r.id}','area',this.value)">
+          ${areas.map(a=>`<option value="${a}" ${r.area===a?'selected':''}>${a}</option>`).join('')}
+        </select>
+      </td>
+      <td><input class="cell-input" value="${esc(r.role||'')}" onchange="updateField('${r.id}','role',this.value)"></td>
+      <td><input class="cell-input" value="${esc(r.note||'')}" onchange="updateField('${r.id}','note',this.value)" placeholder="連絡先・備考..."></td>
+      <td>
+        <select class="cell-select" onchange="updateField('${r.id}','status',this.value)">
+          <option value="confirmed" ${r.status==='confirmed'?'selected':''}>✅ 確定</option>
+          <option value="pending" ${r.status==='pending'?'selected':''}>🟡 調整中</option>
+          <option value="absent" ${r.status==='absent'?'selected':''}>❌ 欠席</option>
+        </select>
+      </td>
+      <td><button class="del-btn" onclick="deleteRole('${r.id}')">削除</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function esc(s){return(s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
+
+async function updateField(id,field,value){
+  const update={};update[field]=value;
+  await sb.from('roles').update(update).eq('id',id);
+  toast('保存しました');
+}
+
+async function deleteRole(id){
+  if(!confirm('この担当者を削除しますか？'))return;
+  await sb.from('roles').delete().eq('id',id);
+  toast('削除しました');
+}
+
+async function addRole(){
+  const name=document.getElementById('add-name').value.trim();
+  if(!name){toast('氏名を入力してください');return;}
+  await sb.from('roles').insert({
+    name,position:document.getElementById('add-position').value,
+    area:document.getElementById('add-area').value,
+    role:document.getElementById('add-role').value,
+    note:document.getElementById('add-note').value,
+    status:document.getElementById('add-status').value,
+  });
+  closeModal('modal-add');
+  toast('追加しました — 全メンバーに反映');
+  ['add-name','add-position','add-role','add-note'].forEach(id=>document.getElementById(id).value='');
+}
+
+sb.channel('roles-rt')
+  .on('postgres_changes',{event:'*',schema:'public',table:'roles'},()=>loadRoles())
+  .subscribe(s=>{if(s==='SUBSCRIBED')setSyncStatus('on');});
+
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+function toast(msg){const c=document.getElementById('toast-c');const t=document.createElement('div');t.className='toast';t.textContent=msg;c.appendChild(t);setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity 0.3s';setTimeout(()=>t.remove(),300);},2500);}
+
+loadRoles();
+</script>
+</body>
+</html>

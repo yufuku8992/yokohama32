@@ -7,138 +7,45 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Noto Sans JP',sans-serif;background:#0d1b3e;color:#fff;min-height:100vh;}
+body{font-family:"Noto Sans JP",sans-serif;background:#f7f5f0;color:#3a342c;min-height:100vh;}
 
 /* HERO */
 .hero{
-  background:linear-gradient(160deg,#0d1b3e 0%,#162a5e 50%,#0d1b3e 100%);
-  padding:60px 40px 48px;
-  text-align:center;
-  position:relative;
-  overflow:hidden;
-  border-bottom:2px solid rgba(201,168,76,0.3);
+  background:linear-gradient(160deg,#0d1b3e 0%,#162a5e 60%,#0d1b3e 100%);
+  padding:52px 40px 44px;text-align:center;position:relative;overflow:hidden;
 }
-.hero::before{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse at 50% 0%,rgba(201,168,76,0.08) 0%,transparent 70%);
-}
-.hero-badge{
-  display:inline-block;
-  background:linear-gradient(135deg,#c9a84c,#e8c97d);
-  color:#0d1b3e;font-size:11px;font-weight:700;
-  padding:3px 14px;border-radius:2px;letter-spacing:0.12em;
-  margin-bottom:16px;
-}
-.hero-title{
-  font-family:'Noto Serif JP',serif;
-  font-size:32px;font-weight:700;
-  color:#fff;letter-spacing:0.04em;
-  line-height:1.4;
-  margin-bottom:10px;
-  position:relative;
-}
-.hero-theme{
-  font-size:14px;color:rgba(201,168,76,0.8);
-  margin-bottom:16px;letter-spacing:0.06em;
-  position:relative;
-}
-.hero-meta{
-  font-size:13px;color:rgba(255,255,255,0.45);
-  position:relative;
-  line-height:1.8;
-}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(201,168,76,0.1) 0%,transparent 70%);}
+.hero-badge{display:inline-block;background:linear-gradient(135deg,#c9a84c,#e8c97d);color:#0d1b3e;font-size:11px;font-weight:700;padding:3px 14px;border-radius:2px;letter-spacing:0.12em;margin-bottom:14px;}
+.hero-title{font-family:"Noto Serif JP",serif;font-size:30px;font-weight:700;color:#fff;letter-spacing:0.04em;line-height:1.4;margin-bottom:8px;position:relative;}
+.hero-theme{font-size:13px;color:rgba(201,168,76,0.85);margin-bottom:14px;letter-spacing:0.06em;position:relative;}
+.hero-meta{font-size:12px;color:rgba(255,255,255,0.4);position:relative;line-height:1.8;}
+
+/* CONTENT */
+.content{max-width:1080px;margin:0 auto;padding:40px 28px;}
+.section-title{font-family:"Noto Serif JP",serif;font-size:12px;font-weight:600;color:#9e9488;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid #e2ddd4;}
 
 /* GRID */
-.grid-wrap{
-  max-width:1000px;margin:0 auto;
-  padding:48px 32px;
-}
-.section-title{
-  font-family:'Noto Serif JP',serif;
-  font-size:13px;font-weight:600;
-  color:rgba(255,255,255,0.35);
-  text-transform:uppercase;letter-spacing:0.12em;
-  margin-bottom:20px;
-  padding-bottom:8px;
-  border-bottom:1px solid rgba(255,255,255,0.08);
-}
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
-  gap:16px;
-  margin-bottom:48px;
-}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:40px;}
 
 /* CARD */
-.card{
-  background:rgba(255,255,255,0.04);
-  border:1px solid rgba(255,255,255,0.08);
-  border-radius:10px;
-  padding:24px;
-  text-decoration:none;
-  color:#fff;
-  display:block;
-  transition:all 0.2s;
-  position:relative;
-  overflow:hidden;
-}
-.card::before{
-  content:'';
-  position:absolute;top:0;left:0;right:0;height:3px;
-  background:var(--card-color,#c9a84c);
-  border-radius:10px 10px 0 0;
-}
-.card:hover{
-  background:rgba(255,255,255,0.08);
-  border-color:rgba(255,255,255,0.15);
-  transform:translateY(-2px);
-  box-shadow:0 8px 32px rgba(0,0,0,0.3);
-}
-.card-icon{font-size:28px;margin-bottom:12px;display:block;}
-.card-name{
-  font-family:'Noto Serif JP',serif;
-  font-size:16px;font-weight:600;
-  margin-bottom:6px;
-  color:#fff;
-}
-.card-desc{font-size:12px;color:rgba(255,255,255,0.45);line-height:1.6;}
-.card-badge{
-  display:inline-block;margin-top:12px;
-  font-size:10px;padding:2px 8px;border-radius:3px;
-  font-weight:600;
-}
-.badge-live{background:rgba(26,122,74,0.3);color:#4aba7a;border:1px solid rgba(26,122,74,0.4);}
-.badge-static{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.4);border:1px solid rgba(255,255,255,0.1);}
-.card-arrow{
-  position:absolute;right:16px;bottom:16px;
-  font-size:18px;color:rgba(255,255,255,0.2);
-  transition:all 0.2s;
-}
-.card:hover .card-arrow{color:rgba(255,255,255,0.6);right:12px;}
+.card{background:#fff;border:1px solid #e2ddd4;border-radius:10px;padding:22px;text-decoration:none;color:#3a342c;display:block;transition:all 0.2s;position:relative;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.05);}
+.card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--card-color,#c9a84c);border-radius:10px 10px 0 0;}
+.card:hover{border-color:#c9a84c;transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,0,0,0.1);}
+.card-icon{font-size:26px;margin-bottom:10px;display:block;}
+.card-name{font-family:"Noto Serif JP",serif;font-size:15px;font-weight:600;margin-bottom:5px;color:#0d1b3e;}
+.card-desc{font-size:11.5px;color:#9e9488;line-height:1.6;}
+.card-badge{display:inline-block;margin-top:10px;font-size:10px;padding:2px 8px;border-radius:3px;font-weight:600;}
+.badge-live{background:#e8f5ed;color:#1a7a4a;border:1px solid rgba(26,122,74,0.2);}
+.badge-static{background:#f0ede6;color:#9e9488;border:1px solid #e2ddd4;}
+.card-arrow{position:absolute;right:16px;bottom:16px;font-size:16px;color:#e2ddd4;transition:all 0.2s;}
+.card:hover .card-arrow{color:#c9a84c;right:12px;}
 
 /* ADD CARD */
-.card-add{
-  background:transparent;
-  border:1px dashed rgba(255,255,255,0.15);
-  border-radius:10px;
-  padding:24px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-  gap:8px;
-  color:rgba(255,255,255,0.25);
-  font-size:13px;
-  min-height:140px;
-}
-.card-add-icon{font-size:24px;}
+.card-add{background:transparent;border:1.5px dashed #e2ddd4;border-radius:10px;padding:22px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;color:#c8c2ba;font-size:12.5px;min-height:130px;}
+.card-add-icon{font-size:22px;}
 
 /* FOOTER */
-footer{
-  text-align:center;padding:24px;
-  font-size:11px;color:rgba(255,255,255,0.2);
-  border-top:1px solid rgba(255,255,255,0.06);
-}
+footer{text-align:center;padding:24px;font-size:11px;color:#c8c2ba;border-top:1px solid #e2ddd4;margin-top:8px;}
 </style>
 </head>
 <body>
@@ -153,16 +60,39 @@ footer{
   </div>
 </div>
 
-<div class="grid-wrap">
+<div class="content">
 
-  <!-- 運営管理 -->
   <div class="section-title">運営管理ツール</div>
   <div class="grid">
 
     <a class="card" href="yokohama_keizaijin_32.html" style="--card-color:#c9a84c">
       <span class="card-icon">📊</span>
       <div class="card-name">運営管理システム</div>
-      <div class="card-desc">タスク管理・進行表・役割分担・インシデント・お知らせをリアルタイムで共有</div>
+      <div class="card-desc">タスク管理・進行表・広報スケジュール・リハーサル予定・事前準備物をリアルタイム共有</div>
+      <span class="card-badge badge-live">● リアルタイム同期</span>
+      <div class="card-arrow">→</div>
+    </a>
+
+    <a class="card" href="scenario.html" style="--card-color:#7d3c98">
+      <span class="card-icon">📜</span>
+      <div class="card-name">進行シナリオ</div>
+      <div class="card-desc">当日カンペ。全体進行・各パネル・政策提言シナリオを発言者色分けで表示。印刷対応。</div>
+      <span class="card-badge badge-static">カンペ / 印刷対応</span>
+      <div class="card-arrow">→</div>
+    </a>
+
+    <a class="card" href="roles.html" style="--card-color:#1a4a8a">
+      <span class="card-icon">👤</span>
+      <div class="card-name">役割分担表</div>
+      <div class="card-desc">当日スタッフの担当エリア・役割・連絡先をリアルタイム管理。セルをクリックして直接編集。</div>
+      <span class="card-badge badge-live">● リアルタイム同期</span>
+      <div class="card-arrow">→</div>
+    </a>
+
+    <a class="card" href="arrivals.html" style="--card-color:#27ae60">
+      <span class="card-icon">✅</span>
+      <div class="card-name">来賓・登壇者 到着管理</div>
+      <div class="card-desc">来賓・登壇者の到着状況をリアルタイム把握。未着・会場内・到着済の3段階で管理。</div>
       <span class="card-badge badge-live">● リアルタイム同期</span>
       <div class="card-arrow">→</div>
     </a>
@@ -170,21 +100,12 @@ footer{
     <a class="card" href="sekijihyo.html" style="--card-color:#4a90d9">
       <span class="card-icon">🪑</span>
       <div class="card-name">席次表</div>
-      <div class="card-desc">ホール全体の座席配置・着席状況をビジュアルで管理。各ブロックの増減をリアルタイム更新</div>
-      <span class="card-badge badge-static">ローカル管理</span>
+      <div class="card-desc">ホール全体の座席配置・着席状況をビジュアル管理。各ブロックの増減をリアルタイム更新。</div>
+      <span class="card-badge badge-live">● リアルタイム同期</span>
       <div class="card-arrow">→</div>
     </a>
 
-
-    <a class="card" href="scenario.html" style="--card-color:#7d3c98">
-      <span class="card-icon">📜</span>
-      <div class="card-name">進行シナリオ</div>
-      <div class="card-desc">当日カンペ。全体進行・各パネルディスカッション・政策提言のシナリオを一元管理。発言者ごとに色分け表示・印刷対応</div>
-      <span class="card-badge badge-static">カンペ / 印刷対応</span>
-      <div class="card-arrow">→</div>
-    </a>
-
-    <!-- ここに新しいページを追加 -->
+    <!-- 追加予定 -->
     <div class="card-add">
       <div class="card-add-icon">＋</div>
       <div>ページを追加予定</div>
@@ -192,7 +113,6 @@ footer{
 
   </div>
 
-  <!-- 外部リンク -->
   <div class="section-title">外部リソース</div>
   <div class="grid">
 
@@ -212,7 +132,7 @@ footer{
       <div class="card-arrow">↗</div>
     </a>
 
-    <a class="card" href="https://github.com/yufuku8992/yokohama32" target="_blank" style="--card-color:#fff">
+    <a class="card" href="https://github.com/yufuku8992/yokohama32" target="_blank" style="--card-color:#0d1b3e">
       <span class="card-icon">💻</span>
       <div class="card-name">GitHub リポジトリ</div>
       <div class="card-desc">このポータルのソースコード管理</div>

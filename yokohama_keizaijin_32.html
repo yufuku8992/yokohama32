@@ -176,7 +176,9 @@
   var pages=[
     {href:"yokohama_keizaijin_32.html",label:"📊 運営管理"},
     {href:"sekijihyo.html",label:"🪑 席次表"},
-    {href:"scenario.html",label:"📜 シナリオ"}
+    {href:"scenario.html",label:"📜 シナリオ"},
+    {href:"roles.html",label:"👤 役割分担"},
+    {href:"arrivals.html",label:"✅ 到着管理"}
   ];
   var cur=location.pathname.split("/").pop();
   var nav=document.getElementById("portal-nav-links");
@@ -402,6 +404,45 @@
       <div class="form-row"><label class="form-label">本文</label><textarea class="form-textarea" id="ann-body" placeholder="詳細内容..."></textarea></div>
     </div>
     <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-new-announce')">キャンセル</button><button class="btn btn-primary" onclick="addAnnouncement()">投稿する</button></div>
+  </div>
+</div>
+
+
+<!-- REHEARSAL ADD MODAL -->
+<div class="modal-overlay" id="modal-add-rehearsal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">リハーサルを追加</div><button class="modal-close" onclick="closeModal('modal-add-rehearsal')">✕</button></div>
+    <div class="modal-body">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="form-row"><label class="form-label">日付 *</label><input class="form-input" type="date" id="rh-date" value="2026-08-28"></div>
+        <div class="form-row"><label class="form-label">時間</label><input class="form-input" type="text" id="rh-time" placeholder="09:00〜11:00"></div>
+      </div>
+      <div class="form-row"><label class="form-label">内容 *</label><input class="form-input" id="rh-title" placeholder="当日リハーサル①"></div>
+      <div class="form-row"><label class="form-label">参加者</label><input class="form-input" id="rh-participants" placeholder="全スタッフ・両委員会"></div>
+      <div class="form-row"><label class="form-label">場所</label><input class="form-input" id="rh-place" placeholder="テンネー記念ホール"></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-add-rehearsal')">キャンセル</button><button class="btn btn-primary" onclick="addRehearsal()">追加する</button></div>
+  </div>
+</div>
+
+<!-- CHECKLIST ADD MODAL -->
+<div class="modal-overlay" id="modal-add-check">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">準備物を追加</div><button class="modal-close" onclick="closeModal('modal-add-check')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-row"><label class="form-label">品目 *</label><input class="form-input" id="ck-item" placeholder="名札・首下げ紐"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="form-row"><label class="form-label">カテゴリ</label>
+          <select class="form-select" id="ck-cat">
+            <option>印刷物・資料</option><option>備品・機材</option><option>受付関係</option>
+            <option>登壇者関係</option><option>来賓関係</option><option>映像・音響</option><option>その他</option>
+          </select>
+        </div>
+        <div class="form-row"><label class="form-label">担当</label><input class="form-input" id="ck-owner" placeholder="佐藤 美咲"></div>
+      </div>
+      <div class="form-row"><label class="form-label">備考</label><input class="form-input" id="ck-note" placeholder="数量・注意事項など"></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-add-check')">キャンセル</button><button class="btn btn-primary" onclick="addCheckItem()">追加する</button></div>
   </div>
 </div>
 

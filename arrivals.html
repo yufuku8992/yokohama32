@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第32回横浜経済人会議 | 来賓・登壇者 到着管理</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+  --navy:#0d1b3e;--gold:#c9a84c;--gold-light:#e8c97d;
+  --white:#fff;--gray-50:#f9f8f6;--gray-100:#f0ede6;--gray-200:#e2ddd4;
+  --gray-400:#9e9488;--gray-600:#6b6358;--gray-800:#3a342c;
+  --green:#1a7a4a;--green-light:#e8f5ed;--green-bright:#27ae60;
+  --red:#c0392b;--red-light:#fdecea;--orange:#c76b0a;--orange-light:#fef3e2;
+  --blue:#1a4a8a;--blue-light:#e8eef8;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans JP',sans-serif;background:#0d1b3e;color:#fff;min-height:100vh;}
+
+/* HEADER */
+#header{background:linear-gradient(135deg,#0d1b3e,#162a5e);padding:16px 24px;border-bottom:2px solid var(--gold);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.header-title{font-family:'Noto Serif JP',serif;font-size:18px;font-weight:700;color:var(--gold-light);}
+.header-sub{font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px;}
+.stats-row{display:flex;gap:10px;}
+.stat-pill{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:6px;padding:8px 16px;text-align:center;min-width:80px;}
+.stat-num{font-size:22px;font-weight:700;line-height:1;}
+.stat-label{font-size:10px;color:rgba(255,255,255,0.4);margin-top:2px;}
+.stat-pill.arrived .stat-num{color:#4aba7a;}
+.stat-pill.pending .stat-num{color:var(--gold-light);}
+.stat-pill.total .stat-num{color:#fff;}
+
+/* TOOLBAR */
+#toolbar{background:#060f22;padding:10px 24px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;border-bottom:1px solid rgba(255,255,255,0.08);}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:4px;border:none;cursor:pointer;font-family:'Noto Sans JP',sans-serif;font-size:12.5px;font-weight:500;transition:all 0.15s;}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--navy);}
+.btn-outline{background:transparent;color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.2);}
+.btn-outline:hover{background:rgba(255,255,255,0.08);}
+.sync-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--gray-400);margin-right:4px;}
+.sync-dot.on{background:#4aba7a;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.sync-label{font-size:11px;color:rgba(255,255,255,0.4);}
+
+/* FILTER TABS */
+.filter-tabs{display:flex;gap:6px;padding:12px 24px;background:#0a1128;border-bottom:1px solid rgba(255,255,255,0.06);}
+.filter-tab{padding:5px 14px;border-radius:20px;border:1px solid rgba(255,255,255,0.12);background:transparent;color:rgba(255,255,255,0.5);font-family:'Noto Sans JP',sans-serif;font-size:12px;cursor:pointer;transition:all 0.15s;}
+.filter-tab.active{background:rgba(201,168,76,0.15);border-color:var(--gold);color:var(--gold-light);}
+
+/* MAIN */
+#main{padding:20px 24px;max-width:1100px;margin:0 auto;}
+
+/* ARRIVAL CARD */
+.arrival-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;}
+.arrival-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;overflow:hidden;transition:all 0.2s;}
+.arrival-card.arrived{border-color:rgba(39,174,96,0.4);background:rgba(39,174,96,0.06);}
+.arrival-card.waiting{border-color:rgba(201,168,76,0.3);background:rgba(201,168,76,0.04);}
+.card-top{padding:14px 16px 10px;display:flex;align-items:flex-start;gap:12px;}
+.arrival-icon{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.type-guest .arrival-icon{background:rgba(201,168,76,0.2);border:2px solid rgba(201,168,76,0.4);}
+.type-speaker .arrival-icon{background:rgba(26,74,138,0.3);border:2px solid rgba(26,74,138,0.5);}
+.type-staff .arrival-icon{background:rgba(86,101,115,0.3);border:2px solid rgba(86,101,115,0.5);}
+.card-info{flex:1;}
+.card-name{font-size:15px;font-weight:700;color:#fff;line-height:1.3;}
+.card-org{font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px;}
+.card-type-badge{display:inline-block;margin-top:5px;padding:2px 8px;border-radius:3px;font-size:10px;font-weight:600;}
+.badge-guest{background:rgba(201,168,76,0.2);color:var(--gold-light);border:1px solid rgba(201,168,76,0.3);}
+.badge-speaker{background:rgba(26,74,138,0.3);color:#8ab4f8;border:1px solid rgba(26,74,138,0.4);}
+.badge-staff{background:rgba(86,101,115,0.3);color:rgba(255,255,255,0.6);border:1px solid rgba(86,101,115,0.4);}
+.status-section{padding:10px 16px 14px;border-top:1px solid rgba(255,255,255,0.06);}
+.status-buttons{display:flex;gap:6px;margin-bottom:8px;}
+.status-btn{flex:1;padding:7px 4px;border-radius:5px;border:none;cursor:pointer;font-family:'Noto Sans JP',sans-serif;font-size:11px;font-weight:600;transition:all 0.15s;opacity:0.4;}
+.status-btn.active{opacity:1;}
+.status-btn.not-arrived{background:rgba(192,57,43,0.2);color:#e74c3c;border:1px solid rgba(192,57,43,0.3);}
+.status-btn.not-arrived.active{background:rgba(192,57,43,0.3);border-color:#e74c3c;}
+.status-btn.waiting{background:rgba(201,168,76,0.2);color:var(--gold-light);border:1px solid rgba(201,168,76,0.3);}
+.status-btn.waiting.active{background:rgba(201,168,76,0.3);border-color:var(--gold);}
+.status-btn.arrived{background:rgba(39,174,96,0.2);color:#4aba7a;border:1px solid rgba(39,174,96,0.3);}
+.status-btn.arrived.active{background:rgba(39,174,96,0.3);border-color:#27ae60;}
+.arrival-time{font-size:11px;color:rgba(255,255,255,0.3);}
+.card-note{font-size:11px;color:rgba(255,255,255,0.35);margin-top:4px;padding:4px 8px;background:rgba(255,255,255,0.04);border-radius:3px;}
+.edit-note-btn{font-size:10px;color:rgba(255,255,255,0.25);background:none;border:none;cursor:pointer;margin-top:4px;padding:0;}
+.edit-note-btn:hover{color:rgba(255,255,255,0.6);}
+
+/* SECTION HEADER */
+.section-header{font-family:'Noto Serif JP',serif;font-size:14px;font-weight:600;color:var(--gold-light);margin:24px 0 12px;padding-bottom:8px;border-bottom:1px solid rgba(201,168,76,0.2);display:flex;align-items:center;gap:8px;}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:#0d1b3e;border:1px solid rgba(201,168,76,0.3);border-radius:10px;width:460px;max-width:95vw;max-height:88vh;overflow-y:auto;}
+.modal-header{padding:16px 20px 12px;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:space-between;}
+.modal-title{font-family:'Noto Serif JP',serif;font-size:15px;font-weight:600;color:var(--gold-light);}
+.modal-close{background:none;border:none;cursor:pointer;font-size:18px;color:rgba(255,255,255,0.4);}
+.modal-body{padding:16px 20px;}
+.modal-footer{padding:12px 20px;border-top:1px solid rgba(255,255,255,0.08);display:flex;justify-content:flex-end;gap:8px;}
+.form-row{margin-bottom:13px;}
+.form-label{font-size:11.5px;font-weight:600;color:rgba(255,255,255,0.5);margin-bottom:4px;display:block;}
+.form-input,.form-select,.form-textarea{width:100%;padding:7px 10px;border:1px solid rgba(255,255,255,0.15);border-radius:4px;background:rgba(255,255,255,0.06);color:#fff;font-family:'Noto Sans JP',sans-serif;font-size:13px;outline:none;}
+.form-input:focus,.form-select:focus{border-color:var(--gold);}
+.form-select option{background:#0d1b3e;}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
+/* TOAST */
+#toast-c{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:999;display:flex;flex-direction:column;align-items:center;gap:6px;}
+.toast{background:var(--navy);color:#fff;padding:9px 18px;border-radius:20px;font-size:12px;border:1px solid var(--gold);animation:tin 0.2s ease;}
+@keyframes tin{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+.loading{text-align:center;padding:40px;color:rgba(255,255,255,0.3);font-size:13px;}
+.empty{text-align:center;padding:40px;color:rgba(255,255,255,0.2);}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="portal-nav" style="background:#060f22;border-bottom:1px solid rgba(201,168,76,0.25);padding:0 20px;height:40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:999;font-family:'Noto Sans JP',sans-serif;">
+  <div style="display:flex;align-items:center;gap:16px;">
+    <a href="index.html" style="font-family:'Noto Serif JP',serif;font-size:12px;color:#c9a84c;text-decoration:none;font-weight:600;">第32回 横浜経済人会議</a>
+    <span style="color:rgba(255,255,255,0.15);">|</span>
+    <div id="portal-nav-links" style="display:flex;gap:4px;"></div>
+  </div>
+  <a href="index.html" style="font-size:11px;color:rgba(255,255,255,0.35);text-decoration:none;">← ポータルへ</a>
+</nav>
+
+<div id="header">
+  <div>
+    <div class="header-title">✅ 来賓・登壇者 到着管理</div>
+    <div class="header-sub">2026年8月28日（金）｜ テンネー記念ホール</div>
+  </div>
+  <div class="stats-row">
+    <div class="stat-pill arrived"><div class="stat-num" id="stat-arrived">0</div><div class="stat-label">到着済</div></div>
+    <div class="stat-pill pending"><div class="stat-num" id="stat-waiting">0</div><div class="stat-label">待機中</div></div>
+    <div class="stat-pill"><div class="stat-num" id="stat-not">0</div><div class="stat-label">未着</div></div>
+    <div class="stat-pill total"><div class="stat-num" id="stat-total">0</div><div class="stat-label">合計</div></div>
+  </div>
+</div>
+
+<div id="toolbar">
+  <span class="sync-dot" id="sync-dot"></span><span class="sync-label" id="sync-label">接続中...</span>
+  <div style="flex:1"></div>
+  <button class="btn btn-gold" onclick="openModal('modal-add')">＋ 人物を追加</button>
+</div>
+
+<div class="filter-tabs">
+  <button class="filter-tab active" onclick="setFilter('all',this)">すべて</button>
+  <button class="filter-tab" onclick="setFilter('guest',this)">👑 来賓</button>
+  <button class="filter-tab" onclick="setFilter('speaker',this)">🎤 登壇者</button>
+  <button class="filter-tab" onclick="setFilter('staff',this)">⚙️ スタッフ</button>
+  <button class="filter-tab" onclick="setFilter('not_arrived',this)">❌ 未着</button>
+  <button class="filter-tab" onclick="setFilter('arrived',this)">✅ 到着済</button>
+</div>
+
+<div id="main"><div class="loading">読込中...</div></div>
+
+<!-- ADD MODAL -->
+<div class="modal-overlay" id="modal-add">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">人物を追加</div><button class="modal-close" onclick="closeModal('modal-add')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-row"><label class="form-label">氏名 *</label><input class="form-input" id="add-name" placeholder="山中 竹春"></div>
+      <div class="form-row"><label class="form-label">所属・役職</label><input class="form-input" id="add-org" placeholder="横浜市長"></div>
+      <div class="grid-2">
+        <div class="form-row"><label class="form-label">区分</label>
+          <select class="form-select" id="add-type">
+            <option value="guest">👑 来賓</option>
+            <option value="speaker">🎤 登壇者</option>
+            <option value="staff">⚙️ スタッフ</option>
+          </select>
+        </div>
+        <div class="form-row"><label class="form-label">並び順</label><input class="form-input" id="add-order" type="number" value="0"></div>
+      </div>
+      <div class="form-row"><label class="form-label">備考（到着予定時間など）</label><input class="form-input" id="add-note" placeholder="例: 17:10頃 到着予定"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-add')">キャンセル</button>
+      <button class="btn btn-gold" onclick="addPerson()">追加する</button>
+    </div>
+  </div>
+</div>
+
+<!-- NOTE EDIT MODAL -->
+<div class="modal-overlay" id="modal-note">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title" id="note-modal-title">備考を編集</div><button class="modal-close" onclick="closeModal('modal-note')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-row"><label class="form-label">備考・メモ</label><input class="form-input" id="note-input" placeholder="到着予定時間・注意事項など"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-note')">キャンセル</button>
+      <button class="btn btn-gold" onclick="saveNote()">保存</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-c"></div>
+
+<script>
+const SB_URL='https://kukckeksvbdgosneezdh.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt1a2NrZWtzdmJkZ29zbmVlemRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1Nzg2MjksImV4cCI6MjA5NjE1NDYyOX0.zM264r67WV4YI7_7cqC53rx5dYYoc77VncKydfNHQUY';
+const sb=supabase.createClient(SB_URL,SB_KEY);
+
+let arrivals=[];
+let currentFilter='all';
+let editingNoteId=null;
+
+// NAV
+(function(){
+  var pages=[{href:"yokohama_keizaijin_32.html",label:"📊 運営管理"},{href:"sekijihyo.html",label:"🪑 席次表"},{href:"scenario.html",label:"📜 シナリオ"},{href:"roles.html",label:"👤 役割分担"},{href:"arrivals.html",label:"✅ 到着管理"}];
+  var cur=location.pathname.split("/").pop();
+  var nav=document.getElementById("portal-nav-links");
+  pages.forEach(function(p){var a=document.createElement("a");a.href=p.href;a.textContent=p.label;var active=cur===p.href;a.style.cssText="padding:4px 10px;border-radius:4px;font-size:11px;text-decoration:none;font-weight:"+(active?"600":"400")+";background:"+(active?"rgba(201,168,76,0.2)":"transparent")+";color:"+(active?"#e8c97d":"rgba(255,255,255,0.45)")+";border:"+(active?"1px solid rgba(201,168,76,0.3)":"1px solid transparent")+";";nav.appendChild(a);});
+})();
+
+function setSyncStatus(s){
+  const dot=document.getElementById('sync-dot'),label=document.getElementById('sync-label');
+  if(s==='on'){dot.className='sync-dot on';label.textContent='リアルタイム同期中';}
+  else{dot.className='sync-dot';label.textContent='接続中...';}
+}
+
+async function loadArrivals(){
+  const{data,error}=await sb.from('arrivals').select('*').order('sort_order').order('created_at');
+  if(error){console.error(error);return;}
+  arrivals=data||[];
+  render();
+}
+
+function setFilter(f,btn){
+  currentFilter=f;
+  document.querySelectorAll('.filter-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+
+function render(){
+  const main=document.getElementById('main');
+  let filtered=arrivals;
+  if(currentFilter==='guest') filtered=arrivals.filter(a=>a.type==='guest');
+  else if(currentFilter==='speaker') filtered=arrivals.filter(a=>a.type==='speaker');
+  else if(currentFilter==='staff') filtered=arrivals.filter(a=>a.type==='staff');
+  else if(currentFilter==='arrived') filtered=arrivals.filter(a=>a.arrival_status==='arrived');
+  else if(currentFilter==='not_arrived') filtered=arrivals.filter(a=>a.arrival_status==='not_arrived');
+
+  updateStats();
+
+  if(!filtered.length){main.innerHTML='<div class="empty">該当する人物がいません</div>';return;}
+
+  // グループ分け
+  const groups={guest:{label:'👑 来賓',items:[]},speaker:{label:'🎤 登壇者',items:[]},staff:{label:'⚙️ スタッフ・その他',items:[]}};
+  filtered.forEach(a=>{
+    const g=groups[a.type]||groups.staff;
+    g.items.push(a);
+  });
+
+  let html='';
+  Object.values(groups).forEach(g=>{
+    if(!g.items.length)return;
+    html+=`<div class="section-header">${g.label} <span style="font-size:12px;color:rgba(255,255,255,0.3);font-family:'Noto Sans JP',sans-serif;font-weight:400;">${g.items.length}名</span></div>`;
+    html+=`<div class="arrival-grid">`;
+    g.items.forEach(a=>html+=renderCard(a));
+    html+=`</div>`;
+  });
+  main.innerHTML=html;
+}
+
+function renderCard(a){
+  const typeMap={guest:{icon:'👑',cls:'type-guest',badge:'badge-guest',label:'来賓'},speaker:{icon:'🎤',cls:'type-speaker',badge:'badge-speaker',label:'登壇者'},staff:{icon:'⚙️',cls:'type-staff',badge:'badge-staff',label:'スタッフ'}};
+  const t=typeMap[a.type]||typeMap.staff;
+  const statusMap={not_arrived:'未着',waiting:'会場内待機',arrived:'到着済'};
+  const isArrived=a.arrival_status==='arrived';
+  const isWaiting=a.arrival_status==='waiting';
+  const timeStr=a.arrival_time?new Date(a.arrival_time).toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit'}):'';
+
+  return`<div class="arrival-card ${isArrived?'arrived':isWaiting?'waiting':''} ${t.cls}" id="card-${a.id}">
+    <div class="card-top">
+      <div class="arrival-icon">${t.icon}</div>
+      <div class="card-info">
+        <div class="card-name">${a.name}</div>
+        <div class="card-org">${a.organization||''}</div>
+        <span class="card-type-badge ${t.badge}">${t.label}</span>
+      </div>
+    </div>
+    <div class="status-section">
+      <div class="status-buttons">
+        <button class="status-btn not-arrived ${a.arrival_status==='not_arrived'?'active':''}" onclick="updateStatus('${a.id}','not_arrived')">❌ 未着</button>
+        <button class="status-btn waiting ${a.arrival_status==='waiting'?'active':''}" onclick="updateStatus('${a.id}','waiting')">🟡 会場内</button>
+        <button class="status-btn arrived ${a.arrival_status==='arrived'?'active':''}" onclick="updateStatus('${a.id}','arrived')">✅ 到着済</button>
+      </div>
+      ${timeStr?`<div class="arrival-time">到着確認: ${timeStr}</div>`:''}
+      ${a.note?`<div class="card-note">📋 ${a.note}</div>`:''}
+      <button class="edit-note-btn" onclick="openNoteEdit('${a.id}','${(a.note||'').replace(/'/g,'&#39;')}')">✏️ メモを編集</button>
+    </div>
+  </div>`;
+}
+
+function updateStats(){
+  const arrived=arrivals.filter(a=>a.arrival_status==='arrived').length;
+  const waiting=arrivals.filter(a=>a.arrival_status==='waiting').length;
+  const notArrived=arrivals.filter(a=>a.arrival_status==='not_arrived').length;
+  document.getElementById('stat-arrived').textContent=arrived;
+  document.getElementById('stat-waiting').textContent=waiting;
+  document.getElementById('stat-not').textContent=notArrived;
+  document.getElementById('stat-total').textContent=arrivals.length;
+}
+
+async function updateStatus(id,status){
+  const update={arrival_status:status};
+  if(status==='arrived') update.arrival_time=new Date().toISOString();
+  await sb.from('arrivals').update(update).eq('id',id);
+  const a=arrivals.find(x=>x.id===id);
+  if(a){const nameStr=a.name;toast(status==='arrived'?`✅ ${nameStr} 到着確認`:status==='waiting'?`🟡 ${nameStr} 会場内待機中`:`❌ ${nameStr} 未着に変更`);}
+}
+
+function openNoteEdit(id,note){
+  editingNoteId=id;
+  const a=arrivals.find(x=>x.id===id);
+  document.getElementById('note-modal-title').textContent=(a?a.name:'')+' — メモ編集';
+  document.getElementById('note-input').value=note.replace(/&#39;/g,"'");
+  openModal('modal-note');
+}
+async function saveNote(){
+  if(!editingNoteId)return;
+  const note=document.getElementById('note-input').value;
+  await sb.from('arrivals').update({note}).eq('id',editingNoteId);
+  closeModal('modal-note');
+  toast('メモを保存しました');
+}
+
+async function addPerson(){
+  const name=document.getElementById('add-name').value.trim();
+  if(!name){toast('氏名を入力してください');return;}
+  await sb.from('arrivals').insert({
+    name,organization:document.getElementById('add-org').value,
+    type:document.getElementById('add-type').value,
+    note:document.getElementById('add-note').value,
+    sort_order:parseInt(document.getElementById('add-order').value)||0,
+    arrival_status:'not_arrived'
+  });
+  closeModal('modal-add');
+  toast('追加しました');
+  ['add-name','add-org','add-note'].forEach(id=>document.getElementById(id).value='');
+}
+
+// REALTIME
+sb.channel('arrivals-rt')
+  .on('postgres_changes',{event:'*',schema:'public',table:'arrivals'},()=>loadArrivals())
+  .subscribe(s=>{if(s==='SUBSCRIBED')setSyncStatus('on');});
+
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+function toast(msg){const c=document.getElementById('toast-c');const t=document.createElement('div');t.className='toast';t.textContent=msg;c.appendChild(t);setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity 0.3s';setTimeout(()=>t.remove(),300);},3000);}
+
+// INIT — 初期データ投入
+async function seedIfEmpty(){
+  const{count}=await sb.from('arrivals').select('*',{count:'exact',head:true});
+  if(count>0)return;
+  const initial=[
+    {name:'黒岩 祐治',organization:'神奈川県知事',type:'guest',sort_order:1},
+    {name:'山中 竹春',organization:'横浜市長',type:'guest',sort_order:2},
+    {name:'渡邊 忠則',organization:'横浜市会議長',type:'guest',sort_order:3},
+    {name:'上野 孝',organization:'横浜商工会議所会頭',type:'guest',sort_order:4},
+    {name:'鈴木 和宏',organization:'横浜市 副市長',type:'speaker',sort_order:10,note:'第1部登壇者'},
+    {name:'羽毛田 実',organization:'OMO7横浜 by 星野リゾート 総支配人',type:'speaker',sort_order:11,note:'第1部登壇者'},
+    {name:'廣瀬 正美',organization:'株式会社竹中工務店 専任副部長',type:'speaker',sort_order:12,note:'第1部登壇者'},
+    {name:'尾崎 浩司',organization:'三井不動産株式会社 横浜支店支店長',type:'speaker',sort_order:13,note:'第2部登壇者'},
+    {name:'細野 徳重',organization:'三菱地所株式会社 横浜支店支店長',type:'speaker',sort_order:14,note:'第2部登壇者'},
+    {name:'中村 郁博',organization:'東洋大学 教授・PPP研究所長',type:'speaker',sort_order:15,note:'第2部登壇者'},
+    {name:'三渕 卓',organization:'東急株式会社 統括部長',type:'speaker',sort_order:16,note:'第3部登壇者'},
+    {name:'佐々木 忠弘',organization:'京浜急行電鉄株式会社 担当部長',type:'speaker',sort_order:17,note:'第3部登壇者'},
+    {name:'加藤 努',organization:'相鉄ホールディングス株式会社 執行役員',type:'speaker',sort_order:18,note:'第3部登壇者'},
+    {name:'江﨑 貴昭',organization:'公益財団法人日本交通公社 副主任研究員',type:'speaker',sort_order:19,note:'第3部ファシリテーター'},
+  ];
+  initial.forEach(p=>p.arrival_status='not_arrived');
+  await sb.from('arrivals').insert(initial);
+}
+
+(async()=>{await seedIfEmpty();await loadArrivals();})();
+</script>
+</body>
+</html>
