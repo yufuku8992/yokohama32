@@ -271,6 +271,27 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--gray
   .grid-4 { grid-template-columns: 1fr !important; }
   .stats-row { flex-wrap: wrap; gap: 6px; }
 }
+
+/* ===== NAV FIX ===== */
+#portal-nav { background:#060f22 !important; }
+#portal-nav a { color:rgba(255,255,255,0.42) !important; text-decoration:none !important; }
+#portal-nav-links a { 
+  display:inline-block;
+  padding:4px 8px;
+  border-radius:4px;
+  font-size:11px;
+  white-space:nowrap;
+  text-decoration:none !important;
+  border:1px solid transparent;
+}
+#portal-nav > a { 
+  color:#c9a84c !important; 
+  font-size:11px;
+  flex-shrink:0;
+}
+@media (max-width:768px) {
+  #portal-nav-links a { font-size:10px !important; padding:3px 6px !important; }
+}
 </style>
 </head>
 <body>

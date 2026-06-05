@@ -148,6 +148,54 @@ body{font-family:'Noto Sans JP',sans-serif;background:#0d1b3e;color:#fff;min-hei
   .grid-4 { grid-template-columns: 1fr !important; }
   .stats-row { flex-wrap: wrap; gap: 6px; }
 }
+
+/* ===== NAV FIX ===== */
+#portal-nav { background:#060f22 !important; }
+#portal-nav a { color:rgba(255,255,255,0.42) !important; text-decoration:none !important; }
+#portal-nav-links a { 
+  display:inline-block;
+  padding:4px 8px;
+  border-radius:4px;
+  font-size:11px;
+  white-space:nowrap;
+  text-decoration:none !important;
+  border:1px solid transparent;
+}
+#portal-nav > a { 
+  color:#c9a84c !important; 
+  font-size:11px;
+  flex-shrink:0;
+}
+@media (max-width:768px) {
+  #portal-nav-links a { font-size:10px !important; padding:3px 6px !important; }
+}
+
+/* ===== LIGHT THEME ===== */
+body { background:#f5f3ee !important; color:#3a342c !important; }
+#header { background:linear-gradient(135deg,#0d1b3e,#162a5e) !important; }
+#toolbar { background:#0d1b3e !important; }
+.filter-tabs { background:#fff !important; border-bottom:1px solid #e2ddd4 !important; }
+.filter-tab { border-color:#e2ddd4 !important; color:#6b6358 !important; background:#fff !important; }
+.filter-tab.active { background:rgba(201,168,76,0.12) !important; color:#0d1b3e !important; border-color:var(--gold) !important; }
+#main { background:#f5f3ee; }
+.arrival-card { background:#fff !important; border-color:#e2ddd4 !important; box-shadow:0 1px 4px rgba(0,0,0,0.06); }
+.arrival-card.arrived { background:#f0faf4 !important; border-color:rgba(39,174,96,0.3) !important; }
+.arrival-card.waiting { background:#fefcf0 !important; border-color:rgba(201,168,76,0.3) !important; }
+.card-name { color:#0d1b3e !important; }
+.card-org { color:#9e9488 !important; }
+.status-section { border-top:1px solid #ede9e2 !important; }
+.arrival-time { color:#9e9488 !important; }
+.card-note { background:#f5f3ee !important; color:#6b6358 !important; }
+.edit-note-btn { color:#c8c2ba !important; }
+.section-header { color:#0d1b3e !important; border-bottom-color:rgba(201,168,76,0.3) !important; }
+.modal { background:#fff !important; border-color:rgba(201,168,76,0.3) !important; }
+.modal-title { color:#0d1b3e !important; }
+.modal-header { border-bottom-color:#e2ddd4 !important; }
+.modal-footer { border-top-color:#e2ddd4 !important; }
+.form-input, .form-select { background:#fff !important; border-color:#e2ddd4 !important; color:#3a342c !important; }
+.form-label { color:#6b6358 !important; }
+.loading { color:#9e9488 !important; }
+.empty { color:#9e9488 !important; }
 </style>
 </head>
 <body>

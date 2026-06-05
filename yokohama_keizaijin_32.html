@@ -162,62 +162,89 @@
 
 /* ===== MOBILE ===== */
 @media (max-width: 768px) {
-  /* サイドバー非表示、ハンバーガーメニュー */
-  #sidebar { transform: translateX(-100%); transition: transform 0.25s ease; width: 240px !important; }
-  #sidebar.open { transform: translateX(0); box-shadow: 4px 0 20px rgba(0,0,0,0.4); }
+  /* サイドバーをデフォルトで非表示 */
+  #sidebar {
+    transform: translateX(-100%) !important;
+    transition: transform 0.25s ease !important;
+    width: 260px !important;
+    top: 40px !important;
+    z-index: 200 !important;
+  }
+  #sidebar.open {
+    transform: translateX(0) !important;
+    box-shadow: 4px 0 24px rgba(0,0,0,0.5) !important;
+  }
   #main { margin-left: 0 !important; }
   #topbar { padding: 0 12px !important; }
   .page-title { font-size: 13px !important; }
 
-  /* ハンバーガーボタン */
+  /* ハンバーガーボタンを表示 */
   #hamburger { display: flex !important; }
 
   /* オーバーレイ */
-  #sidebar-overlay { display: block; }
-  #sidebar-overlay.visible { opacity: 1; pointer-events: all; }
+  #sidebar-overlay.visible { opacity: 1 !important; pointer-events: all !important; }
 
-  /* グリッドをスマホで1列or2列に */
+  /* グリッド */
   .grid-4 { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
   .grid-2 { grid-template-columns: 1fr !important; gap: 12px !important; }
   .grid-3 { grid-template-columns: 1fr !important; gap: 12px !important; }
 
-  /* コンテンツのパディング */
-  #content { padding: 14px !important; }
+  /* コンテンツ */
+  #content { padding: 12px !important; }
 
-  /* テーブルを横スクロール */
+  /* テーブル横スクロール */
   .card { overflow-x: auto; }
   .tbl { min-width: 500px; }
 
-  /* stat-cardの文字サイズ調整 */
-  .stat-value { font-size: 22px !important; }
+  /* stat-card */
+  .stat-value { font-size: 20px !important; }
   .stat-label { font-size: 9px !important; }
   .stat-sub { font-size: 10px !important; }
-  .stat-icon { font-size: 20px !important; }
+  .stat-icon { font-size: 18px !important; }
 
-  /* トップバーのボタン */
-  .topbar-right .btn { font-size: 11px !important; padding: 5px 8px !important; }
-  .topbar-right .btn span { display: none; }
-
-  /* ナビバーの文字を小さく */
+  /* ナビバー */
   #portal-nav a { font-size: 10px !important; padding: 3px 6px !important; }
 
-  /* カード内パディング */
+  /* カード */
   .card-body { padding: 12px !important; }
   .card-header { padding: 10px 14px !important; }
-
-  /* 進捗バー */
   #participants-bars { font-size: 12px; }
+
+  /* トップバー右側ボタンのテキスト非表示 */
+  .topbar-actions .btn-text { display: none; }
 }
 
 @media (max-width: 480px) {
   .grid-4 { grid-template-columns: 1fr 1fr !important; }
+  .stat-value { font-size: 18px !important; }
+}
+
+/* ===== NAV FIX ===== */
+#portal-nav { background:#060f22 !important; }
+#portal-nav a { color:rgba(255,255,255,0.42) !important; text-decoration:none !important; }
+#portal-nav-links a { 
+  display:inline-block;
+  padding:4px 8px;
+  border-radius:4px;
+  font-size:11px;
+  white-space:nowrap;
+  text-decoration:none !important;
+  border:1px solid transparent;
+}
+#portal-nav > a { 
+  color:#c9a84c !important; 
+  font-size:11px;
+  flex-shrink:0;
+}
+@media (max-width:768px) {
+  #portal-nav-links a { font-size:10px !important; padding:3px 6px !important; }
 }
 </style>
 </head>
 <body>
 
 <!-- サイドバーオーバーレイ -->
-<div id="sidebar-overlay" onclick="closeSidebar()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99;opacity:0;pointer-events:none;transition:opacity 0.25s;"></div>
+<div id="sidebar-overlay" onclick="closeSidebar()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:199;opacity:0;pointer-events:none;transition:opacity 0.25s;"></div>
 
 <!-- SHARED NAV -->
 <nav id="portal-nav" style="background:#060f22;border-bottom:1px solid rgba(201,168,76,0.25);padding:0 12px;height:40px;display:flex;align-items:center;gap:0;position:sticky;top:0;z-index:999;font-family:'Noto Sans JP',sans-serif;">
@@ -275,7 +302,7 @@
 <div id="main">
   <header id="topbar">
     <div style="display:flex;align-items:center;gap:10px;">
-      <button id="hamburger" onclick="toggleSidebar()" style="display:none;background:none;border:none;cursor:pointer;padding:4px;flex-direction:column;gap:5px;justify-content:center;">
+      <button id="hamburger" onclick="toggleSidebar()" style="display:none;background:none;border:none;cursor:pointer;padding:6px;flex-direction:column;gap:5px;justify-content:center;align-items:center;">
         <span style="display:block;width:20px;height:2px;background:var(--navy);border-radius:2px;"></span>
         <span style="display:block;width:20px;height:2px;background:var(--navy);border-radius:2px;"></span>
         <span style="display:block;width:20px;height:2px;background:var(--navy);border-radius:2px;"></span>
