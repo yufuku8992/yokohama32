@@ -802,6 +802,8 @@ async function init(){
   renderDashboard();
   setupRealtime();
   renderParticipantBars();
+  fetchGASCount();
+  setInterval(fetchGASCount, 60000);
 }
 init();
 </script>
