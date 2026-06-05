@@ -271,6 +271,18 @@
 })();
 </script>
 <!-- END NAV -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const hb = document.getElementById('hamburger');
+  if (hb) {
+    hb.removeAttribute('onclick');
+    hb.addEventListener('click', function(e) {
+      e.stopPropagation();
+      toggleSidebar();
+    });
+  }
+});
+</script>
 
 
 <nav id="sidebar">
@@ -837,7 +849,7 @@ async function loadAnnouncements(){
 function renderAnnouncements(){
   const el=document.getElementById('announce-full-list');if(!el)return;
   if(!announcements.length){el.innerHTML='<div class="empty-state"><div class="empty-icon">📢</div><p>お知らせはありません</p></div>';return;}
-  el.innerHTML='<div style="padding:0 4px">'+announcements.map(a=>`<div class="announce-item ${a.priority}">
+  el.innerHTML='<div style="padding:0 4px">'+[...announcements].sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).map(a=>`<div class="announce-item ${a.priority}">
     <div style="display:flex;align-items:center;gap:7px"><span class="badge badge-${a.priority==='urgent'?'urgent':a.priority==='normal'?'normal':'info'}" style="font-size:10px">${a.priority==='urgent'?'緊急':a.priority==='normal'?'通知':'情報'}</span><strong style="font-size:13px">${a.title}</strong></div>
     <div style="font-size:13px;color:var(--gray-600);margin-top:5px">${a.body||''}</div>
     <div class="announce-meta" style="margin-top:3px">${a.author||''} · ${fmtTime(a.created_at)}</div>
