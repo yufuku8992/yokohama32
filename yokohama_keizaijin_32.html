@@ -163,40 +163,31 @@
 </head>
 <body>
 <!-- SHARED NAV -->
-<nav id="portal-nav" style="background:#060f22;border-bottom:1px solid rgba(201,168,76,0.25);padding:0 20px;height:40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:999;font-family:'Noto Sans JP',sans-serif;">
-  <div style="display:flex;align-items:center;gap:16px;">
-    <a href="index.html" style="font-family:'Noto Serif JP',serif;font-size:12px;color:#c9a84c;text-decoration:none;font-weight:600;letter-spacing:0.04em;white-space:nowrap;">第32回 横浜経済人会議</a>
-    <span style="color:rgba(255,255,255,0.15);font-size:12px;">|</span>
-    <div style="display:flex;gap:4px;" id="portal-nav-links"></div>
-  </div>
-  <a href="index.html" style="font-size:11px;color:rgba(255,255,255,0.35);text-decoration:none;white-space:nowrap;">← ポータルへ</a>
+<nav id="portal-nav" style="background:#060f22;border-bottom:1px solid rgba(201,168,76,0.25);padding:0 16px;height:40px;display:flex;align-items:center;gap:0;position:sticky;top:0;z-index:999;font-family:'Noto Sans JP',sans-serif;">
+  <a href="index.html" style="font-family:'Noto Serif JP',serif;font-size:11.5px;color:#c9a84c;text-decoration:none;font-weight:700;letter-spacing:0.04em;white-space:nowrap;padding-right:12px;border-right:1px solid rgba(255,255,255,0.1);margin-right:8px;">第32回 横浜経済人会議</a>
+  <div id="portal-nav-links" style="display:flex;gap:2px;overflow-x:auto;flex:1;"></div>
 </nav>
 <script>
 (function(){
-  var pages=[
-    {href:"yokohama_keizaijin_32.html",label:"📊 運営管理"},
-    {href:"sekijihyo.html",label:"🪑 席次表"},
-    {href:"scenario.html",label:"📜 シナリオ"},
-    {href:"roles.html",label:"👤 役割分担"},
-    {href:"arrivals.html",label:"✅ 到着管理"}
-  ];
-  var cur=location.pathname.split("/").pop();
+  var pages=[{href:"index.html",label:"🏠 ホーム"},{href:"scenario.html",label:"📜 シナリオ"},{href:"roles.html",label:"👤 役割分担"},{href:"arrivals.html",label:"✅ 到着管理"},{href:"sekijihyo.html",label:"🪑 席次表"},{href:"pr_schedule.html",label:"📣 広報"},{href:"checklist.html",label:"📦 準備物"},{href:"trouble.html",label:"⚠️ トラブル対応"},{href:"yokohama_kaigi_v6.html",label:"📋 申込管理"}];
+  var cur=location.pathname.split("/").pop()||"index.html";
   var nav=document.getElementById("portal-nav-links");
   if(!nav)return;
   pages.forEach(function(p){
     var a=document.createElement("a");
-    a.href=p.href; a.textContent=p.label;
+    a.href=p.href;a.textContent=p.label;
     var active=cur===p.href;
-    a.style.cssText="padding:4px 10px;border-radius:4px;font-size:11px;text-decoration:none;"
-      +"font-weight:"+(active?"600":"400")+";"
-      +"background:"+(active?"rgba(201,168,76,0.2)":"transparent")+";"
-      +"color:"+(active?"#e8c97d":"rgba(255,255,255,0.45)")+";"
-      +"border:"+(active?"1px solid rgba(201,168,76,0.3)":"1px solid transparent")+";";
+    a.style.cssText="padding:4px 8px;border-radius:4px;font-size:11px;text-decoration:none;white-space:nowrap;"
+      +"font-weight:"+(active?"700":"400")+";"
+      +"background:"+(active?"rgba(201,168,76,0.22)":"transparent")+";"
+      +"color:"+(active?"#e8c97d":"rgba(255,255,255,0.42)")+";"
+      +"border:"+(active?"1px solid rgba(201,168,76,0.35)":"1px solid transparent")+";";
     nav.appendChild(a);
   });
 })();
 </script>
 <!-- END NAV -->
+
 
 <nav id="sidebar">
   <div class="sidebar-header">
@@ -237,10 +228,24 @@
 
     <!-- DASHBOARD -->
     <div id="page-dashboard" class="page active">
+      <!-- 来場進捗 -->
+      <div class="card mb-20">
+        <div class="card-header">
+          <div class="card-title">👥 来場目標 進捗管理</div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span id="total-pct-label" style="font-size:13px;font-weight:700;color:var(--green)">0%</span>
+            <span class="text-muted">目標509名</span>
+            <button class="btn btn-outline btn-sm" onclick="renderParticipantsEditTable();openModal('modal-participants')">編集</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div id="participants-bars"></div>
+        </div>
+      </div>
       <div class="grid-4 mb-20">
-        <div class="stat-card gold"><div class="stat-label">来場目標</div><div class="stat-value">509</div><div class="stat-sub">対外140名 / 対内369名</div><div class="stat-icon">👥</div></div>
+        <div class="stat-card gold"><div class="stat-label">申込合計</div><div class="stat-value" id="stat-total-reg">—</div><div class="stat-sub">目標 509名</div><div class="stat-icon">👥</div></div>
         <div class="stat-card blue"><div class="stat-label">タスク完了率</div><div class="stat-value" id="dash-task-rate">—</div><div class="stat-sub" id="dash-task-sub">読込中...</div><div class="stat-icon">✅</div></div>
-        <div class="stat-card red"><div class="stat-label">未対応インシデント</div><div class="stat-value" id="dash-inc-count">—</div><div class="stat-sub">件</div><div class="stat-icon">🚨</div></div>
+        <div class="stat-card red"><div class="stat-label">未対応トラブル</div><div class="stat-value" id="dash-inc-count">—</div><div class="stat-sub">件</div><div class="stat-icon">⚠️</div></div>
         <div class="stat-card green"><div class="stat-label">開催まで</div><div class="stat-value" id="days-left">—</div><div class="stat-sub">2026年8月28日（金）</div><div class="stat-icon">📅</div></div>
       </div>
       <div class="grid-2 mb-18">
@@ -443,6 +448,35 @@
       <div class="form-row"><label class="form-label">備考</label><input class="form-input" id="ck-note" placeholder="数量・注意事項など"></div>
     </div>
     <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('modal-add-check')">キャンセル</button><button class="btn btn-primary" onclick="addCheckItem()">追加する</button></div>
+  </div>
+</div>
+
+
+<!-- 来場進捗 編集モーダル -->
+<div class="modal-overlay" id="modal-participants">
+  <div class="modal" style="width:580px">
+    <div class="modal-header">
+      <div class="modal-title">👥 来場目標 進捗編集</div>
+      <button class="modal-close" onclick="closeModal('modal-participants')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="font-size:12px;color:var(--gray-400);margin-bottom:14px;">各区分の現在の申込・参加確認数を入力してください。</div>
+      <table style="width:100%;border-collapse:collapse;" id="participants-edit-table">
+        <thead>
+          <tr style="background:var(--gray-50);font-size:11px;color:var(--gray-400);">
+            <th style="padding:8px 12px;text-align:left;font-weight:600;">区分</th>
+            <th style="padding:8px 12px;text-align:center;font-weight:600;">目標</th>
+            <th style="padding:8px 12px;text-align:center;font-weight:600;">現在数</th>
+            <th style="padding:8px 12px;text-align:center;font-weight:600;">残り</th>
+          </tr>
+        </thead>
+        <tbody id="participants-edit-tbody"></tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-participants')">閉じる</button>
+      <button class="btn btn-primary" onclick="saveParticipants()">保存して反映</button>
+    </div>
   </div>
 </div>
 
@@ -767,6 +801,7 @@ async function init(){
   await Promise.all([loadTasks(),loadRunbook(),loadRoles(),loadIncidents(),loadAnnouncements()]);
   renderDashboard();
   setupRealtime();
+  renderParticipantBars();
 }
 init();
 </script>

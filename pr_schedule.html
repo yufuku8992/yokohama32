@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第32回横浜経済人会議 | 広報スケジュール</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0d1b3e;--gold:#c9a84c;--gold-light:#e8c97d;--bg:#f5f3ee;--gray-100:#f0ede6;--gray-200:#e2ddd4;--gray-400:#9e9488;--gray-600:#6b6358;--gray-800:#3a342c;--green:#1a7a4a;--green-light:#e8f5ed;--red:#c0392b;--orange:#c76b0a;--blue:#1a4a8a;--blue-light:#e8eef8;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"Noto Sans JP",sans-serif;background:var(--bg);color:var(--gray-800);min-height:100vh;}
+#toolbar{background:var(--navy);padding:10px 24px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;position:sticky;top:40px;z-index:80;border-bottom:2px solid var(--gold);}
+.toolbar-title{font-family:"Noto Serif JP",serif;font-size:13px;color:var(--gold-light);font-weight:600;}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:4px;border:none;cursor:pointer;font-family:"Noto Sans JP",sans-serif;font-size:12.5px;font-weight:500;transition:all 0.15s;}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--navy);}
+.btn-outline{background:transparent;color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.2);}
+.btn-outline:hover{background:rgba(255,255,255,0.1);}
+.btn-sm{padding:4px 10px;font-size:11.5px;}
+#main{max-width:1100px;margin:0 auto;padding:24px 28px;}
+.tabs{display:flex;gap:0;border-bottom:2px solid var(--gray-200);margin-bottom:20px;}
+.tab{padding:10px 20px;cursor:pointer;border:none;background:none;font-family:"Noto Sans JP",sans-serif;font-size:13px;color:var(--gray-600);border-bottom:2px solid transparent;margin-bottom:-2px;transition:all 0.15s;}
+.tab:hover{color:var(--navy);}
+.tab.active{color:var(--navy);border-bottom-color:var(--gold);font-weight:600;}
+.card{background:#fff;border:1px solid var(--gray-200);border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.05);margin-bottom:18px;}
+.card-header{padding:13px 18px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between;}
+.card-title{font-family:"Noto Serif JP",serif;font-size:13px;font-weight:600;color:var(--navy);}
+.tbl{width:100%;border-collapse:collapse;}
+.tbl thead tr{background:var(--navy);color:#fff;}
+.tbl th{padding:9px 14px;text-align:left;font-size:10.5px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;white-space:nowrap;}
+.tbl td{padding:10px 14px;border-bottom:1px solid var(--gray-100);font-size:13px;vertical-align:top;}
+.tbl tbody tr:hover td{background:var(--gray-50,#f9f8f6);}
+.tbl tbody tr:last-child td{border-bottom:none;}
+.tbl tbody tr.done td{opacity:0.45;}
+.check-cell{width:30px;text-align:center;cursor:pointer;}
+.check-box{width:17px;height:17px;border:2px solid var(--gray-200);border-radius:3px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;color:#fff;transition:all 0.15s;}
+.check-box.done{background:var(--green);border-color:var(--green);}
+.period-badge{display:inline-block;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:600;white-space:nowrap;}
+.media-badge{display:inline-block;padding:2px 7px;border-radius:3px;font-size:10.5px;font-weight:600;background:var(--blue-light);color:var(--blue);white-space:nowrap;}
+.status-done{display:inline-block;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:600;background:var(--green-light);color:var(--green);}
+.status-todo{display:inline-block;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:600;background:var(--gray-100);color:var(--gray-600);}
+.timeline{position:relative;padding-left:28px;}
+.timeline-item{position:relative;padding:12px 0 12px 20px;border-left:2px solid var(--gray-200);}
+.timeline-item:last-child{border-left-color:transparent;}
+.timeline-item.done{border-left-color:var(--green);}
+.timeline-dot{position:absolute;left:-8px;top:16px;width:14px;height:14px;border-radius:50%;background:var(--gray-200);border:2px solid #fff;}
+.timeline-item.done .timeline-dot{background:var(--green);}
+.timeline-date{font-size:11px;color:var(--gray-400);font-weight:600;margin-bottom:2px;}
+.timeline-content{font-size:13px;font-weight:500;}
+.timeline-meta{font-size:11px;color:var(--gray-400);margin-top:3px;}
+.progress-strip{background:#fff;border:1px solid var(--gray-200);border-radius:8px;padding:16px 20px;margin-bottom:18px;display:flex;gap:20px;align-items:center;flex-wrap:wrap;box-shadow:0 1px 4px rgba(0,0,0,0.05);}
+.prog-item{text-align:center;}
+.prog-num{font-size:22px;font-weight:700;color:var(--navy);}
+.prog-label{font-size:11px;color:var(--gray-400);}
+.prog-bar{flex:1;min-width:200px;}
+.prog-bar-track{height:8px;background:var(--gray-100);border-radius:4px;overflow:hidden;}
+.prog-bar-fill{height:100%;background:linear-gradient(90deg,var(--green),#4aba7a);border-radius:4px;transition:width 0.4s;}
+#toast-c{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:999;display:flex;flex-direction:column;align-items:center;gap:6px;}
+.toast{background:var(--navy);color:#fff;padding:9px 18px;border-radius:20px;font-size:12px;border:1px solid var(--gold);animation:tin 0.2s;}
+@keyframes tin{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+@media print{#toolbar,#portal-nav{display:none!important;}}
+</style>
+</head>
+<body>
+<!-- SHARED NAV -->
+<nav id="portal-nav" style="background:#060f22;border-bottom:1px solid rgba(201,168,76,0.25);padding:0 16px;height:40px;display:flex;align-items:center;gap:0;position:sticky;top:0;z-index:999;font-family:'Noto Sans JP',sans-serif;">
+  <a href="index.html" style="font-family:'Noto Serif JP',serif;font-size:11.5px;color:#c9a84c;text-decoration:none;font-weight:700;letter-spacing:0.04em;white-space:nowrap;padding-right:12px;border-right:1px solid rgba(255,255,255,0.1);margin-right:8px;">第32回 横浜経済人会議</a>
+  <div id="portal-nav-links" style="display:flex;gap:2px;overflow-x:auto;flex:1;"></div>
+</nav>
+<script>
+(function(){
+  var pages=[{href:"index.html",label:"🏠 ホーム"},{href:"scenario.html",label:"📜 シナリオ"},{href:"roles.html",label:"👤 役割分担"},{href:"arrivals.html",label:"✅ 到着管理"},{href:"sekijihyo.html",label:"🪑 席次表"},{href:"pr_schedule.html",label:"📣 広報"},{href:"checklist.html",label:"📦 準備物"},{href:"trouble.html",label:"⚠️ トラブル対応"},{href:"yokohama_kaigi_v6.html",label:"📋 申込管理"}];
+  var cur=location.pathname.split("/").pop()||"index.html";
+  var nav=document.getElementById("portal-nav-links");
+  if(!nav)return;
+  pages.forEach(function(p){
+    var a=document.createElement("a");
+    a.href=p.href;a.textContent=p.label;
+    var active=cur===p.href;
+    a.style.cssText="padding:4px 8px;border-radius:4px;font-size:11px;text-decoration:none;white-space:nowrap;"
+      +"font-weight:"+(active?"700":"400")+";"
+      +"background:"+(active?"rgba(201,168,76,0.22)":"transparent")+";"
+      +"color:"+(active?"#e8c97d":"rgba(255,255,255,0.42)")+";"
+      +"border:"+(active?"1px solid rgba(201,168,76,0.35)":"1px solid transparent")+";";
+    nav.appendChild(a);
+  });
+})();
+</script>
+<!-- END NAV -->
+
+<div id="toolbar">
+  <span class="toolbar-title">📣 広報スケジュール</span>
+  <div style="flex:1"></div>
+  <button class="btn btn-outline btn-sm" onclick="window.print()">🖨 印刷</button>
+</div>
+<div id="main">
+  <div class="progress-strip">
+    <div class="prog-item"><div class="prog-num" id="pr-done-all">0</div><div class="prog-label">完了</div></div>
+    <div class="prog-item"><div class="prog-num" id="pr-total-all" style="color:var(--gray-400)">0</div><div class="prog-label">全件</div></div>
+    <div class="prog-bar">
+      <div style="font-size:11px;color:var(--gray-400);margin-bottom:4px;display:flex;justify-content:space-between;"><span>全体進捗</span><span id="pr-pct">0%</span></div>
+      <div class="prog-bar-track"><div class="prog-bar-fill" id="pr-bar" style="width:0%"></div></div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('tab-gaigai',this)">対外 広報スケジュール</button>
+    <button class="tab" onclick="showTab('tab-nainai',this)">対内 広報スケジュール</button>
+    <button class="tab" onclick="showTab('tab-timeline',this)">タイムライン表示</button>
+  </div>
+
+  <!-- 対外 -->
+  <div id="tab-gaigai">
+    <div class="card">
+      <div class="card-header"><div class="card-title">📢 対外広報スケジュール（市内事業者・後援先・メディア向け）</div></div>
+      <table class="tbl"><thead><tr><th style="width:30px"></th><th>日付</th><th>時期</th><th>内容</th><th>担当</th><th>媒体</th><th>状態</th></tr></thead>
+      <tbody id="tbody-gaigai"></tbody></table>
+    </div>
+  </div>
+
+  <!-- 対内 -->
+  <div id="tab-nainai" style="display:none">
+    <div class="card">
+      <div class="card-header"><div class="card-title">📣 対内広報スケジュール（JCメンバー向け）</div></div>
+      <table class="tbl"><thead><tr><th style="width:30px"></th><th>日付</th><th>時期</th><th>内容</th><th>担当</th><th>媒体</th><th>状態</th></tr></thead>
+      <tbody id="tbody-nainai"></tbody>
+    </div>
+  </div>
+
+  <!-- タイムライン -->
+  <div id="tab-timeline" style="display:none">
+    <div class="card">
+      <div class="card-header"><div class="card-title">📅 広報タイムライン（対外・対内 統合）</div></div>
+      <div style="padding:18px 24px" id="timeline-wrap"></div>
+    </div>
+  </div>
+</div>
+<div id="toast-c"></div>
+
+<script>
+const PERIOD_COLORS = {
+  '事業承認後':'#7d3c98','1ヶ月半前':'#1a4a8a','1ヶ月前':'#c76b0a',
+  '半月前':'#c0392b','1週間前':'#1a7a4a','前日':'#0d1b3e','当日':'#c9a84c'
+};
+
+const gaigai = [
+  {id:'g01',done:false,date:'2026-07-08',period:'事業承認後',content:'横浜JC公式SNS告知①（デジタルフライヤー配信）',owner:'荒井 亮一',media:'SNS（HP/FB/Instagram）'},
+  {id:'g02',done:false,date:'2026-07-14',period:'1ヶ月半前',content:'PR TIMES・PressWalkerによる配信（第1回）',owner:'弘中 義之',media:'PR配信'},
+  {id:'g03',done:false,date:'2026-07-14',period:'1ヶ月半前',content:'プレスリリース第1回配信（市政記者会13社・キー局FAX）',owner:'福田 雄太郎',media:'FAX/メール'},
+  {id:'g04',done:false,date:'2026-07-14',period:'1ヶ月半前',content:'メール・FAX専用案内資料送付（開催案内先一覧に基づき）',owner:'弘中 義之',media:'メール/FAX'},
+  {id:'g05',done:false,date:'2026-07-14',period:'1ヶ月半前',content:'後援先への後援依頼・当日参加依頼実施',owner:'荒井 亮一',media:'メール/訪問'},
+  {id:'g06',done:false,date:'2026-07-28',period:'1ヶ月前',content:'横浜JC公式SNS告知②（講師プロフィール・講演内容紹介）',owner:'荒井 亮一',media:'SNS'},
+  {id:'g07',done:false,date:'2026-08-14',period:'半月前',content:'開催予告動画 配信（YouTube・SNS）',owner:'荒井 亮一',media:'YouTube/SNS'},
+  {id:'g08',done:false,date:'2026-08-14',period:'半月前',content:'プレスリリース第2回配信（再配信）',owner:'福田 雄太郎',media:'FAX/メール'},
+  {id:'g09',done:false,date:'2026-08-14',period:'半月前',content:'PR TIMES・PressWalker再配信（第2回）',owner:'弘中 義之',media:'PR配信'},
+  {id:'g10',done:false,date:'2026-08-14',period:'半月前',content:'SNS告知③（講師プロフィール・講演内容詳細紹介）',owner:'荒井 亮一',media:'SNS'},
+  {id:'g11',done:false,date:'2026-08-21',period:'1週間前',content:'開催予告動画 再配信',owner:'荒井 亮一',media:'YouTube/SNS'},
+  {id:'g12',done:false,date:'2026-08-21',period:'1週間前',content:'申込者へのリマインドメール送付（デジタルパンフ同封）',owner:'永井 嵩久',media:'メール'},
+  {id:'g13',done:false,date:'2026-08-21',period:'1週間前',content:'SNS告知④（最終案内・参加促進）',owner:'荒井 亮一',media:'SNS'},
+  {id:'g14',done:false,date:'2026-09-05',period:'事業後',content:'SNS事業報告（FB・Instagram）',owner:'荒井 亮一',media:'SNS'},
+  {id:'g15',done:false,date:'2026-10-01',period:'事業後',content:'アーカイブ動画 分割配信（4本）・登壇企業へ共有依頼',owner:'荒井 亮一',media:'YouTube'},
+];
+
+const nainai = [
+  {id:'n01',done:false,date:'2026-07-08',period:'事業承認後',content:'公式LINEで告知①（デジタルフライヤー配信）',owner:'弘中 義之',media:'公式LINE'},
+  {id:'n02',done:false,date:'2026-07-28',period:'1ヶ月前',content:'公式LINEで告知②（事業内容の周知①）',owner:'弘中 義之',media:'公式LINE'},
+  {id:'n03',done:false,date:'2026-07-28',period:'1ヶ月前',content:'委員会PRを全委員会で実施（地域開発×国際観光で手分け）',owner:'荒井 亮一/弘中 義之',media:'対面/委員会'},
+  {id:'n04',done:false,date:'2026-08-14',period:'半月前',content:'出席者一次確認',owner:'弘中 義之',media:'総括LINE'},
+  {id:'n05',done:false,date:'2026-08-14',period:'半月前',content:'公式LINEで告知③（事業内容の周知②）',owner:'弘中 義之',media:'公式LINE'},
+  {id:'n06',done:false,date:'2026-08-21',period:'1週間前',content:'公式LINEで告知④（事業内容の周知③）',owner:'弘中 義之',media:'公式LINE'},
+  {id:'n07',done:false,date:'2026-08-21',period:'1週間前',content:'出席者二次確認',owner:'弘中 義之',media:'総括LINE'},
+  {id:'n08',done:false,date:'2026-08-21',period:'1週間前',content:'対内メンバーへデジタルパンフレット配布（LINE）',owner:'弘中 義之',media:'公式LINE'},
+  {id:'n09',done:false,date:'2026-08-27',period:'前日',content:'公式LINEで最終案内',owner:'弘中 義之',media:'公式LINE'},
+];
+
+function renderTable(data, tbodyId) {
+  const tbody = document.getElementById(tbodyId);
+  tbody.innerHTML = data.map(r => {
+    const c = PERIOD_COLORS[r.period]||'#566573';
+    return `<tr class="${r.done?'done':''}">
+      <td class="check-cell" onclick="toggle('${r.id}',data)">
+        <div class="check-box ${r.done?'done':''}">${r.done?'✓':''}</div>
+      </td>
+      <td style="white-space:nowrap;font-size:12px;color:var(--gray-600)">${r.date}</td>
+      <td><span class="period-badge" style="background:${c}22;color:${c};border:1px solid ${c}44">${r.period}</span></td>
+      <td style="font-weight:${r.done?'400':'500'}">${r.content}</td>
+      <td style="font-size:12px;white-space:nowrap;color:var(--gray-600)">${r.owner}</td>
+      <td><span class="media-badge">${r.media}</span></td>
+      <td>${r.done?'<span class=\'status-done\'>✓ 完了</span>':'<span class=\'status-todo\'>未対応</span>'}</td>
+    </tr>`;
+  }).join('');
+  updateProgress();
+}
+
+function toggle(id, arr) {
+  const r = arr ? arr.find(x=>x.id===id) : (gaigai.find(x=>x.id===id)||nainai.find(x=>x.id===id));
+  if(r) { r.done=!r.done; renderAll(); toast(r.done?`✅ 完了にしました`:`◻ 未対応に戻しました`); }
+}
+
+function renderTimeline() {
+  const all = [...gaigai,...nainai].sort((a,b)=>a.date.localeCompare(b.date));
+  const wrap = document.getElementById('timeline-wrap');
+  const grouped = {};
+  all.forEach(r=>{ if(!grouped[r.date]) grouped[r.date]=[]; grouped[r.date].push(r); });
+  wrap.innerHTML = Object.entries(grouped).map(([date,items]) => `
+    <div class="timeline">
+      ${items.map(r=>{
+        const c=PERIOD_COLORS[r.period]||'#566573';
+        return `<div class="timeline-item ${r.done?'done':''}">
+          <div class="timeline-dot"></div>
+          <div class="timeline-date">${date} <span class="period-badge" style="background:${c}22;color:${c};border:1px solid ${c}44;font-size:10px">${r.period}</span></div>
+          <div class="timeline-content" onclick="toggle('${r.id}')" style="cursor:pointer;${r.done?'text-decoration:line-through;opacity:0.5':''}">${r.content}</div>
+          <div class="timeline-meta">👤 ${r.owner} · <span class="media-badge" style="font-size:10px">${r.media}</span></div>
+        </div>`;
+      }).join('')}
+    </div>`).join('');
+}
+
+function updateProgress() {
+  const all = [...gaigai,...nainai];
+  const done = all.filter(x=>x.done).length;
+  const total = all.length;
+  const pct = total?Math.round(done/total*100):0;
+  document.getElementById('pr-done-all').textContent = done;
+  document.getElementById('pr-total-all').textContent = total;
+  document.getElementById('pr-pct').textContent = pct+'%';
+  document.getElementById('pr-bar').style.width = pct+'%';
+}
+
+function renderAll() {
+  renderTable(gaigai,'tbody-gaigai');
+  renderTable(nainai,'tbody-nainai');
+  renderTimeline();
+  updateProgress();
+}
+
+function showTab(id, btn) {
+  ['tab-gaigai','tab-nainai','tab-timeline'].forEach(t=>document.getElementById(t).style.display='none');
+  document.getElementById(id).style.display='block';
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function toast(msg){const c=document.getElementById('toast-c');const t=document.createElement('div');t.className='toast';t.textContent=msg;c.appendChild(t);setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity 0.3s';setTimeout(()=>t.remove(),300);},2500);}
+renderAll();
+</script>
+</body>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第32回横浜経済人会議 | 事前準備物チェックリスト</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0d1b3e;--gold:#c9a84c;--gold-light:#e8c97d;--white:#fff;--bg:#f5f3ee;--gray-100:#f0ede6;--gray-200:#e2ddd4;--gray-400:#9e9488;--gray-600:#6b6358;--gray-800:#3a342c;--green:#1a7a4a;--green-light:#e8f5ed;--red:#c0392b;--orange:#c76b0a;--blue:#1a4a8a;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"Noto Sans JP",sans-serif;background:var(--bg);color:var(--gray-800);min-height:100vh;}
+#toolbar{background:var(--navy);padding:10px 24px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;position:sticky;top:40px;z-index:80;border-bottom:2px solid var(--gold);}
+.toolbar-title{font-family:"Noto Serif JP",serif;font-size:13px;color:var(--gold-light);font-weight:600;}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:4px;border:none;cursor:pointer;font-family:"Noto Sans JP",sans-serif;font-size:12.5px;font-weight:500;transition:all 0.15s;}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--navy);}
+.btn-outline{background:transparent;color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.2);}
+.btn-outline:hover{background:rgba(255,255,255,0.1);}
+.btn-sm{padding:4px 10px;font-size:11.5px;}
+#main{max-width:1100px;margin:0 auto;padding:24px 28px;}
+.progress-bar-wrap{background:#fff;border:1px solid var(--gray-200);border-radius:8px;padding:18px 22px;margin-bottom:20px;box-shadow:0 1px 4px rgba(0,0,0,0.05);}
+.progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.progress-title{font-family:"Noto Serif JP",serif;font-size:14px;font-weight:600;color:var(--navy);}
+.progress-pct{font-size:24px;font-weight:700;color:var(--green);}
+.progress-bar{height:10px;background:var(--gray-100);border-radius:5px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--green),#4aba7a);border-radius:5px;transition:width 0.4s;}
+.grid-layout{display:grid;grid-template-columns:240px 1fr;gap:20px;align-items:start;}
+.cat-sidebar{background:#fff;border:1px solid var(--gray-200);border-radius:8px;overflow:hidden;position:sticky;top:100px;box-shadow:0 1px 4px rgba(0,0,0,0.05);}
+.cat-item{padding:10px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;border-bottom:1px solid var(--gray-100);transition:background 0.1s;font-size:13px;border-left:3px solid transparent;}
+.cat-item:last-child{border-bottom:none;}
+.cat-item:hover{background:var(--gray-50,#f9f8f6);}
+.cat-item.active{background:rgba(201,168,76,0.08);border-left-color:var(--gold);font-weight:600;color:var(--navy);}
+.cat-count{font-size:11px;color:var(--gray-400);background:var(--gray-100);padding:1px 7px;border-radius:10px;}
+.cat-done-count{font-size:11px;color:var(--green);background:var(--green-light);padding:1px 7px;border-radius:10px;}
+.card{background:#fff;border:1px solid var(--gray-200);border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.05);}
+.card-header{padding:13px 18px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between;}
+.card-title{font-family:"Noto Serif JP",serif;font-size:13px;font-weight:600;color:var(--navy);}
+.check-item{display:flex;align-items:flex-start;gap:12px;padding:11px 18px;border-bottom:1px solid var(--gray-100);transition:background 0.1s;}
+.check-item:last-child{border-bottom:none;}
+.check-item:hover{background:var(--gray-50,#f9f8f6);}
+.check-box{width:20px;height:20px;border:2px solid var(--gray-200);border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.15s;margin-top:1px;}
+.check-box.checked{background:var(--green);border-color:var(--green);color:#fff;font-size:12px;}
+.check-info{flex:1;}
+.check-name{font-size:13.5px;font-weight:500;line-height:1.4;}
+.check-name.done{text-decoration:line-through;opacity:0.4;}
+.check-meta{font-size:11px;color:var(--gray-400);margin-top:3px;display:flex;gap:10px;flex-wrap:wrap;}
+.tag{display:inline-block;padding:1px 7px;border-radius:3px;font-size:10.5px;font-weight:600;}
+.check-qty{font-size:11px;color:var(--gray-600);background:var(--gray-100);padding:1px 7px;border-radius:3px;}
+.check-note{font-size:11px;color:var(--orange);margin-top:3px;}
+.priority-high{color:var(--red);font-size:10px;font-weight:700;background:#fdecea;padding:1px 6px;border-radius:3px;}
+.priority-mid{color:var(--orange);font-size:10px;font-weight:700;background:#fef3e2;padding:1px 6px;border-radius:3px;}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(13,27,62,0.5);z-index:200;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:#fff;border-radius:8px;width:520px;max-width:95vw;max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.2);}
+.modal-header{padding:16px 20px 12px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between;}
+.modal-title{font-family:"Noto Serif JP",serif;font-size:15px;font-weight:600;color:var(--navy);}
+.modal-close{background:none;border:none;cursor:pointer;font-size:18px;color:var(--gray-400);}
+.modal-body{padding:16px 20px;}
+.modal-footer{padding:12px 20px;border-top:1px solid var(--gray-100);display:flex;justify-content:flex-end;gap:8px;}
+.form-row{margin-bottom:13px;}
+.form-label{font-size:11.5px;font-weight:600;color:var(--gray-600);margin-bottom:4px;display:block;}
+.form-input,.form-select{width:100%;padding:7px 10px;border:1px solid var(--gray-200);border-radius:4px;font-family:"Noto Sans JP",sans-serif;font-size:13px;color:var(--gray-800);outline:none;}
+.form-input:focus,.form-select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,0.12);}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+#toast-c{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:999;display:flex;flex-direction:column;align-items:center;gap:6px;}
+.toast{background:var(--navy);color:#fff;padding:9px 18px;border-radius:20px;font-size:12px;border:1px solid var(--gold);animation:tin 0.2s;}
+@keyframes tin{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+@media print{#toolbar,#portal-nav,.cat-sidebar,.modal-overlay{display:none!important;}#main{padding:10px;}#main .grid-layout{display:block;}}
+</style>
+</head>
+<body>
+<!-- SHARED NAV -->
+<nav id="portal-nav" style="background:#060f22;border-bottom:1px solid rgba(201,168,76,0.25);padding:0 16px;height:40px;display:flex;align-items:center;gap:0;position:sticky;top:0;z-index:999;font-family:'Noto Sans JP',sans-serif;">
+  <a href="index.html" style="font-family:'Noto Serif JP',serif;font-size:11.5px;color:#c9a84c;text-decoration:none;font-weight:700;letter-spacing:0.04em;white-space:nowrap;padding-right:12px;border-right:1px solid rgba(255,255,255,0.1);margin-right:8px;">第32回 横浜経済人会議</a>
+  <div id="portal-nav-links" style="display:flex;gap:2px;overflow-x:auto;flex:1;"></div>
+</nav>
+<script>
+(function(){
+  var pages=[{href:"index.html",label:"🏠 ホーム"},{href:"scenario.html",label:"📜 シナリオ"},{href:"roles.html",label:"👤 役割分担"},{href:"arrivals.html",label:"✅ 到着管理"},{href:"sekijihyo.html",label:"🪑 席次表"},{href:"pr_schedule.html",label:"📣 広報"},{href:"checklist.html",label:"📦 準備物"},{href:"trouble.html",label:"⚠️ トラブル対応"},{href:"yokohama_kaigi_v6.html",label:"📋 申込管理"}];
+  var cur=location.pathname.split("/").pop()||"index.html";
+  var nav=document.getElementById("portal-nav-links");
+  if(!nav)return;
+  pages.forEach(function(p){
+    var a=document.createElement("a");
+    a.href=p.href;a.textContent=p.label;
+    var active=cur===p.href;
+    a.style.cssText="padding:4px 8px;border-radius:4px;font-size:11px;text-decoration:none;white-space:nowrap;"
+      +"font-weight:"+(active?"700":"400")+";"
+      +"background:"+(active?"rgba(201,168,76,0.22)":"transparent")+";"
+      +"color:"+(active?"#e8c97d":"rgba(255,255,255,0.42)")+";"
+      +"border:"+(active?"1px solid rgba(201,168,76,0.35)":"1px solid transparent")+";";
+    nav.appendChild(a);
+  });
+})();
+</script>
+<!-- END NAV -->
+
+<div id="toolbar">
+  <span class="toolbar-title">📦 事前準備物チェックリスト</span>
+  <div style="flex:1"></div>
+  <button class="btn btn-outline btn-sm" onclick="window.print()">🖨 印刷</button>
+  <button class="btn btn-outline btn-sm" onclick="clearAll()">全クリア</button>
+  <button class="btn btn-gold" onclick="openModal('modal-add')">＋ 追加</button>
+</div>
+<div id="main">
+  <div class="progress-bar-wrap">
+    <div class="progress-top">
+      <div class="progress-title">📦 全体進捗</div>
+      <div><span class="progress-pct" id="pct">0%</span> <span style="font-size:12px;color:var(--gray-400);" id="pct-sub">0/0 完了</span></div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  </div>
+  <div class="grid-layout">
+    <div class="cat-sidebar" id="cat-sidebar"></div>
+    <div id="items-wrap"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-add">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">準備物を追加</div><button class="modal-close" onclick="closeModal('modal-add')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-row"><label class="form-label">品目名 *</label><input class="form-input" id="add-name" placeholder="例: 名札・首下げ紐"></div>
+      <div class="grid-2">
+        <div class="form-row"><label class="form-label">カテゴリ</label>
+          <select class="form-select" id="add-cat">
+            <option>印刷物・資料</option><option>受付関係</option><option>備品・機材</option>
+            <option>映像・音響</option><option>登壇者関係</option><option>来賓関係</option>
+            <option>動画・データ</option><option>その他</option>
+          </select>
+        </div>
+        <div class="form-row"><label class="form-label">優先度</label>
+          <select class="form-select" id="add-priority"><option value="high">🔴 高</option><option value="mid" selected>🟡 中</option><option value="low">🟢 低</option></select>
+        </div>
+        <div class="form-row"><label class="form-label">数量・個数</label><input class="form-input" id="add-qty" placeholder="例: 20部 / 1式"></div>
+        <div class="form-row"><label class="form-label">担当者</label><input class="form-input" id="add-owner" placeholder="例: 佐藤 美咲"></div>
+      </div>
+      <div class="form-row"><label class="form-label">備考・注意事項</label><input class="form-input" id="add-note" placeholder="例: 前日までに準備"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" style="color:var(--gray-600);border-color:var(--gray-200);" onclick="closeModal('modal-add')">キャンセル</button>
+      <button class="btn btn-gold" onclick="addItem()">追加する</button>
+    </div>
+  </div>
+</div>
+<div id="toast-c"></div>
+
+<script>
+const CAT_ICONS = {'印刷物・資料':'🗒','受付関係':'🎫','備品・機材':'🔧','映像・音響':'🎥','登壇者関係':'🎤','来賓関係':'👑','動画・データ':'💾','その他':'📋'};
+
+let items = [
+  // 印刷物・資料
+  {id:'c01',done:false,name:'当日進行シナリオ（全体版）',cat:'印刷物・資料',priority:'high',qty:'スタッフ全員分',owner:'福田 雄太郎',note:'各担当へ事前配布'},
+  {id:'c02',done:false,name:'役割分担表（当日版）',cat:'印刷物・資料',priority:'high',qty:'スタッフ全員分',owner:'福田 雄太郎',note:''},
+  {id:'c03',done:false,name:'緊急連絡先リスト',cat:'印刷物・資料',priority:'high',qty:'スタッフ全員分',owner:'長谷川 圭一',note:'全スタッフが携帯すること'},
+  {id:'c04',done:false,name:'対外参加者名簿PDF 印刷',cat:'印刷物・資料',priority:'high',qty:'受付班分',owner:'佐藤 美咲',note:'前日までに最終版を印刷'},
+  {id:'c05',done:false,name:'当日参加受付表（個人情報同意書付き）',cat:'印刷物・資料',priority:'high',qty:'50部以上',owner:'佐藤 美咲',note:'記入見本も設置'},
+  {id:'c06',done:false,name:'デジタルパンフレット（QRコード印刷版）',cat:'印刷物・資料',priority:'mid',qty:'20枚',owner:'弘中 義之',note:'当日参加者向け受付QRコード'},
+  {id:'c07',done:false,name:'政策提言書（当日配布用）',cat:'印刷物・資料',priority:'mid',qty:'来賓・登壇者分',owner:'荒井 亮一',note:'後日郵送分は別途'},
+  // 受付関係
+  {id:'r01',done:false,name:'席札（ふんどし）各委員会分',cat:'受付関係',priority:'high',qty:'委員会20名・専務室5名想定',owner:'福田 雄太郎',note:'委員会名・氏名を記載'},
+  {id:'r02',done:false,name:'来賓・登壇者用ネームプレート',cat:'受付関係',priority:'high',qty:'14名分',owner:'永井 嵩久',note:'敬称・役職を正確に記載'},
+  {id:'r03',done:false,name:'受付テーブル・サイン',cat:'受付関係',priority:'mid',qty:'1式',owner:'佐藤 美咲',note:'対内・対外・来賓で分ける'},
+  {id:'r04',done:false,name:'芳名録（JCメンバー・シニア用）',cat:'受付関係',priority:'high',qty:'1冊',owner:'福田 雄太郎',note:'例会式典委員会から受領'},
+  {id:'r05',done:false,name:'アンケートQRコード掲示スタンド',cat:'受付関係',priority:'high',qty:'場内5箇所分',owner:'福田 雄太郎',note:'スクリーン投影と併用'},
+  {id:'r06',done:false,name:'タブレット（デジタルパンフ閲覧用）',cat:'受付関係',priority:'mid',qty:'2台',owner:'佐藤 美咲',note:''},
+  // 備品・機材
+  {id:'b01',done:false,name:'国旗・JC旗',cat:'備品・機材',priority:'high',qty:'各1本',owner:'弘中 義之',note:'掲揚位置はステージレイアウト参照'},
+  {id:'b02',done:false,name:'ガムテープ・養生テープ',cat:'備品・機材',priority:'mid',qty:'各2本',owner:'鈴木 一郎',note:'どんでん・設営用'},
+  {id:'b03',done:false,name:'延長コード・電源タップ',cat:'備品・機材',priority:'mid',qty:'3本以上',owner:'鈴木 一郎',note:''},
+  {id:'b04',done:false,name:'筆記用具（ペン・ボールペン）',cat:'備品・機材',priority:'mid',qty:'20本',owner:'佐藤 美咲',note:'受付・各テーブル用'},
+  {id:'b05',done:false,name:'ゴミ袋（大・小）',cat:'備品・機材',priority:'low',qty:'各10枚',owner:'鈴木 一郎',note:'撤収時用'},
+  {id:'b06',done:false,name:'救急箱',cat:'備品・機材',priority:'mid',qty:'1式',owner:'鈴木 一郎',note:'会場既備品を確認のこと'},
+  // 映像・音響
+  {id:'m01',done:false,name:'プロジェクター動作確認（輝度調整含む）',cat:'映像・音響',priority:'high',qty:'リハーサル時に確認',owner:'弘中 義之',note:'Re-Vision社と実施'},
+  {id:'m02',done:false,name:'マイク（ハンドマイク・ピンマイク・予備）',cat:'映像・音響',priority:'high',qty:'ハンド4本・ピン9本・予備2本',owner:'弘中 義之',note:'Re-Vision社持込。電池残量確認'},
+  {id:'m03',done:false,name:'音響機材一式',cat:'映像・音響',priority:'high',qty:'1式（Re-Vision）',owner:'弘中 義之',note:''},
+  {id:'m04',done:false,name:'進行スライドデータ（PC搬入確認）',cat:'映像・音響',priority:'high',qty:'バックアップUSB含む',owner:'長谷川 圭一',note:'バックアップを必ず取ること'},
+  {id:'m05',done:false,name:'オープニング動画データ',cat:'動画・データ',priority:'high',qty:'1本（Re-Vision）',owner:'荒井 亮一',note:''},
+  {id:'m06',done:false,name:'事業紹介動画データ',cat:'動画・データ',priority:'high',qty:'1本（Re-Vision）',owner:'荒井 亮一',note:''},
+  {id:'m07',done:false,name:'政策提言動画①②③データ',cat:'動画・データ',priority:'high',qty:'3本（Re-Vision）',owner:'荒井 亮一',note:''},
+  {id:'m08',done:false,name:'エンディング動画データ',cat:'動画・データ',priority:'high',qty:'1本（Re-Vision）',owner:'荒井 亮一',note:''},
+  {id:'m09',done:false,name:'GREEN×EXPO2027 CMデータ',cat:'動画・データ',priority:'high',qty:'1本（協会受領済）',owner:'弘中 義之',note:'開会前・休憩中・閉会後放映'},
+  // 登壇者関係
+  {id:'s01',done:false,name:'登壇者控室準備（お茶・ネームプレート）',cat:'登壇者関係',priority:'high',qty:'9名分',owner:'永井 嵩久',note:'著名人は会場内での声がけ避ける'},
+  {id:'s02',done:false,name:'登壇者当日スケジュール表（個別）',cat:'登壇者関係',priority:'high',qty:'9名分',owner:'荒井 亮一',note:'到着時間・出番・動線を明記'},
+  {id:'s03',done:false,name:'登壇者プロフィールスライド確認',cat:'登壇者関係',priority:'high',qty:'全体進行スライドに組込済か確認',owner:'長谷川 圭一',note:''},
+  // 来賓関係
+  {id:'g01',done:false,name:'来賓席次確認・座席札設置',cat:'来賓関係',priority:'high',qty:'4名分',owner:'永井 嵩久',note:'最前列を事前確認'},
+  {id:'g02',done:false,name:'来賓アテンド担当者配置確認',cat:'来賓関係',priority:'high',qty:'4名分×1名',owner:'永井 嵩久',note:'副理事長がアテンド。動線リハ必須'},
+  {id:'g03',done:false,name:'来賓控室案内・お茶準備',cat:'来賓関係',priority:'high',qty:'1式',owner:'永井 嵩久',note:''},
+];
+
+let idCounter = 100;
+let currentCat = 'all';
+
+function render() {
+  // 進捗
+  const done = items.filter(x=>x.done).length;
+  const total = items.length;
+  const pct = total ? Math.round(done/total*100) : 0;
+  document.getElementById('pct').textContent = pct + '%';
+  document.getElementById('pct-sub').textContent = done + '/' + total + ' 完了';
+  document.getElementById('progress-fill').style.width = pct + '%';
+
+  // カテゴリサイドバー
+  const cats = {'すべて':{total:total,done:done}};
+  items.forEach(it => {
+    if(!cats[it.cat]) cats[it.cat] = {total:0,done:0};
+    cats[it.cat].total++;
+    if(it.done) cats[it.cat].done++;
+  });
+  const sidebar = document.getElementById('cat-sidebar');
+  sidebar.innerHTML = Object.entries(cats).map(([cat,g]) => `
+    <div class="cat-item ${currentCat===cat?'active':''}" onclick="setCat('${cat}')">
+      <span>${CAT_ICONS[cat]||'📋'} ${cat}</span>
+      <span class="${g.done===g.total&&g.total>0?'cat-done-count':'cat-count'}">${g.done}/${g.total}</span>
+    </div>`).join('');
+
+  // アイテム一覧
+  const filtered = currentCat === 'すべて' ? items : items.filter(x=>x.cat===currentCat);
+  const groupByCat = {};
+  filtered.forEach(it => {
+    if(!groupByCat[it.cat]) groupByCat[it.cat] = [];
+    groupByCat[it.cat].push(it);
+  });
+
+  const wrap = document.getElementById('items-wrap');
+  wrap.innerHTML = Object.entries(groupByCat).map(([cat,itms]) => `
+    <div class="card" style="margin-bottom:14px;">
+      <div class="card-header">
+        <div class="card-title">${CAT_ICONS[cat]||'📋'} ${cat}</div>
+        <span style="font-size:11px;color:var(--gray-400)">${itms.filter(x=>x.done).length}/${itms.length} 完了</span>
+      </div>
+      ${itms.map(it => `
+        <div class="check-item">
+          <div class="check-box ${it.done?'checked':''}" onclick="toggle('${it.id}')">${it.done?'✓':''}</div>
+          <div class="check-info">
+            <div class="check-name ${it.done?'done':''}">${it.priority==='high'?'<span class=\'priority-high\'>🔴 必須</span> ':it.priority==='mid'?'<span class=\'priority-mid\'>🟡 重要</span> ':''}${it.name}</div>
+            <div class="check-meta">
+              ${it.qty?`<span class="check-qty">📦 ${it.qty}</span>`:''}
+              ${it.owner?`<span>👤 ${it.owner}</span>`:''}
+            </div>
+            ${it.note?`<div class="check-note">💡 ${it.note}</div>`:''}
+          </div>
+          <button onclick="deleteItem('${it.id}')" style="background:none;border:none;cursor:pointer;color:var(--gray-200);font-size:16px;padding:2px 6px;opacity:0;" onmouseover="this.style.opacity=1;this.style.color='var(--red)';" onmouseout="this.style.opacity=0;">✕</button>
+        </div>`).join('')}
+    </div>`).join('');
+}
+
+function setCat(cat) { currentCat = cat; render(); }
+function toggle(id) { const it=items.find(x=>x.id===id); if(it){it.done=!it.done;render();} }
+function deleteItem(id) { if(confirm('削除しますか？')){items=items.filter(x=>x.id!==id);render();} }
+function clearAll() { if(confirm('全チェックをクリアしますか？')){items.forEach(x=>x.done=false);render();} }
+
+function addItem() {
+  const name=document.getElementById('add-name').value.trim();
+  if(!name){toast('品目名を入力してください');return;}
+  items.push({id:'u'+idCounter++,done:false,name,cat:document.getElementById('add-cat').value,priority:document.getElementById('add-priority').value,qty:document.getElementById('add-qty').value,owner:document.getElementById('add-owner').value,note:document.getElementById('add-note').value});
+  closeModal('modal-add');render();toast('追加しました');
+  ['add-name','add-qty','add-owner','add-note'].forEach(id=>document.getElementById(id).value='');
+}
+
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open')}));
+function toast(msg){const c=document.getElementById('toast-c');const t=document.createElement('div');t.className='toast';t.textContent=msg;c.appendChild(t);setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity 0.3s';setTimeout(()=>t.remove(),300);},2500);}
+
+render();
+</script>
+</body>
+</html>

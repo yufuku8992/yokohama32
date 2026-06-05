@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第32回横浜経済人会議 | トラブル対応・FAQ</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--navy:#0d1b3e;--gold:#c9a84c;--gold-light:#e8c97d;--bg:#f5f3ee;--gray-100:#f0ede6;--gray-200:#e2ddd4;--gray-400:#9e9488;--gray-600:#6b6358;--gray-800:#3a342c;--green:#1a7a4a;--green-light:#e8f5ed;--red:#c0392b;--red-light:#fdecea;--orange:#c76b0a;--orange-light:#fef3e2;--blue:#1a4a8a;--blue-light:#e8eef8;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"Noto Sans JP",sans-serif;background:var(--bg);color:var(--gray-800);min-height:100vh;}
+#toolbar{background:var(--navy);padding:10px 24px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;position:sticky;top:40px;z-index:80;border-bottom:2px solid var(--gold);}
+.toolbar-title{font-family:"Noto Serif JP",serif;font-size:13px;color:var(--gold-light);font-weight:600;}
+.sync-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#9e9488;margin-right:4px;}
+.sync-dot.on{background:#4aba7a;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.sync-label{font-size:11px;color:rgba(255,255,255,0.4);}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:4px;border:none;cursor:pointer;font-family:"Noto Sans JP",sans-serif;font-size:12.5px;font-weight:500;transition:all 0.15s;}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--navy);}
+.btn-danger{background:var(--red);color:#fff;}
+.btn-outline{background:transparent;color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.2);}
+.btn-outline:hover{background:rgba(255,255,255,0.1);}
+.btn-sm{padding:4px 10px;font-size:11.5px;}
+.btn-green{background:var(--green);color:#fff;}
+#main{max-width:1100px;margin:0 auto;padding:24px 28px;}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.card{background:#fff;border:1px solid var(--gray-200);border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.05);}
+.card-header{padding:13px 18px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between;}
+.card-title{font-family:"Noto Serif JP",serif;font-size:13px;font-weight:600;color:var(--navy);}
+/* TROUBLE */
+.trouble-item{padding:14px 18px;border-bottom:1px solid var(--gray-100);border-left:4px solid var(--orange);transition:background 0.1s;}
+.trouble-item:last-child{border-bottom:none;}
+.trouble-item.resolved{border-left-color:var(--green);opacity:0.65;}
+.trouble-top{display:flex;align-items:flex-start;gap:10px;margin-bottom:5px;}
+.trouble-title{font-size:13.5px;font-weight:600;flex:1;}
+.trouble-badge{display:inline-block;padding:2px 8px;border-radius:3px;font-size:10.5px;font-weight:600;white-space:nowrap;}
+.b-open{background:var(--orange-light);color:var(--orange);}
+.b-resolved{background:var(--green-light);color:var(--green);}
+.b-urgent{background:var(--red);color:#fff;}
+.trouble-meta{font-size:11px;color:var(--gray-400);margin-bottom:6px;}
+.trouble-detail{font-size:12.5px;color:var(--gray-600);line-height:1.6;}
+.trouble-actions{margin-top:8px;display:flex;gap:6px;}
+/* FAQ */
+.faq-cat{font-family:"Noto Serif JP",serif;font-size:12px;font-weight:600;color:var(--navy);padding:10px 18px 6px;background:var(--gray-100);border-bottom:1px solid var(--gray-200);letter-spacing:0.04em;}
+.faq-item{border-bottom:1px solid var(--gray-100);}
+.faq-item:last-child{border-bottom:none;}
+.faq-q{padding:12px 18px;cursor:pointer;display:flex;align-items:flex-start;gap:10px;font-size:13px;font-weight:600;color:var(--navy);background:none;border:none;width:100%;text-align:left;transition:background 0.1s;}
+.faq-q:hover{background:var(--gray-50,#f9f8f6);}
+.faq-q-icon{flex-shrink:0;color:var(--gold);font-weight:700;font-size:14px;}
+.faq-arrow{margin-left:auto;font-size:12px;color:var(--gray-400);transition:transform 0.2s;}
+.faq-a{display:none;padding:0 18px 14px 42px;font-size:13px;color:var(--gray-600);line-height:1.75;border-left:3px solid var(--gold);margin:0 18px 10px;background:rgba(201,168,76,0.04);border-radius:0 4px 4px 0;}
+.faq-item.open .faq-a{display:block;}
+.faq-item.open .faq-arrow{transform:rotate(180deg);}
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(13,27,62,0.5);z-index:200;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:#fff;border-radius:8px;width:540px;max-width:95vw;max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.2);}
+.modal-header{padding:16px 20px 12px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between;}
+.modal-title{font-family:"Noto Serif JP",serif;font-size:15px;font-weight:600;color:var(--navy);}
+.modal-close{background:none;border:none;cursor:pointer;font-size:18px;color:var(--gray-400);}
+.modal-body{padding:16px 20px;}
+.modal-footer{padding:12px 20px;border-top:1px solid var(--gray-100);display:flex;justify-content:flex-end;gap:8px;}
+.form-row{margin-bottom:13px;}
+.form-label{font-size:11.5px;font-weight:600;color:var(--gray-600);margin-bottom:4px;display:block;}
+.form-input,.form-select,.form-textarea{width:100%;padding:7px 10px;border:1px solid var(--gray-200);border-radius:4px;font-family:"Noto Sans JP",sans-serif;font-size:13px;color:var(--gray-800);outline:none;}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,0.12);}
+.form-textarea{resize:vertical;min-height:80px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+#toast-c{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:999;display:flex;flex-direction:column;align-items:center;gap:6px;}
+.toast{background:var(--navy);color:#fff;padding:9px 18px;border-radius:20px;font-size:12px;border:1px solid var(--gold);animation:tin 0.2s;}
+.toast.err{border-color:var(--red);}
+@keyframes tin{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.loading{text-align:center;padding:30px;color:var(--gray-400);}
+.empty{text-align:center;padding:30px;color:var(--gray-400);font-size:13px;}
+</style>
+</head>
+<body>
+<!-- SHARED NAV -->
+<nav id="portal-nav" style="background:#060f22;border-bottom:1px solid rgba(201,168,76,0.25);padding:0 16px;height:40px;display:flex;align-items:center;gap:0;position:sticky;top:0;z-index:999;font-family:'Noto Sans JP',sans-serif;">
+  <a href="index.html" style="font-family:'Noto Serif JP',serif;font-size:11.5px;color:#c9a84c;text-decoration:none;font-weight:700;letter-spacing:0.04em;white-space:nowrap;padding-right:12px;border-right:1px solid rgba(255,255,255,0.1);margin-right:8px;">第32回 横浜経済人会議</a>
+  <div id="portal-nav-links" style="display:flex;gap:2px;overflow-x:auto;flex:1;"></div>
+</nav>
+<script>
+(function(){
+  var pages=[{href:"index.html",label:"🏠 ホーム"},{href:"scenario.html",label:"📜 シナリオ"},{href:"roles.html",label:"👤 役割分担"},{href:"arrivals.html",label:"✅ 到着管理"},{href:"sekijihyo.html",label:"🪑 席次表"},{href:"pr_schedule.html",label:"📣 広報"},{href:"checklist.html",label:"📦 準備物"},{href:"trouble.html",label:"⚠️ トラブル対応"},{href:"yokohama_kaigi_v6.html",label:"📋 申込管理"}];
+  var cur=location.pathname.split("/").pop()||"index.html";
+  var nav=document.getElementById("portal-nav-links");
+  if(!nav)return;
+  pages.forEach(function(p){
+    var a=document.createElement("a");
+    a.href=p.href;a.textContent=p.label;
+    var active=cur===p.href;
+    a.style.cssText="padding:4px 8px;border-radius:4px;font-size:11px;text-decoration:none;white-space:nowrap;"
+      +"font-weight:"+(active?"700":"400")+";"
+      +"background:"+(active?"rgba(201,168,76,0.22)":"transparent")+";"
+      +"color:"+(active?"#e8c97d":"rgba(255,255,255,0.42)")+";"
+      +"border:"+(active?"1px solid rgba(201,168,76,0.35)":"1px solid transparent")+";";
+    nav.appendChild(a);
+  });
+})();
+</script>
+<!-- END NAV -->
+
+<div id="toolbar">
+  <span class="toolbar-title">⚠️ トラブル対応 ・ FAQ</span>
+  <span style="color:rgba(255,255,255,0.2);margin:0 4px;">|</span>
+  <span class="sync-dot" id="sync-dot"></span><span class="sync-label" id="sync-label">接続中...</span>
+  <div style="flex:1"></div>
+  <button class="btn btn-danger" onclick="openModal('modal-add-trouble')">🚨 トラブルを記録</button>
+</div>
+
+<div id="main">
+  <div class="grid-2">
+    <!-- TROUBLE LIST -->
+    <div>
+      <div class="card" style="margin-bottom:14px;">
+        <div class="card-header">
+          <div class="card-title">🚨 トラブル記録</div>
+          <div style="display:flex;gap:6px;align-items:center;">
+            <span id="trouble-open-count" style="font-size:11px;background:var(--red-light);color:var(--red);padding:2px 8px;border-radius:3px;font-weight:600;">対応中 0件</span>
+          </div>
+        </div>
+        <div id="trouble-list"><div class="loading">読込中...</div></div>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">💡 よくあるトラブルと対応（FAQ）</div>
+        </div>
+        <div id="faq-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TROUBLE ADD MODAL -->
+<div class="modal-overlay" id="modal-add-trouble">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">🚨 トラブルを記録</div><button class="modal-close" onclick="closeModal('modal-add-trouble')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-row"><label class="form-label">件名・概要 *</label><input class="form-input" id="tr-title" placeholder="例: マイクから音が出ない"></div>
+      <div class="g2">
+        <div class="form-row"><label class="form-label">発生場所</label><input class="form-input" id="tr-loc" placeholder="ステージ上など"></div>
+        <div class="form-row"><label class="form-label">緊急度</label>
+          <select class="form-select" id="tr-urgency">
+            <option value="urgent">🔴 緊急（即対応）</option>
+            <option value="normal" selected>🟡 通常</option>
+            <option value="low">🟢 軽微</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row"><label class="form-label">対応担当者</label>
+        <select class="form-select" id="tr-owner">
+          <option>長谷川 圭一</option><option>荒井 亮一</option><option>弘中 義之</option><option>永井 嵩久</option><option>福田 雄太郎</option><option>Re-Vision（音響）</option>
+        </select>
+      </div>
+      <div class="form-row"><label class="form-label">詳細・状況</label><textarea class="form-textarea" id="tr-detail" placeholder="状況の詳細、経緯など..."></textarea></div>
+      <div class="form-row"><label class="form-label">対応内容（現時点）</label><textarea class="form-textarea" id="tr-action" placeholder="実施した・する予定の対応..."></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" style="color:var(--gray-600);border-color:var(--gray-200);" onclick="closeModal('modal-add-trouble')">キャンセル</button>
+      <button class="btn btn-danger" onclick="addTrouble()">記録する</button>
+    </div>
+  </div>
+</div>
+<div id="toast-c"></div>
+
+<script>
+const SB_URL='https://kukckeksvbdgosneezdh.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt1a2NrZWtzdmJkZ29zbmVlemRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1Nzg2MjksImV4cCI6MjA5NjE1NDYyOX0.zM264r67WV4YI7_7cqC53rx5dYYoc77VncKydfNHQUY';
+const sb=supabase.createClient(SB_URL,SB_KEY);
+let troubles=[];
+
+function setSyncStatus(s){
+  const dot=document.getElementById('sync-dot'),label=document.getElementById('sync-label');
+  if(s==='on'){dot.className='sync-dot on';label.textContent='リアルタイム同期中';}
+  else{dot.className='sync-dot';label.textContent='接続中...';}
+}
+
+// ===== TROUBLE =====
+async function loadTroubles(){
+  const{data}=await sb.from('incidents').select('*').order('created_at',{ascending:false});
+  troubles=data||[];renderTroubles();
+}
+function renderTroubles(){
+  const el=document.getElementById('trouble-list');
+  const openCount=troubles.filter(t=>!t.resolved).length;
+  document.getElementById('trouble-open-count').textContent=`対応中 ${openCount}件`;
+  if(!troubles.length){el.innerHTML='<div class="empty">トラブルはありません ✅</div>';return;}
+  el.innerHTML=troubles.map(t=>{
+    const urgencyMap={urgent:'🔴 緊急',normal:'🟡 通常',low:'🟢 軽微'};
+    const urgency=t.urgency||'normal';
+    return`<div class="trouble-item ${t.resolved?'resolved':''}">
+      <div class="trouble-top">
+        <div class="trouble-title">⚠️ ${t.title}</div>
+        <span class="trouble-badge ${t.resolved?'b-resolved':urgency==='urgent'?'b-urgent':'b-open'}">${t.resolved?'✓ 解決済':urgencyMap[urgency]||'通常'}</span>
+      </div>
+      <div class="trouble-meta">📍 ${t.location||'—'} · 👤 ${t.assignee||'—'} · 🕐 ${fmtTime(t.created_at)}</div>
+      ${t.detail?`<div class="trouble-detail">📋 ${t.detail}</div>`:''}
+      ${t.action?`<div class="trouble-detail" style="margin-top:4px;color:var(--green)">✅ 対応: ${t.action}</div>`:''}
+      <div class="trouble-actions">
+        ${!t.resolved?`<button class="btn btn-green btn-sm" onclick="resolveTrouble('${t.id}')">✓ 解決済みにする</button>`:`<button class="btn btn-outline btn-sm" style="color:var(--gray-600);border-color:var(--gray-200);" onclick="reopenTrouble('${t.id}')">再開</button>`}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function addTrouble(){
+  const title=document.getElementById('tr-title').value.trim();
+  if(!title){toast('件名を入力してください','err');return;}
+  await sb.from('incidents').insert({title,location:document.getElementById('tr-loc').value,urgency:document.getElementById('tr-urgency').value,assignee:document.getElementById('tr-owner').value,detail:document.getElementById('tr-detail').value,action:document.getElementById('tr-action').value,resolved:false});
+  closeModal('modal-add-trouble');
+  toast('🚨 トラブルを記録しました — 全メンバーに反映','');
+  ['tr-title','tr-loc','tr-detail','tr-action'].forEach(id=>document.getElementById(id).value='');
+}
+async function resolveTrouble(id){await sb.from('incidents').update({resolved:true}).eq('id',id);toast('✅ 解決済みにしました');}
+async function reopenTrouble(id){await sb.from('incidents').update({resolved:false}).eq('id',id);toast('再開しました');}
+
+// ===== FAQ =====
+const FAQ = [
+  {cat:'📡 映像・音響',items:[
+    {q:'プロジェクターが映らない',a:'①接続ケーブルを確認。②Re-Vision担当者（音響・映像操作室）に即連絡。③予備ケーブルは操作室に保管。④解決しない場合はスクリーン投影なしで進行を継続し、司会者に状況説明のアナウンスを依頼する。'},
+    {q:'マイクから音が出ない / ハウリングが発生',a:'①Re-Vision担当者に即連絡。②予備マイクと交換（予備は操作室に保管）。③ハウリングはマイクとスピーカーの位置関係を変えることで解消できる場合がある。④登壇者には落ち着いて待機いただくよう伝える。'},
+    {q:'動画が再生されない',a:'①Re-Vision担当者に即連絡。②PCの音量・映像出力設定を確認。③バックアップUSBから再生。④どうしても再生できない場合はそのパートを省略し、司会者が口頭で内容を要約して進行を続ける。'},
+  ]},
+  {cat:'👤 来賓・登壇者',items:[
+    {q:'来賓・登壇者が予定時刻に到着しない',a:'①担当アテンド者が連絡先に電話。②到着予定時刻を確認し、司会者に共有。③遅参の場合は進行順を一部変更（趣旨説明や動画放映で時間を調整）。④市長等公務による遅参は事前に対応策を共有済み。'},
+    {q:'登壇者が体調不良・急なキャンセル',a:'①委員長・室長に即報告。②該当パートの進行を他の登壇者・ファシリテーターで吸収。③司会者から参加者にアナウンス（「諸事情により〜様はご欠席となりました」）。④Supabaseトラブル対応欄に記録。'},
+    {q:'来賓の名前・肩書きを間違えた',a:'①その場で落ち着いて「失礼いたしました、正しくは〜様でございます」と訂正。②過度に謝罪しない（参加者の注意が集まりすぎるため）。③後日担当者から来賓に書面で謝罪。'},
+  ]},
+  {cat:'👥 参加者・会場',items:[
+    {q:'参加者が定員を超えそう',a:'①受付で整理券配布に切り替え。②2階席へ誘導（500席弱は1階のみ。2階は経済政策室・スタッフ用）。③立見は安全上NGのため入場制限を実施。④受付担当リーダーに即報告。'},
+    {q:'参加者が体調不良・気分が悪い',a:'①近くのスタッフが対応。②会場外（ロビー等）に誘導。③必要であれば救急車を要請（119）。④会場の救急箱の場所を事前に確認しておく。⑤進行はそのまま続ける。'},
+    {q:'会場内で迷子・迷われている参加者がいる',a:'①最寄りのスタッフが目的地まで誘導。②受付・スタッフ配置図を手元に持っておく。③JCメンバーへの案内はサイネージ・誘導看板を活用。'},
+    {q:'退場時に混雑・パニックが発生',a:'①司会者が冷静に「後方からご退場ください」とアナウンスを繰り返す。②スタッフが各通路に配置し誘導。③焦らず、ゆっくり、安全第一。④緊急の場合は会場の避難誘導マニュアルに従う。'},
+  ]},
+  {cat:'📋 進行・運営',items:[
+    {q:'タイムスケジュールが大幅に押している',a:'①司会者がファシリテーターに「あと〇分で締め」と合図。②各パートの終了合図は事前に打ち合わせ済み。③アンケート時間（4分）は削らない（データ収集が目的のため）。④最大5分程度の遅延は許容範囲内。それ以上の場合は委員長・室長に相談。'},
+    {q:'停電・火災など緊急事態が発生',a:'①参加者の安全を最優先。②会場スタッフの指示に従う。③司会者が冷静にアナウンス「非常時のため、スタッフの誘導に従い退場ください」。④会場の避難経路・集合場所を事前に確認しておく。'},
+    {q:'アンケートQRコードが読めない',a:'①スクリーンのQRコードを拡大投影。②スタッフが持つQRコードの掲示板を参加者に近づける。③読めない参加者には紙のアンケート（予備を用意）を手渡す。'},
+  ]},
+];
+
+function renderFAQ(){
+  const el=document.getElementById('faq-list');
+  el.innerHTML=FAQ.map(section=>`
+    <div class="faq-cat">${section.cat}</div>
+    ${section.items.map((item,i)=>`
+      <div class="faq-item" id="faq-${section.cat}-${i}">
+        <button class="faq-q" onclick="toggleFAQ('faq-${section.cat}-${i}')">
+          <span class="faq-q-icon">Q</span>
+          <span style="flex:1">${item.q}</span>
+          <span class="faq-arrow">▼</span>
+        </button>
+        <div class="faq-a">A. ${item.a}</div>
+      </div>`).join('')}
+  `).join('');
+}
+
+function toggleFAQ(id){
+  const el=document.getElementById(id);
+  el.classList.toggle('open');
+}
+
+function fmtTime(ts){if(!ts)return'';const d=new Date(ts);const diff=Math.floor((new Date()-d)/60000);if(diff<1)return'たった今';if(diff<60)return diff+'分前';if(diff<1440)return Math.floor(diff/60)+'時間前';return(d.getMonth()+1)+'/'+(d.getDate());}
+
+sb.channel('trouble-rt')
+  .on('postgres_changes',{event:'*',schema:'public',table:'incidents'},()=>loadTroubles())
+  .subscribe(s=>{if(s==='SUBSCRIBED')setSyncStatus('on');});
+
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+function toast(msg,type){const c=document.getElementById('toast-c');const t=document.createElement('div');t.className='toast'+(type?' '+type:'');t.textContent=msg;c.appendChild(t);setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity 0.3s';setTimeout(()=>t.remove(),300);},3000);}
+
+renderFAQ();
+loadTroubles();
+</script>
+</body>
+</html>
