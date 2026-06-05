@@ -10279,11 +10279,163 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
     <div class="nav-item" onclick="switchNav('gas',this)"><span>⚡</span> Google連携設定</div>
     <div class="nav-sep"></div>
     <div class="nav-label">外部リンク</div>
-    <div class="nav-item" onclick="window.open('https://yufuku8992.github.io/yokohama32/yokohama_keizaijin_32.html','_blank')"><span>🔗</span> 横浜経済人会議</div>
+    <div class="nav-item" onclick="location.href='https://yufuku8992.github.io/yokohama32/yokohama_keizaijin_32.html'"><span>🔗</span> 横浜経済人会議</div>
+    <div class="nav-sep"></div>
+    <div class="nav-item" onclick="switchNav('guide',this)"><span>📖</span> 操作手順</div>
   </nav>
 
   <main class="main">
 
+
+
+    <!-- 操作手順 -->
+    <div id="panel-guide" class="panel">
+      <div class="section-title">操作手順書</div>
+
+      <div class="card" style="margin-bottom:12px;background:#fff8e6;border-left:3px solid var(--gold)">
+        <div style="font-size:12px;color:var(--text2);line-height:1.8">
+          このアプリは <strong>Google Apps Script（GAS）</strong> をデータベースとして使用しています。<br>
+          全端末が同じGASのURLに接続することでリアルタイム同期が可能です。
+        </div>
+      </div>
+
+      <!-- STEP 1 -->
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+          <div style="width:28px;height:28px;border-radius:50%;background:var(--ink);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0">1</div>
+          <div style="font-size:14px;font-weight:500">アプリを開く</div>
+        </div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.9">
+          iPhoneは <strong>Safari</strong>、AndroidはChromeで以下のURLを開いてください。<br>
+          <code style="font-size:11px;word-break:break-all">https://yufuku8992.github.io/yokohama32/yokohama_kaigi_v6.html</code><br>
+          <br>
+          ブックマークまたはホーム画面に追加しておくと便利です。<br>
+          ・iPhone Safari → 共有ボタン →「ホーム画面に追加」<br>
+          ・Android Chrome → メニュー →「ホーム画面に追加」
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+          <div style="width:28px;height:28px;border-radius:50%;background:var(--ink);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0">2</div>
+          <div style="font-size:14px;font-weight:500">Google連携設定（初回のみ）</div>
+        </div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.9">
+          1. 画面下の「⋯ その他」→「⚡ Google連携」をタップ<br>
+          2. GASのWebアプリURLを入力欄に貼り付ける<br>
+          &nbsp;&nbsp;&nbsp;<code style="font-size:10px">https://script.google.com/macros/s/★★★/exec</code><br>
+          &nbsp;&nbsp;&nbsp;※ GASのURLは担当者から共有されたものを使用<br>
+          3.「保存」をタップ<br>
+          4.「今すぐデータを取得」をタップ<br>
+          5. 画面上部に「同期済」と表示されれば設定完了
+        </div>
+        <div style="margin-top:10px;background:#f0f8f0;border-radius:6px;padding:10px;font-size:11px;color:var(--success)">
+          ✅ GASのURLはQRコードで配布されます。iPhoneの標準カメラで読み取り→SafariでURLが開いたらコピーして貼り付けてください。
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+          <div style="width:28px;height:28px;border-radius:50%;background:var(--ink);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0">3</div>
+          <div style="font-size:14px;font-weight:500">当日チェックイン</div>
+        </div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.9">
+          <strong>QRスキャンでチェックイン</strong><br>
+          1.「📷 受付」タブを開く<br>
+          2.「カメラ起動」をタップ（初回はカメラ許可が必要）<br>
+          3. 参加者のQRコードにカメラをかざす<br>
+          4. 緑色の画面で氏名が表示されればチェックイン完了<br>
+          <br>
+          <strong>氏名検索でチェックイン（QRが使えない場合）</strong><br>
+          1.「📷 受付」タブ下部の検索欄に氏名を入力<br>
+          2. 候補が表示されたら「チェックイン」をタップ
+        </div>
+        <div style="margin-top:10px;background:#fdeaea;border-radius:6px;padding:10px;font-size:11px;color:var(--danger)">
+          ⚠️ チェックイン済みの方を再スキャンすると「すでにチェックイン済み」と表示されます。
+        </div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+          <div style="width:28px;height:28px;border-radius:50%;background:var(--ink);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0">4</div>
+          <div style="font-size:14px;font-weight:500">手動登録（フォーム外からの申込）</div>
+        </div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.9">
+          1.「✏️ 登録」タブを開く<br>
+          2. 各項目を入力して「登録する」をタップ<br>
+          3. 登録完了と同時にGAS経由で確認メールが自動送信される<br>
+          4. 登録した方のQRコードは「🖨️ QR印刷」→「QRを生成」で確認可能
+        </div>
+      </div>
+
+      <!-- STEP 5 -->
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+          <div style="width:28px;height:28px;border-radius:50%;background:var(--ink);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0">5</div>
+          <div style="font-size:14px;font-weight:500">データの確認・修正</div>
+        </div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.9">
+          <strong>申込一覧</strong><br>
+          ・「📋 一覧」タブで全申込者を確認<br>
+          ・氏名・所属・メールで検索可能<br>
+          ・来場済み／未来場でフィルター可能<br>
+          ・「編集」ボタンで内容を修正<br>
+          ・「削除」ボタンでスプレッドシートごと削除<br>
+          ・「来場取消」で誤チェックインを修正<br>
+          <br>
+          <strong>データ更新</strong><br>
+          ・5秒ごとに自動同期されます<br>
+          ・すぐに反映したい場合は「🔄 更新」ボタンをタップ
+        </div>
+      </div>
+
+      <!-- STEP 6 -->
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+          <div style="width:28px;height:28px;border-radius:50%;background:var(--ink);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0">6</div>
+          <div style="font-size:14px;font-weight:500">集計・分析</div>
+        </div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.9">
+          PC左サイドバーまたはスマホの「⋯ その他」→「📈 集計・分析」から確認できます。<br>
+          ・申込数・来場数の推移グラフ<br>
+          ・来場率の時間帯別グラフ<br>
+          ・知ったきっかけの分布<br>
+          ・所属組織ランキング<br>
+          ・役職キーワード分布
+        </div>
+      </div>
+
+      <!-- トラブルシューティング -->
+      <div class="card">
+        <div style="font-size:13px;font-weight:500;margin-bottom:12px">❓ よくあるトラブル</div>
+        <div style="font-size:12px;color:var(--text2);line-height:2">
+          <strong>QRが読み取れない</strong><br>
+          → 画面の明るさを最大にする<br>
+          → QRコードをカメラから10〜20cm離す<br>
+          → 氏名検索でチェックインする<br>
+          <br>
+          <strong>「申込データが見つかりません」と出る</strong><br>
+          → 「🔄 更新」を押して最新データを取得してから再スキャン<br>
+          <br>
+          <strong>同期エラーが出る</strong><br>
+          → インターネット接続を確認<br>
+          → GASのURLが正しいか確認<br>
+          → 「⚡ Google連携設定」でURLを再入力<br>
+          <br>
+          <strong>カメラが起動しない</strong><br>
+          → iPhoneの場合はSafariで開いているか確認<br>
+          → ブラウザのカメラ許可を確認（設定→Safari→カメラ→許可）
+        </div>
+      </div>
+
+      <div style="text-align:center;font-size:11px;color:var(--text3);padding:16px 0">
+        担当：副委員長 福田雄太郎　☎ 070-4550-7707<br>
+        一般社団法人横浜青年会議所 経済政策室 地域開発創造委員会
+      </div>
+    </div>
 
     <!-- 集計・分析 -->
     <div id="panel-analytics" class="panel">
@@ -10554,6 +10706,7 @@ function findAlignmentPattern(matrix, alignmentPatternQuads, topRight, topLeft, 
       <button class="btn btn-ghost btn-full" onclick="switchNavMobile('qrprint',null);closeMobileMenu()">🖨️ QR印刷</button>
       <button class="btn btn-ghost btn-full" onclick="switchNavMobile('email',null);closeMobileMenu()">✉️ 送信状況</button>
       <button class="btn btn-ghost btn-full" onclick="switchNavMobile('analytics',null);closeMobileMenu()">📈 集計・分析</button>
+      <button class="btn btn-ghost btn-full" onclick="switchNavMobile('guide',null);closeMobileMenu()">📖 操作手順</button>
       <button class="btn btn-ghost btn-full" onclick="switchNavMobile('gas',null);closeMobileMenu()">⚡ Google連携</button>
       <button class="btn btn-ghost btn-full" onclick="exportCSV()">📤 CSV出力</button>
     </div>
@@ -10684,6 +10837,7 @@ function syncFromGAS(silent){
           var id=active.id.replace('panel-','');
           if(id==='dashboard')renderDashboard();
   if(id==='analytics')renderAnalytics();
+  if(id==='guide'){}
           if(id==='list')renderList();
           if(id==='email')renderEmailPanel();
           if(id==='checkin')renderCheckinLog();
@@ -10727,6 +10881,7 @@ function _switchPanel(id){
   document.getElementById('panel-'+id).classList.add('active');
   if(id==='dashboard')renderDashboard();
   if(id==='analytics')renderAnalytics();
+  if(id==='guide'){}
   if(id==='list')renderList();
   if(id==='email')renderEmailPanel();
   if(id==='gas')setupGAS();
