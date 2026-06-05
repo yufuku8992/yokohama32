@@ -107,12 +107,53 @@ body{font-family:'Noto Sans JP',sans-serif;background:#0d1b3e;color:#fff;min-hei
 
 .loading{text-align:center;padding:40px;color:rgba(255,255,255,0.3);font-size:13px;}
 .empty{text-align:center;padding:40px;color:rgba(255,255,255,0.2);}
+
+/* ===== MOBILE ===== */
+@media (max-width: 768px) {
+  body { font-size: 13px; }
+  #toolbar { padding: 8px 14px !important; top: 40px; }
+  #main, .content, [id="main"] { padding: 12px 14px !important; }
+  .grid-2 { grid-template-columns: 1fr !important; gap: 12px !important; }
+  .grid-3 { grid-template-columns: 1fr !important; gap: 10px !important; }
+  .grid-4 { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
+  .card { overflow-x: auto; }
+  .tbl { min-width: 460px; }
+  .btn { font-size: 11.5px !important; padding: 5px 10px !important; }
+  .btn-sm { font-size: 11px !important; padding: 3px 8px !important; }
+  #toc { display: none !important; }
+  #layout { display: block !important; }
+  #main-content { padding: 14px !important; }
+  .progress-strip { flex-wrap: wrap; gap: 10px; }
+  .filter-row { gap: 4px; }
+  .filter-btn { font-size: 11px; padding: 4px 10px; }
+  .arrival-grid { grid-template-columns: 1fr !important; }
+  .cat-sidebar { position: static !important; }
+  .grid-layout { grid-template-columns: 1fr !important; }
+  .tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .tab { white-space: nowrap; font-size: 12px; padding: 8px 12px; }
+  .modal { width: 95vw !important; max-width: 95vw !important; }
+  .grid-2.modal-grid, .g2 { grid-template-columns: 1fr !important; }
+  .stat-pill { min-width: 60px; padding: 6px 10px; }
+  .stat-num { font-size: 18px !important; }
+  .filter-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; }
+  .filter-tab { white-space: nowrap; font-size: 11px; padding: 4px 10px; }
+  #portal-nav a { font-size: 10px !important; padding: 3px 6px !important; }
+  .section-header { flex-wrap: wrap; gap: 6px; }
+  .section-title { font-size: 15px !important; }
+  .timeline { padding-left: 16px; }
+  .progress-strip .prog-bar { min-width: 100% !important; }
+  .table-wrap { overflow-x: auto; }
+}
+@media (max-width: 480px) {
+  .grid-4 { grid-template-columns: 1fr !important; }
+  .stats-row { flex-wrap: wrap; gap: 6px; }
+}
 </style>
 </head>
 <body>
 <!-- SHARED NAV -->
 <nav id="portal-nav" style="background:#060f22;border-bottom:1px solid rgba(201,168,76,0.25);padding:0 16px;height:40px;display:flex;align-items:center;gap:0;position:sticky;top:0;z-index:999;font-family:'Noto Sans JP',sans-serif;">
-  <a href="index.html" style="font-family:'Noto Serif JP',serif;font-size:11.5px;color:#c9a84c;text-decoration:none;font-weight:700;letter-spacing:0.04em;white-space:nowrap;padding-right:12px;border-right:1px solid rgba(255,255,255,0.1);margin-right:8px;">第32回 横浜経済人会議</a>
+  <a href="index.html" style="font-family:'Noto Serif JP',serif;font-size:11px;color:#c9a84c;text-decoration:none;font-weight:700;white-space:nowrap;padding-right:8px;border-right:1px solid rgba(255,255,255,0.1);margin-right:6px;flex-shrink:0;">第32回</a>
   <div id="portal-nav-links" style="display:flex;gap:2px;overflow-x:auto;flex:1;"></div>
 </nav>
 <script>
@@ -379,20 +420,23 @@ async function seedIfEmpty(){
   const{count}=await sb.from('arrivals').select('*',{count:'exact',head:true});
   if(count>0)return;
   const initial=[
-    {name:'黒岩 祐治',organization:'神奈川県知事',type:'guest',sort_order:1},
-    {name:'山中 竹春',organization:'横浜市長',type:'guest',sort_order:2},
-    {name:'渡邊 忠則',organization:'横浜市会議長',type:'guest',sort_order:3},
-    {name:'上野 孝',organization:'横浜商工会議所会頭',type:'guest',sort_order:4},
-    {name:'鈴木 和宏',organization:'横浜市 副市長',type:'speaker',sort_order:10,note:'第1部登壇者'},
-    {name:'羽毛田 実',organization:'OMO7横浜 by 星野リゾート 総支配人',type:'speaker',sort_order:11,note:'第1部登壇者'},
-    {name:'廣瀬 正美',organization:'株式会社竹中工務店 専任副部長',type:'speaker',sort_order:12,note:'第1部登壇者'},
-    {name:'尾崎 浩司',organization:'三井不動産株式会社 横浜支店支店長',type:'speaker',sort_order:13,note:'第2部登壇者'},
-    {name:'細野 徳重',organization:'三菱地所株式会社 横浜支店支店長',type:'speaker',sort_order:14,note:'第2部登壇者'},
-    {name:'中村 郁博',organization:'東洋大学 教授・PPP研究所長',type:'speaker',sort_order:15,note:'第2部登壇者'},
-    {name:'三渕 卓',organization:'東急株式会社 統括部長',type:'speaker',sort_order:16,note:'第3部登壇者'},
-    {name:'佐々木 忠弘',organization:'京浜急行電鉄株式会社 担当部長',type:'speaker',sort_order:17,note:'第3部登壇者'},
-    {name:'加藤 努',organization:'相鉄ホールディングス株式会社 執行役員',type:'speaker',sort_order:18,note:'第3部登壇者'},
-    {name:'江﨑 貴昭',organization:'公益財団法人日本交通公社 副主任研究員',type:'speaker',sort_order:19,note:'第3部ファシリテーター'},
+    // 来賓
+    {name:'黒岩 祐治',organization:'神奈川県知事',type:'guest',sort_order:1,note:''},
+    {name:'山中 竹春',organization:'横浜市長',type:'guest',sort_order:2,note:''},
+    {name:'渡邊 忠則',organization:'横浜市会議長',type:'guest',sort_order:3,note:''},
+    {name:'上野 孝',organization:'横浜商工会議所会頭',type:'guest',sort_order:4,note:''},
+    // 第1部登壇者
+    {name:'羽毛田 実',organization:'OMO7横浜 by 星野リゾート 総支配人',type:'speaker',sort_order:10,note:'第1部登壇者'},
+    {name:'廣瀬 正美',organization:'株式会社竹中工務店 開発事業部 事業企画グループ 専任副部長',type:'speaker',sort_order:11,note:'第1部登壇者'},
+    {name:'鈴木 和宏',organization:'横浜市 副市長',type:'speaker',sort_order:12,note:'第1部登壇者'},
+    // 第2部登壇者
+    {name:'柳川 元宏',organization:'三井不動産株式会社 関内プロジェクト推進準備室 室長',type:'speaker',sort_order:13,note:'第2部登壇者'},
+    {name:'早野 禎一',organization:'株式会社横浜スタジアム にぎわい創出部 部長',type:'speaker',sort_order:14,note:'第2部登壇者'},
+    {name:'中村 郁博',organization:'東洋大学 専攻長 兼 教授・国際PPP研究所長',type:'speaker',sort_order:15,note:'第2部登壇者'},
+    // 第3部登壇者
+    {name:'佐々木 忠弘',organization:'京浜急行電鉄株式会社 新しい価値共創室 担当部長',type:'speaker',sort_order:16,note:'第3部登壇者'},
+    {name:'加藤 努',organization:'相鉄ホールディングス株式会社 執行役員 経営戦略室 事業創造担当部長',type:'speaker',sort_order:17,note:'第3部登壇者'},
+    {name:'江﨑 貴昭',organization:'公益財団法人日本交通公社 観光研究部 副主任研究員',type:'speaker',sort_order:18,note:'第3部ファシリテーター'},
   ];
   initial.forEach(p=>p.arrival_status='not_arrived');
   await sb.from('arrivals').insert(initial);
