@@ -753,7 +753,11 @@ function renderTasks(q=''){
     <td class="${t.status==='overdue'?'':'text-muted'}" style="font-size:11.5px;${t.status==='overdue'?'color:var(--red);font-weight:600':''}">${t.due||''}</td>
     <td>${sBadge(t.status)}</td>
     <td><span class="tag">${t.cat||''}</span></td>
-    <td><button class="btn btn-outline btn-sm" onclick="cycleTask('${t.id}')">→ 次へ</button></td>
+    <td style="white-space:nowrap">
+      <button class="btn btn-outline btn-sm" onclick="cycleTask('${t.id}')">→次へ</button>
+      <button class="btn btn-outline btn-sm" style="margin-left:3px" onclick="openEditTask('${t.id}')">✏️</button>
+      <button class="btn btn-outline btn-sm" style="margin-left:3px;color:var(--red);border-color:var(--red)" onclick="deleteTask('${t.id}')">✕</button>
+    </td>
   </tr>`).join('');
 }
 async function cycleTask(id){
@@ -762,6 +766,51 @@ async function cycleTask(id){
   setSyncStatus('syncing');
   await sb.from('tasks').update({status:o[(o.indexOf(t.status)+1)%o.length]}).eq('id',id);
   showToast('ステータスを更新しました','success');
+}
+
+function openEditTask(id){
+  const t=tasks.find(x=>x.id===id);if(!t)return;
+  document.getElementById('new-task-title').value=t.title||'';
+  document.getElementById('new-task-assignee').value=t.assignee||'';
+  document.getElementById('new-task-due').value=t.due||'';
+  document.getElementById('new-task-priority').value=t.priority||'mid';
+  document.getElementById('new-task-cat').value=t.cat||'';
+  document.getElementById('new-task-memo').value=t.memo||'';
+  const m=document.getElementById('modal-new-task');
+  const titleEl=m?m.querySelector('.modal-title'):null;
+  if(titleEl)titleEl.textContent='タスクを編集';
+  const saveBtn=m?m.querySelector('.btn-primary'):null;
+  if(saveBtn){saveBtn.textContent='更新する';saveBtn.onclick=()=>updateTask(id);}
+  openModal('modal-new-task');
+}
+
+async function updateTask(id){
+  const title=document.getElementById('new-task-title').value.trim();
+  if(!title){showToast('タスク名を入力してください','error');return;}
+  setSyncStatus('syncing');
+  await sb.from('tasks').update({
+    title,
+    assignee:document.getElementById('new-task-assignee').value,
+    due:document.getElementById('new-task-due').value,
+    priority:document.getElementById('new-task-priority').value,
+    cat:document.getElementById('new-task-cat').value,
+    memo:document.getElementById('new-task-memo').value,
+  }).eq('id',id);
+  closeModal('modal-new-task');
+  const m=document.getElementById('modal-new-task');
+  const titleEl=m?m.querySelector('.modal-title'):null;
+  if(titleEl)titleEl.textContent='タスクを追加';
+  const saveBtn=m?m.querySelector('.btn-primary'):null;
+  if(saveBtn){saveBtn.textContent='追加する';saveBtn.onclick=addTask;}
+  showToast('✅ タスクを更新しました','success');
+}
+
+async function deleteTask(id){
+  const t=tasks.find(x=>x.id===id);
+  if(!confirm('「'+(t?t.title:'')+'」を削除しますか？'))return;
+  setSyncStatus('syncing');
+  await sb.from('tasks').delete().eq('id',id);
+  showToast('タスクを削除しました','success');
 }
 async function addTask(){
   const title=document.getElementById('new-task-title').value.trim();
