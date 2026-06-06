@@ -9,256 +9,196 @@
 <style>
 :root{
   --navy:#0d1b3e;--gold:#c9a84c;--gold-light:#e8c97d;
-  --white:#fff;--bg:#f5f3ee;--gray-100:#f0ede6;--gray-200:#e2ddd4;
+  --bg:#f5f3ee;--gray-50:#f9f8f6;--gray-100:#f0ede6;--gray-200:#e2ddd4;
   --gray-400:#9e9488;--gray-600:#6b6358;--gray-800:#3a342c;
-  --green:#1a7a4a;--red:#c0392b;--blue:#1a4a8a;--orange:#c76b0a;
+  --green:#1a7a4a;--green-light:#e8f5ed;--red:#c0392b;--red-light:#fdecea;
+  --orange:#c76b0a;--blue:#1a4a8a;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--gray-800);min-height:100vh;}
 
-/* TOOLBAR */
-#toolbar{background:var(--navy);padding:10px 24px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;position:sticky;top:40px;z-index:80;border-bottom:2px solid var(--gold);}
+#toolbar{background:var(--navy);padding:10px 20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;position:sticky;top:40px;z-index:80;border-bottom:2px solid var(--gold);}
 .toolbar-title{font-family:'Noto Serif JP',serif;font-size:13px;color:var(--gold-light);font-weight:600;}
 .sync-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#9e9488;margin-right:4px;}
 .sync-dot.on{background:#4aba7a;animation:pulse 2s infinite;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
 .sync-label{font-size:11px;color:rgba(255,255,255,0.4);}
-.btn{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:4px;border:none;cursor:pointer;font-family:'Noto Sans JP',sans-serif;font-size:12.5px;font-weight:500;transition:all 0.15s;}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:6px 13px;border-radius:4px;border:none;cursor:pointer;font-family:'Noto Sans JP',sans-serif;font-size:12px;font-weight:500;transition:all 0.15s;}
 .btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--navy);}
 .btn-outline{background:transparent;color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.2);}
-.btn-outline:hover{background:rgba(255,255,255,0.1);}
-.btn-sm{padding:4px 9px;font-size:11.5px;}
-.btn-red{background:var(--red);color:#fff;}
+.btn-outline:hover{background:rgba(255,255,255,0.08);}
+.btn-sm{padding:4px 9px;font-size:11px;}
+.btn-danger{background:var(--red);color:#fff;}
+.btn-light{background:#fff;color:var(--gray-800);border:1px solid var(--gray-200);}
+.btn-light:hover{background:var(--gray-50);}
 
-/* MAIN */
-#main{padding:24px 28px;max-width:1200px;margin:0 auto;}
+#main{max-width:1100px;margin:0 auto;padding:20px 24px;}
 
-/* FILTER */
-.filter-row{display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap;}
+.filter-row{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap;align-items:center;}
 .filter-btn{padding:5px 14px;border-radius:20px;border:1px solid var(--gray-200);background:#fff;color:var(--gray-600);font-family:'Noto Sans JP',sans-serif;font-size:12px;cursor:pointer;transition:all 0.15s;}
 .filter-btn.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+.filter-btn:hover:not(.active){background:var(--gray-50);}
+
+.notice{background:#fef9e7;border:1px solid rgba(201,168,76,0.3);border-radius:6px;padding:10px 14px;font-size:12px;color:var(--gray-600);margin-bottom:14px;display:flex;gap:8px;align-items:flex-start;}
+
+/* SECTION */
+.section-wrap{margin-bottom:20px;}
+.section-header{background:var(--navy);color:#fff;padding:10px 16px;border-radius:6px 6px 0 0;display:flex;align-items:center;justify-content:space-between;}
+.section-title{font-family:'Noto Serif JP',serif;font-size:13px;font-weight:600;color:var(--gold-light);}
+.section-count{font-size:11px;color:rgba(255,255,255,0.4);}
 
 /* TABLE */
-.table-wrap{background:#fff;border-radius:8px;border:1px solid var(--gray-200);overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.06);}
+.tbl-wrap{background:#fff;border:1px solid var(--gray-200);border-top:none;border-radius:0 0 6px 6px;overflow:hidden;}
 .tbl{width:100%;border-collapse:collapse;}
-.tbl thead tr{background:var(--navy);color:#fff;}
-.tbl th{padding:10px 14px;text-align:left;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;white-space:nowrap;}
+.tbl th{padding:8px 12px;background:var(--gray-50);font-size:11px;font-weight:600;color:var(--gray-400);text-align:left;border-bottom:1px solid var(--gray-200);white-space:nowrap;}
 .tbl td{padding:0;border-bottom:1px solid var(--gray-100);vertical-align:middle;}
-.tbl tbody tr:hover td{background:var(--gray-50,#f9f8f6);}
 .tbl tbody tr:last-child td{border-bottom:none;}
+.tbl tbody tr:hover td{background:rgba(201,168,76,0.04);}
 
 /* INLINE EDIT */
-.cell-input{width:100%;border:none;background:transparent;font-family:'Noto Sans JP',sans-serif;font-size:13px;color:var(--gray-800);padding:9px 12px;outline:none;}
-.cell-input:focus{background:rgba(201,168,76,0.08);outline:2px solid var(--gold);outline-offset:-2px;}
-.cell-select{width:100%;border:none;background:transparent;font-family:'Noto Sans JP',sans-serif;font-size:12px;color:var(--gray-800);padding:9px 10px;cursor:pointer;outline:none;}
-.cell-select:focus{background:rgba(201,168,76,0.08);}
+.cell-input{width:100%;border:none;background:transparent;font-family:'Noto Sans JP',sans-serif;font-size:13px;color:var(--gray-800);padding:9px 12px;outline:none;cursor:text;}
+.cell-input:focus{background:rgba(201,168,76,0.07);outline:2px solid var(--gold);outline-offset:-2px;border-radius:2px;}
+.cell-input.name{font-weight:600;}
+
+/* ACTION BTNS */
+.row-actions{display:flex;gap:4px;padding:0 8px;opacity:0;transition:opacity 0.15s;}
+.tbl tbody tr:hover .row-actions{opacity:1;}
+.row-act-btn{padding:3px 8px;border-radius:3px;border:none;cursor:pointer;font-size:10.5px;font-weight:600;}
+.edit-btn{background:var(--navy);color:#fff;}
+.del-btn{background:var(--red);color:#fff;}
 
 /* AREA BADGE */
-.area-badge{display:inline-block;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:600;white-space:nowrap;}
+.area-tag{display:inline-block;padding:2px 9px;border-radius:3px;font-size:11px;font-weight:600;white-space:nowrap;}
 
-/* STATUS BADGE */
-.status-badge{display:inline-block;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:600;}
-.s-confirmed{background:#e8f5ed;color:#1a7a4a;}
-.s-pending{background:#fef3e2;color:#c76b0a;}
-.s-absent{background:#fdecea;color:#c0392b;}
-
-/* DELETE BTN */
-.del-btn{opacity:0;padding:4px 8px;border-radius:3px;border:none;background:var(--red);color:#fff;font-size:11px;cursor:pointer;margin:0 8px;}
-.tbl tbody tr:hover .del-btn{opacity:1;}
+/* ADD ROW */
+.add-row-btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:9px;border:none;background:var(--gray-50);color:var(--gray-400);font-family:'Noto Sans JP',sans-serif;font-size:12px;cursor:pointer;transition:all 0.15s;border-top:1px solid var(--gray-100);}
+.add-row-btn:hover{background:rgba(201,168,76,0.06);color:var(--gold);}
 
 /* MODAL */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(13,27,62,0.5);z-index:200;align-items:center;justify-content:center;}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(13,27,62,0.45);z-index:200;align-items:center;justify-content:center;}
 .modal-overlay.open{display:flex;}
-.modal{background:#fff;border-radius:8px;width:520px;max-width:95vw;max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.2);}
-.modal-header{padding:16px 20px 12px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between;}
-.modal-title{font-family:'Noto Serif JP',serif;font-size:15px;font-weight:600;color:var(--navy);}
+.modal{background:#fff;border-radius:8px;width:520px;max-width:95vw;max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.15);}
+.modal-header{padding:15px 18px 12px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between;}
+.modal-title{font-family:'Noto Serif JP',serif;font-size:14px;font-weight:600;color:var(--navy);}
 .modal-close{background:none;border:none;cursor:pointer;font-size:18px;color:var(--gray-400);}
-.modal-body{padding:16px 20px;}
-.modal-footer{padding:12px 20px;border-top:1px solid var(--gray-100);display:flex;justify-content:flex-end;gap:8px;}
-.form-row{margin-bottom:13px;}
-.form-label{font-size:11.5px;font-weight:600;color:var(--gray-600);margin-bottom:4px;display:block;}
-.form-input,.form-select{width:100%;padding:7px 10px;border:1px solid var(--gray-200);border-radius:4px;font-family:'Noto Sans JP',sans-serif;font-size:13px;color:var(--gray-800);outline:none;}
-.form-input:focus,.form-select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,0.12);}
-.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.modal-body{padding:15px 18px;}
+.modal-footer{padding:11px 18px;border-top:1px solid var(--gray-100);display:flex;justify-content:flex-end;gap:7px;}
+.form-row{margin-bottom:12px;}
+.form-label{font-size:11px;font-weight:600;color:var(--gray-600);margin-bottom:4px;display:block;}
+.form-input,.form-select,.form-textarea{width:100%;padding:7px 10px;border:1px solid var(--gray-200);border-radius:4px;font-family:'Noto Sans JP',sans-serif;font-size:13px;color:var(--gray-800);background:#fff;outline:none;}
+.form-input:focus,.form-select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,0.1);}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
 
+/* TOAST */
 #toast-c{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:999;display:flex;flex-direction:column;align-items:center;gap:6px;}
-.toast{background:var(--navy);color:#fff;padding:9px 18px;border-radius:20px;font-size:12px;border:1px solid var(--gold);animation:tin 0.2s;}
+.toast{background:var(--navy);color:#fff;padding:8px 18px;border-radius:20px;font-size:12px;border:1px solid var(--gold);animation:tin 0.2s;}
 @keyframes tin{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
 .loading{text-align:center;padding:40px;color:var(--gray-400);}
 
-/* ===== MOBILE ===== */
-@media (max-width: 768px) {
-  body { font-size: 13px; }
-  #toolbar { padding: 8px 14px !important; top: 40px; }
-  #main, .content, [id="main"] { padding: 12px 14px !important; }
-  .grid-2 { grid-template-columns: 1fr !important; gap: 12px !important; }
-  .grid-3 { grid-template-columns: 1fr !important; gap: 10px !important; }
-  .grid-4 { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
-  .card { overflow-x: auto; }
-  .tbl { min-width: 460px; }
-  .btn { font-size: 11.5px !important; padding: 5px 10px !important; }
-  .btn-sm { font-size: 11px !important; padding: 3px 8px !important; }
-  #toc { display: none !important; }
-  #layout { display: block !important; }
-  #main-content { padding: 14px !important; }
-  .progress-strip { flex-wrap: wrap; gap: 10px; }
-  .filter-row { gap: 4px; }
-  .filter-btn { font-size: 11px; padding: 4px 10px; }
-  .arrival-grid { grid-template-columns: 1fr !important; }
-  .cat-sidebar { position: static !important; }
-  .grid-layout { grid-template-columns: 1fr !important; }
-  .tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  .tab { white-space: nowrap; font-size: 12px; padding: 8px 12px; }
-  .modal { width: 95vw !important; max-width: 95vw !important; }
-  .grid-2.modal-grid, .g2 { grid-template-columns: 1fr !important; }
-  .stat-pill { min-width: 60px; padding: 6px 10px; }
-  .stat-num { font-size: 18px !important; }
-  .filter-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; }
-  .filter-tab { white-space: nowrap; font-size: 11px; padding: 4px 10px; }
-  #portal-nav a { font-size: 10px !important; padding: 3px 6px !important; }
-  .section-header { flex-wrap: wrap; gap: 6px; }
-  .section-title { font-size: 15px !important; }
-  .timeline { padding-left: 16px; }
-  .progress-strip .prog-bar { min-width: 100% !important; }
-  .table-wrap { overflow-x: auto; }
-}
-@media (max-width: 480px) {
-  .grid-4 { grid-template-columns: 1fr !important; }
-  .stats-row { flex-wrap: wrap; gap: 6px; }
-}
+/* NAV */
+#portal-nav{background:#060f22 !important;}
+#portal-nav a{color:rgba(255,255,255,0.42) !important;text-decoration:none !important;}
+#portal-nav-links a{display:inline-block;padding:4px 8px;border-radius:4px;font-size:11px;white-space:nowrap;text-decoration:none !important;border:1px solid transparent;}
+#portal-nav > a{color:#c9a84c !important;flex-shrink:0;}
 
-/* ===== NAV FIX ===== */
-#portal-nav { background:#060f22 !important; }
-#portal-nav a { color:rgba(255,255,255,0.42) !important; text-decoration:none !important; }
-#portal-nav-links a { 
-  display:inline-block;
-  padding:4px 8px;
-  border-radius:4px;
-  font-size:11px;
-  white-space:nowrap;
-  text-decoration:none !important;
-  border:1px solid transparent;
-}
-#portal-nav > a { 
-  color:#c9a84c !important; 
-  font-size:11px;
-  flex-shrink:0;
-}
-@media (max-width:768px) {
-  #portal-nav-links a { font-size:10px !important; padding:3px 6px !important; }
+/* MOBILE */
+@media(max-width:768px){
+  #main{padding:12px 14px;}
+  .tbl{min-width:600px;}
+  .tbl-wrap{overflow-x:auto;}
+  .filter-row{gap:4px;}
+  .filter-btn{font-size:11px;padding:4px 10px;}
+  #toolbar{padding:8px 14px;}
+  .row-actions{opacity:1;}
+  #portal-nav a{font-size:10px !important;padding:3px 6px !important;}
 }
 </style>
 </head>
 <body>
-<!-- SHARED NAV -->
-<nav id="portal-nav" style="background:#060f22;border-bottom:1px solid rgba(201,168,76,0.25);padding:0 16px;height:40px;display:flex;align-items:center;gap:0;position:sticky;top:0;z-index:999;font-family:'Noto Sans JP',sans-serif;">
-  <a href="index.html" style="font-family:'Noto Serif JP',serif;font-size:11px;color:#c9a84c;text-decoration:none;font-weight:700;white-space:nowrap;padding-right:8px;border-right:1px solid rgba(255,255,255,0.1);margin-right:6px;flex-shrink:0;">第32回</a>
-  <div id="portal-nav-links" style="display:flex;gap:2px;overflow-x:auto;flex:1;"></div>
+
+<!-- NAV -->
+<nav id="portal-nav" style="background:#060f22;border-bottom:1px solid rgba(201,168,76,0.25);padding:0 12px;height:40px;display:flex;align-items:center;gap:0;position:sticky;top:0;z-index:999;font-family:'Noto Sans JP',sans-serif;">
+  <a href="yokohama_keizaijin_32.html" style="font-family:'Noto Serif JP',serif;font-size:11px;color:#c9a84c;text-decoration:none;font-weight:700;white-space:nowrap;padding-right:8px;border-right:1px solid rgba(255,255,255,0.1);margin-right:6px;flex-shrink:0;">第32回</a>
+  <div id="portal-nav-links" style="display:flex;gap:2px;overflow-x:auto;flex:1;-webkit-overflow-scrolling:touch;scrollbar-width:none;"></div>
 </nav>
 <script>
 (function(){
-  var pages=[{href:"index.html",label:"🏠 ホーム"},{href:"scenario.html",label:"📜 シナリオ"},{href:"roles.html",label:"👤 役割分担"},{href:"arrivals.html",label:"✅ 到着管理"},{href:"sekijihyo.html",label:"🪑 席次表"},{href:"pr_schedule.html",label:"📣 広報"},{href:"checklist.html",label:"📦 準備物"},{href:"trouble.html",label:"⚠️ トラブル対応"},{href:"yokohama_kaigi_v6.html",label:"📋 申込管理"}];
-  var cur=location.pathname.split("/").pop()||"index.html";
+  var pages=[{href:"yokohama_keizaijin_32.html",label:"🏠 ホーム"},{href:"scenario.html",label:"📜 シナリオ"},{href:"roles.html",label:"👤 役割分担"},{href:"arrivals.html",label:"✅ 到着管理"},{href:"sekijihyo.html",label:"🪑 席次表"},{href:"pr_schedule.html",label:"📣 広報"},{href:"checklist.html",label:"📦 準備物"},{href:"trouble.html",label:"⚠️ トラブル"},{href:"yokohama_kaigi_v6.html",label:"📋 申込管理"}];
+  var cur=location.pathname.split("/").pop()||"yokohama_keizaijin_32.html";
   var nav=document.getElementById("portal-nav-links");
   if(!nav)return;
-  pages.forEach(function(p){
-    var a=document.createElement("a");
-    a.href=p.href;a.textContent=p.label;
-    var active=cur===p.href;
-    a.style.cssText="padding:4px 8px;border-radius:4px;font-size:11px;text-decoration:none;white-space:nowrap;"
-      +"font-weight:"+(active?"700":"400")+";"
-      +"background:"+(active?"rgba(201,168,76,0.22)":"transparent")+";"
-      +"color:"+(active?"#e8c97d":"rgba(255,255,255,0.42)")+";"
-      +"border:"+(active?"1px solid rgba(201,168,76,0.35)":"1px solid transparent")+";";
-    nav.appendChild(a);
-  });
+  pages.forEach(function(p){var a=document.createElement("a");a.href=p.href;a.textContent=p.label;var active=cur===p.href;a.style.cssText="padding:4px 8px;border-radius:4px;font-size:11px;text-decoration:none;white-space:nowrap;font-weight:"+(active?"700":"400")+";background:"+(active?"rgba(201,168,76,0.22)":"transparent")+";color:"+(active?"#e8c97d":"rgba(255,255,255,0.42)")+";border:"+(active?"1px solid rgba(201,168,76,0.35)":"1px solid transparent")+";";nav.appendChild(a);});
 })();
 </script>
-<!-- END NAV -->
-
-<nav id="portal-nav" style="background:#060f22;border-bottom:1px solid rgba(201,168,76,0.25);padding:0 20px;height:40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:999;font-family:'Noto Sans JP',sans-serif;">
-  <div style="display:flex;align-items:center;gap:16px;">
-    <a href="index.html" style="font-family:'Noto Serif JP',serif;font-size:12px;color:#c9a84c;text-decoration:none;font-weight:600;">第32回 横浜経済人会議</a>
-    <span style="color:rgba(255,255,255,0.15);">|</span>
-    <div id="portal-nav-links" style="display:flex;gap:4px;"></div>
-  </div>
-  <a href="index.html" style="font-size:11px;color:rgba(255,255,255,0.35);text-decoration:none;">← ポータルへ</a>
-</nav>
 
 <div id="toolbar">
   <span class="toolbar-title">👤 役割分担表</span>
   <span style="color:rgba(255,255,255,0.2);margin:0 4px;">|</span>
   <span class="sync-dot" id="sync-dot"></span><span class="sync-label" id="sync-label">接続中...</span>
   <div style="flex:1"></div>
-  <span style="font-size:11px;color:rgba(255,255,255,0.4);">セルをクリックして直接編集 · 変更は自動保存</span>
-  <button class="btn btn-gold" onclick="openModal('modal-add')">＋ 担当者を追加</button>
+  <span style="font-size:11px;color:rgba(255,255,255,0.35);">セル直接編集 / 行クリックで詳細編集</span>
+  <button class="btn btn-gold" onclick="openAddModal()">＋ 担当者を追加</button>
 </div>
 
 <div id="main">
+  <div class="notice">
+    📋 8/28 第32回横浜経済人会議 役割分担表（実務用）｜
+    ※赤文字はトランシーバー持参 計14人（１個は控え）｜
+    ※観光の配置は田岡運営幹事と話し合った上で仮置き｜
+    ※リーダーの配置は基本スタッフで構成
+  </div>
+
   <div class="filter-row">
     <button class="filter-btn active" onclick="setFilter('all',this)">すべて</button>
-    <button class="filter-btn" onclick="setFilter('全体統括',this)">全体統括</button>
-    <button class="filter-btn" onclick="setFilter('MC・司会',this)">MC・司会</button>
-    <button class="filter-btn" onclick="setFilter('登壇者アテンド',this)">登壇者アテンド</button>
-    <button class="filter-btn" onclick="setFilter('来賓アテンド',this)">来賓アテンド</button>
-    <button class="filter-btn" onclick="setFilter('映像・音響',this)">映像・音響</button>
-    <button class="filter-btn" onclick="setFilter('どんでん',this)">どんでん</button>
-    <button class="filter-btn" onclick="setFilter('会場誘導',this)">会場誘導</button>
-    <button class="filter-btn" onclick="setFilter('受付',this)">受付</button>
-    <button class="filter-btn" onclick="setFilter('広報・記録',this)">広報・記録</button>
+    <button class="filter-btn" onclick="setFilter('運営',this)">🎯 運営</button>
+    <button class="filter-btn" onclick="setFilter('ステージ',this)">🎬 ステージ</button>
+    <button class="filter-btn" onclick="setFilter('設営',this)">🔧 設営</button>
+    <button class="filter-btn" onclick="setFilter('アテンド',this)">🤝 アテンド</button>
+    <button class="filter-btn" onclick="setFilter('警備・誘導',this)">🚦 警備・誘導</button>
+    <button class="filter-btn" onclick="setFilter('受付',this)">🎫 受付</button>
   </div>
 
-  <div class="table-wrap">
-    <table class="tbl">
-      <thead>
-        <tr>
-          <th style="width:130px">氏名</th>
-          <th style="width:160px">役職・委員会</th>
-          <th style="width:130px">担当エリア</th>
-          <th style="width:180px">当日役割</th>
-          <th>連絡先・備考</th>
-          <th style="width:90px">ステータス</th>
-          <th style="width:50px"></th>
-        </tr>
-      </thead>
-      <tbody id="roles-tbody"><tr><td colspan="7" class="loading">読込中...</td></tr></tbody>
-    </table>
-  </div>
+  <div id="roles-wrap"><div class="loading">読込中...</div></div>
 </div>
 
-<!-- ADD MODAL -->
-<div class="modal-overlay" id="modal-add">
+<!-- EDIT MODAL -->
+<div class="modal-overlay" id="modal-edit">
   <div class="modal">
-    <div class="modal-header"><div class="modal-title">担当者を追加</div><button class="modal-close" onclick="closeModal('modal-add')">✕</button></div>
+    <div class="modal-header">
+      <div class="modal-title" id="edit-modal-title">担当者を編集</div>
+      <button class="modal-close" onclick="closeModal('modal-edit')">✕</button>
+    </div>
     <div class="modal-body">
-      <div class="form-row"><label class="form-label">氏名 *</label><input class="form-input" id="add-name" placeholder="山田 太郎"></div>
+      <input type="hidden" id="edit-id">
       <div class="grid-2">
-        <div class="form-row"><label class="form-label">役職・委員会</label><input class="form-input" id="add-position" placeholder="地域開発創造委員会"></div>
         <div class="form-row"><label class="form-label">担当エリア</label>
-          <select class="form-select" id="add-area">
-            <option>全体統括</option><option>MC・司会</option><option>登壇者アテンド</option>
-            <option>来賓アテンド</option><option>映像・音響</option><option>どんでん</option>
-            <option>会場誘導</option><option>受付</option><option>広報・記録</option><option>その他</option>
+          <select class="form-select" id="edit-area">
+            <option>運営</option><option>ステージ</option><option>設営</option>
+            <option>アテンド</option><option>警備・誘導</option><option>受付</option>
           </select>
         </div>
-        <div class="form-row"><label class="form-label">当日役割</label><input class="form-input" id="add-role" placeholder="例: 第1部ファシリテーター"></div>
-        <div class="form-row"><label class="form-label">ステータス</label>
-          <select class="form-select" id="add-status">
-            <option value="confirmed">✅ 確定</option>
-            <option value="pending">🟡 調整中</option>
-            <option value="absent">❌ 欠席</option>
-          </select>
-        </div>
+        <div class="form-row"><label class="form-label">役職・ポジション</label>
+          <input class="form-input" id="edit-position" placeholder="例: 総責任者"></div>
       </div>
-      <div class="form-row"><label class="form-label">連絡先・備考</label><input class="form-input" id="add-note" placeholder="090-XXXX-XXXX / 注意事項"></div>
+      <div class="form-row"><label class="form-label">業務内容</label>
+        <input class="form-input" id="edit-role" placeholder="例: 最終判断・責任者"></div>
+      <div class="form-row"><label class="form-label">担当①</label>
+        <input class="form-input" id="edit-m1" placeholder="氏名（委員会）"></div>
+      <div class="form-row"><label class="form-label">担当②</label>
+        <input class="form-input" id="edit-m2" placeholder="氏名（委員会）"></div>
+      <div class="form-row"><label class="form-label">担当③</label>
+        <input class="form-input" id="edit-m3" placeholder="氏名（委員会）"></div>
+      <div class="form-row"><label class="form-label">備考</label>
+        <input class="form-input" id="edit-note" placeholder="トランシーバー・注意事項など"></div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-outline" style="color:var(--gray-600);border-color:var(--gray-200);" onclick="closeModal('modal-add')">キャンセル</button>
-      <button class="btn btn-gold" onclick="addRole()">追加する</button>
+      <button class="btn btn-danger btn-sm" id="delete-btn" onclick="deleteRole()" style="margin-right:auto;display:none">削除</button>
+      <button class="btn btn-light btn-sm" onclick="closeModal('modal-edit')">キャンセル</button>
+      <button class="btn btn-gold" onclick="saveRole()">保存</button>
     </div>
   </div>
 </div>
-
 <div id="toast-c"></div>
 
 <script>
@@ -268,19 +208,44 @@ const sb=supabase.createClient(SB_URL,SB_KEY);
 
 let roles=[];
 let currentFilter='all';
+let editingId=null;
 
 const AREA_COLORS={
-  '全体統括':'#0d1b3e','MC・司会':'#1a4a8a','登壇者アテンド':'#7d3c98',
-  '来賓アテンド':'#c9a84c','映像・音響':'#c76b0a','どんでん':'#566573',
-  '会場誘導':'#2980b9','受付':'#1a7a4a','広報・記録':'#c0392b','その他':'#7f8c8d'
+  '運営':'#0d1b3e','ステージ':'#7d3c98','設営':'#c76b0a',
+  'アテンド':'#1a4a8a','警備・誘導':'#c0392b','受付':'#1a7a4a'
 };
 
-(function(){
-  var pages=[{href:"yokohama_keizaijin_32.html",label:"📊 運営管理"},{href:"sekijihyo.html",label:"🪑 席次表"},{href:"scenario.html",label:"📜 シナリオ"},{href:"roles.html",label:"👤 役割分担"},{href:"arrivals.html",label:"✅ 到着管理"}];
-  var cur=location.pathname.split("/").pop();
-  var nav=document.getElementById("portal-nav-links");
-  pages.forEach(function(p){var a=document.createElement("a");a.href=p.href;a.textContent=p.label;var active=cur===p.href;a.style.cssText="padding:4px 10px;border-radius:4px;font-size:11px;text-decoration:none;font-weight:"+(active?"600":"400")+";background:"+(active?"rgba(201,168,76,0.2)":"transparent")+";color:"+(active?"#e8c97d":"rgba(255,255,255,0.45)")+";border:"+(active?"1px solid rgba(201,168,76,0.3)":"1px solid transparent")+";";nav.appendChild(a);});
-})();
+const INITIAL_DATA=[
+  // 運営
+  {area:'運営',position:'総責任者',role:'最終判断・責任者',m1:'荒井亮一（地域）',m2:'弘中義之（観光）',m3:'',note:''},
+  {area:'運営',position:'全体統括',role:'全体の進行・調整',m1:'福田雄太郎（地域）',m2:'',m3:'',note:''},
+  {area:'運営',position:'運営ディレクター',role:'運営・判断',m1:'酒井俊光（Re-Vision）',m2:'酒井勇樹（地域/Re-Vision）',m3:'',note:''},
+  // ステージ
+  {area:'ステージ',position:'映像オペレーター',role:'映像操作',m1:'株式会社Re-Vision',m2:'',m3:'',note:''},
+  {area:'ステージ',position:'音声オペレーター',role:'音響操作',m1:'株式会社Re-Vision',m2:'',m3:'',note:''},
+  {area:'ステージ',position:'司会',role:'全体進行',m1:'清水柾斗（地域）',m2:'岩瀬紫帆里（地域）',m3:'',note:''},
+  {area:'ステージ',position:'タイムキーパー・カンペ出し',role:'時間管理',m1:'大角侑吾（地域）',m2:'',m3:'',note:''},
+  {area:'ステージ',position:'撮影',role:'写真・動画撮影',m1:'株式会社Re-Vision',m2:'株式会社Re-Vision',m3:'株式会社Re-Vision',note:''},
+  // 設営
+  {area:'設営',position:'設営責任者',role:'設営・どんでん',m1:'菊地原勇人（地域）',m2:'',m3:'',note:''},
+  {area:'設営',position:'設営スタッフ',role:'設営・どんでん補助',m1:'大窪淳介（地域）',m2:'坂本信（地域）',m3:'田岡拓真（観光）',note:''},
+  {area:'設営',position:'設営スタッフ',role:'設営・どんでん補助',m1:'浅野達也（観光）',m2:'木造淳（観光）',m3:'',note:''},
+  // アテンド
+  {area:'アテンド',position:'アテンド責任者',role:'控室・舞台袖',m1:'菊地正浩（地域）',m2:'井上麻世（観光）',m3:'',note:''},
+  {area:'アテンド',position:'出入口アテンド',role:'出入口対応',m1:'田村光晴（地域）',m2:'朝香光裕（リーダー）',m3:'多塚大介（リーダー）',note:''},
+  {area:'アテンド',position:'EVアテンド',role:'エレベーター対応',m1:'中井澤桃子',m2:'柚木健汰',m3:'高木淳（リーダー）',note:''},
+  // 警備・誘導
+  {area:'警備・誘導',position:'誘導・警備責任者',role:'警備・誘導',m1:'渡邊敬仁（地域）',m2:'',m3:'',note:''},
+  {area:'警備・誘導',position:'警備・誘導スタッフ',role:'会場誘導',m1:'飯田竜（地域）',m2:'門倉大貴（地域）',m3:'平田洋一（観光）',note:''},
+  {area:'警備・誘導',position:'警備・誘導スタッフ',role:'会場誘導',m1:'秋本卓也（観光）',m2:'駒津大祐（観光）',m3:'',note:''},
+  // 受付
+  {area:'受付',position:'受付責任者',role:'一般・来賓・メディア',m1:'青木孝治（地域）',m2:'武田亜由美（観光）',m3:'',note:''},
+  {area:'受付',position:'受付スタッフ',role:'一般・来賓・メディア受付',m1:'竹岡倫生（地域）',m2:'福下博詞（地域）',m3:'田中隼平（観光）',note:''},
+  {area:'受付',position:'受付スタッフ',role:'一般・来賓・メディア受付',m1:'三浦健太（観光）',m2:'石綿拳人（観光）',m3:'齋藤翔太（観光）',note:''},
+  {area:'受付',position:'受付スタッフ',role:'一般・来賓・メディア受付',m1:'岡野正吾（リーダー）',m2:'小杉幸大（リーダー）',m3:'横溝誠（リーダー）',note:''},
+  {area:'受付',position:'JC正会員受付',role:'正会員受付',m1:'例会式典委員会',m2:'例会式典委員会',m3:'例会式典委員会',note:''},
+  {area:'受付',position:'JCシニア受付',role:'シニア受付',m1:'例会式典委員会',m2:'例会式典委員会',m3:'',note:''},
+];
 
 function setSyncStatus(s){
   const dot=document.getElementById('sync-dot'),label=document.getElementById('sync-label');
@@ -290,7 +255,7 @@ function setSyncStatus(s){
 
 async function loadRoles(){
   const{data,error}=await sb.from('roles').select('*').order('created_at');
-  if(error)return;
+  if(error){console.error(error);return;}
   roles=data||[];
   render();
 }
@@ -303,34 +268,59 @@ function setFilter(f,btn){
 }
 
 function render(){
-  const tbody=document.getElementById('roles-tbody');
+  const wrap=document.getElementById('roles-wrap');
   const filtered=currentFilter==='all'?roles:roles.filter(r=>r.area===currentFilter);
-  if(!filtered.length){tbody.innerHTML='<tr><td colspan="7" class="loading">担当者がいません。「＋ 担当者を追加」から追加してください。</td></tr>';return;}
-  tbody.innerHTML=filtered.map(r=>{
-    const c=AREA_COLORS[r.area]||'#7f8c8d';
-    const sMap={confirmed:'s-confirmed',pending:'s-pending',absent:'s-absent'};
-    const sLabel={confirmed:'✅ 確定',pending:'🟡 調整中',absent:'❌ 欠席'};
-    const areas=['全体統括','MC・司会','登壇者アテンド','来賓アテンド','映像・音響','どんでん','会場誘導','受付','広報・記録','その他'];
-    return`<tr>
-      <td><input class="cell-input" value="${esc(r.name)}" onchange="updateField('${r.id}','name',this.value)" style="font-weight:600;"></td>
-      <td><input class="cell-input" value="${esc(r.position||'')}" onchange="updateField('${r.id}','position',this.value)"></td>
-      <td>
-        <select class="cell-select" onchange="updateField('${r.id}','area',this.value)">
-          ${areas.map(a=>`<option value="${a}" ${r.area===a?'selected':''}>${a}</option>`).join('')}
-        </select>
-      </td>
-      <td><input class="cell-input" value="${esc(r.role||'')}" onchange="updateField('${r.id}','role',this.value)"></td>
-      <td><input class="cell-input" value="${esc(r.note||'')}" onchange="updateField('${r.id}','note',this.value)" placeholder="連絡先・備考..."></td>
-      <td>
-        <select class="cell-select" onchange="updateField('${r.id}','status',this.value)">
-          <option value="confirmed" ${r.status==='confirmed'?'selected':''}>✅ 確定</option>
-          <option value="pending" ${r.status==='pending'?'selected':''}>🟡 調整中</option>
-          <option value="absent" ${r.status==='absent'?'selected':''}>❌ 欠席</option>
-        </select>
-      </td>
-      <td><button class="del-btn" onclick="deleteRole('${r.id}')">削除</button></td>
-    </tr>`;
-  }).join('');
+  if(!filtered.length){wrap.innerHTML='<div class="loading">担当者がいません</div>';return;}
+
+  // エリアごとにグループ化
+  const areas=['運営','ステージ','設営','アテンド','警備・誘導','受付'];
+  const groups={};
+  filtered.forEach(r=>{
+    if(!groups[r.area])groups[r.area]=[];
+    groups[r.area].push(r);
+  });
+
+  let html='';
+  areas.forEach(area=>{
+    if(!groups[area]||!groups[area].length)return;
+    const color=AREA_COLORS[area]||'#566573';
+    const items=groups[area];
+    html+=`<div class="section-wrap">
+      <div class="section-header" style="background:${color}">
+        <div class="section-title">${area}</div>
+        <div class="section-count">${items.length}名/組</div>
+      </div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr>
+            <th style="width:130px">役職・ポジション</th>
+            <th style="width:150px">業務内容</th>
+            <th>担当①</th><th>担当②</th><th>担当③</th>
+            <th style="width:120px">備考</th>
+            <th style="width:80px"></th>
+          </tr></thead>
+          <tbody>
+            ${items.map(r=>`<tr>
+              <td><input class="cell-input name" value="${esc(r.position||'')}" onchange="updateField('${r.id}','position',this.value)"></td>
+              <td><input class="cell-input" value="${esc(r.role||'')}" onchange="updateField('${r.id}','role',this.value)"></td>
+              <td><input class="cell-input" value="${esc(r.m1||'')}" onchange="updateField('${r.id}','m1',this.value)"></td>
+              <td><input class="cell-input" value="${esc(r.m2||'')}" onchange="updateField('${r.id}','m2',this.value)"></td>
+              <td><input class="cell-input" value="${esc(r.m3||'')}" onchange="updateField('${r.id}','m3',this.value)"></td>
+              <td><input class="cell-input" value="${esc(r.note||'')}" placeholder="備考..." onchange="updateField('${r.id}','note',this.value)"></td>
+              <td>
+                <div class="row-actions">
+                  <button class="row-act-btn edit-btn" onclick="openEditModal('${r.id}')">編集</button>
+                  <button class="row-act-btn del-btn" onclick="confirmDelete('${r.id}')">削除</button>
+                </div>
+              </td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+        <button class="add-row-btn" onclick="openAddModalWithArea('${area}')">＋ ${area}に追加</button>
+      </div>
+    </div>`;
+  });
+  wrap.innerHTML=html;
 }
 
 function esc(s){return(s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
@@ -341,27 +331,79 @@ async function updateField(id,field,value){
   toast('保存しました');
 }
 
-async function deleteRole(id){
-  if(!confirm('この担当者を削除しますか？'))return;
+async function confirmDelete(id){
+  const r=roles.find(x=>x.id===id);
+  if(!confirm(`「${r?r.position:''}」を削除しますか？`))return;
   await sb.from('roles').delete().eq('id',id);
   toast('削除しました');
 }
 
-async function addRole(){
-  const name=document.getElementById('add-name').value.trim();
-  if(!name){toast('氏名を入力してください');return;}
-  await sb.from('roles').insert({
-    name,position:document.getElementById('add-position').value,
-    area:document.getElementById('add-area').value,
-    role:document.getElementById('add-role').value,
-    note:document.getElementById('add-note').value,
-    status:document.getElementById('add-status').value,
-  });
-  closeModal('modal-add');
-  toast('追加しました — 全メンバーに反映');
-  ['add-name','add-position','add-role','add-note'].forEach(id=>document.getElementById(id).value='');
+// ADD MODAL
+function openAddModal(){openAddModalWithArea(currentFilter==='all'?'運営':currentFilter);}
+function openAddModalWithArea(area){
+  editingId=null;
+  document.getElementById('edit-modal-title').textContent='担当者を追加';
+  document.getElementById('edit-id').value='';
+  document.getElementById('edit-area').value=area;
+  document.getElementById('edit-position').value='';
+  document.getElementById('edit-role').value='';
+  document.getElementById('edit-m1').value='';
+  document.getElementById('edit-m2').value='';
+  document.getElementById('edit-m3').value='';
+  document.getElementById('edit-note').value='';
+  document.getElementById('delete-btn').style.display='none';
+  openModal('modal-edit');
 }
 
+// EDIT MODAL
+function openEditModal(id){
+  const r=roles.find(x=>x.id===id);
+  if(!r)return;
+  editingId=id;
+  document.getElementById('edit-modal-title').textContent=r.position+' を編集';
+  document.getElementById('edit-id').value=id;
+  document.getElementById('edit-area').value=r.area||'運営';
+  document.getElementById('edit-position').value=r.position||'';
+  document.getElementById('edit-role').value=r.role||'';
+  document.getElementById('edit-m1').value=r.m1||'';
+  document.getElementById('edit-m2').value=r.m2||'';
+  document.getElementById('edit-m3').value=r.m3||'';
+  document.getElementById('edit-note').value=r.note||'';
+  document.getElementById('delete-btn').style.display='inline-flex';
+  openModal('modal-edit');
+}
+
+async function saveRole(){
+  const payload={
+    area:document.getElementById('edit-area').value,
+    position:document.getElementById('edit-position').value,
+    role:document.getElementById('edit-role').value,
+    m1:document.getElementById('edit-m1').value,
+    m2:document.getElementById('edit-m2').value,
+    m3:document.getElementById('edit-m3').value,
+    note:document.getElementById('edit-note').value,
+  };
+  if(!payload.position){toast('役職・ポジションを入力してください');return;}
+  if(editingId){
+    await sb.from('roles').update(payload).eq('id',editingId);
+    toast('✅ 更新しました');
+  } else {
+    await sb.from('roles').insert(payload);
+    toast('✅ 追加しました');
+  }
+  closeModal('modal-edit');
+}
+
+async function deleteRole(){
+  if(!editingId)return;
+  const r=roles.find(x=>x.id===editingId);
+  if(!confirm(`「${r?r.position:''}」を削除しますか？`))return;
+  await sb.from('roles').delete().eq('id',editingId);
+  closeModal('modal-edit');
+  toast('削除しました');
+}
+
+// REALTIME
 sb.channel('roles-rt')
   .on('postgres_changes',{event:'*',schema:'public',table:'roles'},()=>loadRoles())
   .subscribe(s=>{if(s==='SUBSCRIBED')setSyncStatus('on');});
@@ -371,7 +413,33 @@ function closeModal(id){document.getElementById(id).classList.remove('open');}
 document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
 function toast(msg){const c=document.getElementById('toast-c');const t=document.createElement('div');t.className='toast';t.textContent=msg;c.appendChild(t);setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity 0.3s';setTimeout(()=>t.remove(),300);},2500);}
 
-loadRoles();
+// 初期データ投入
+async function seedIfEmpty(){
+  const{count}=await sb.from('roles').select('*',{count:'exact',head:true});
+  if(count>0)return;
+  for(const d of INITIAL_DATA){
+    await sb.from('roles').insert({
+      name:d.m1||d.position,
+      position:d.position,
+      area:d.area,
+      role:d.role,
+      m1:d.m1||'',
+      m2:d.m2||'',
+      m3:d.m3||'',
+      note:d.note||'',
+      status:'confirmed'
+    });
+  }
+}
+
+async function loadRoles(){
+  const{data,error}=await sb.from('roles').select('*').order('created_at');
+  if(error){console.error(error);return;}
+  roles=data||[];
+  render();
+}
+
+(async()=>{await seedIfEmpty();await loadRoles();})();
 </script>
 </body>
 </html>

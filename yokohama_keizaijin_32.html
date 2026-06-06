@@ -246,43 +246,38 @@
 <!-- サイドバーオーバーレイ -->
 <div id="sidebar-overlay" onclick="closeSidebar()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:199;opacity:0;pointer-events:none;transition:opacity 0.25s;"></div>
 
-<!-- SHARED NAV -->
-<nav id="portal-nav" style="background:#060f22;border-bottom:1px solid rgba(201,168,76,0.25);padding:0 12px;height:40px;display:flex;align-items:center;gap:0;position:sticky;top:0;z-index:999;font-family:'Noto Sans JP',sans-serif;">
-  <a href="index.html" style="font-family:'Noto Serif JP',serif;font-size:11px;color:#c9a84c;text-decoration:none;font-weight:700;white-space:nowrap;padding-right:10px;border-right:1px solid rgba(255,255,255,0.1);margin-right:6px;flex-shrink:0;">第32回</a>
-  <div id="portal-nav-links" style="display:flex;gap:2px;overflow-x:auto;flex:1;-webkit-overflow-scrolling:touch;scrollbar-width:none;"></div>
-</nav>
+
 <script>
-(function(){
-  var pages=[{href:"index.html",label:"🏠 ホーム"},{href:"scenario.html",label:"📜 シナリオ"},{href:"roles.html",label:"👤 役割分担"},{href:"arrivals.html",label:"✅ 到着管理"},{href:"sekijihyo.html",label:"🪑 席次表"},{href:"pr_schedule.html",label:"📣 広報"},{href:"checklist.html",label:"📦 準備物"},{href:"trouble.html",label:"⚠️ トラブル対応"},{href:"yokohama_kaigi_v6.html",label:"📋 申込管理"}];
-  var cur=location.pathname.split("/").pop()||"index.html";
-  var nav=document.getElementById("portal-nav-links");
-  if(!nav)return;
-  pages.forEach(function(p){
-    var a=document.createElement("a");
-    a.href=p.href;a.textContent=p.label;
-    var active=cur===p.href;
-    a.style.cssText="padding:4px 8px;border-radius:4px;font-size:11px;text-decoration:none;white-space:nowrap;"
-      +"font-weight:"+(active?"700":"400")+";"
-      +"background:"+(active?"rgba(201,168,76,0.22)":"transparent")+";"
-      +"color:"+(active?"#e8c97d":"rgba(255,255,255,0.42)")+";"
-      +"border:"+(active?"1px solid rgba(201,168,76,0.35)":"1px solid transparent")+";";
-    nav.appendChild(a);
-  });
-})();
-</script>
-<!-- END NAV -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  const hb = document.getElementById('hamburger');
-  if (hb) {
-    hb.removeAttribute('onclick');
-    hb.addEventListener('click', function(e) {
-      e.stopPropagation();
-      toggleSidebar();
-    });
+// サイドバー開閉（グローバルスコープで定義）
+function toggleSidebar() {
+  var sb = document.getElementById('sidebar');
+  var ov = document.getElementById('sidebar-overlay');
+  if (!sb) return;
+  if (sb.classList.contains('open')) {
+    sb.classList.remove('open');
+    if(ov){ov.style.opacity='0';ov.style.pointerEvents='none';setTimeout(function(){ov.style.display='none';},250);}
+  } else {
+    sb.classList.add('open');
+    if(ov){ov.style.display='block';setTimeout(function(){ov.style.opacity='1';ov.style.pointerEvents='all';},10);}
   }
+}
+function closeSidebar() {
+  var sb = document.getElementById('sidebar');
+  var ov = document.getElementById('sidebar-overlay');
+  if (!sb) return;
+  sb.classList.remove('open');
+  if(ov){ov.style.opacity='0';ov.style.pointerEvents='none';setTimeout(function(){ov.style.display='none';},250);}
+}
+// ハンバーガーボタンにイベント登録
+document.addEventListener('DOMContentLoaded', function(){
+  var hb = document.getElementById('hamburger');
+  if(hb) hb.addEventListener('click', function(e){ e.stopPropagation(); toggleSidebar(); });
+  var ov = document.getElementById('sidebar-overlay');
+  if(ov) ov.addEventListener('click', closeSidebar);
 });
 </script>
+
+
 
 
 <nav id="sidebar">
@@ -297,9 +292,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <button class="nav-item active" onclick="showPage('dashboard')"><span class="nav-icon">📊</span> ダッシュボード</button>
     <button class="nav-item" onclick="showPage('tasks')"><span class="nav-icon">✅</span> タスク管理<span class="nav-badge" id="badge-tasks" style="display:none">0</span></button>
     <button class="nav-item" onclick="showPage('runbook')"><span class="nav-icon">📋</span> 進行表</button>
-    <div class="nav-section">当日運営</div>
-    <button class="nav-item" onclick="showPage('roles')"><span class="nav-icon">👤</span> 役割分担表</button>
-    <button class="nav-item" onclick="showPage('incidents')"><span class="nav-icon">⚠️</span> インシデント<span class="nav-badge" id="badge-incidents" style="display:none">0</span></button>
+
     <div class="nav-section">情報共有</div>
     <button class="nav-item" onclick="showPage('announcements')"><span class="nav-icon">📢</span> お知らせ</button>
   </div>
@@ -314,7 +307,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <div id="main">
   <header id="topbar">
     <div style="display:flex;align-items:center;gap:10px;">
-      <button id="hamburger" onclick="toggleSidebar()" style="display:none;background:none;border:none;cursor:pointer;padding:6px;flex-direction:column;gap:5px;justify-content:center;align-items:center;">
+      <button id="hamburger" style="display:none;background:none;border:none;cursor:pointer;padding:6px;flex-direction:column;gap:5px;justify-content:center;align-items:center;">
         <span style="display:block;width:20px;height:2px;background:var(--navy);border-radius:2px;"></span>
         <span style="display:block;width:20px;height:2px;background:var(--navy);border-radius:2px;"></span>
         <span style="display:block;width:20px;height:2px;background:var(--navy);border-radius:2px;"></span>
