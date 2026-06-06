@@ -123,6 +123,41 @@ body{font-family:"Noto Sans JP",sans-serif;background:var(--bg);color:var(--gray
 </style>
 </head>
 <body>
+<!-- SHARED NAV -->
+<nav id="portal-nav" style="background:#060f22;border-bottom:1px solid rgba(201,168,76,0.25);padding:0 12px;height:40px;display:flex;align-items:center;gap:0;position:sticky;top:0;z-index:999;font-family:'Noto Sans JP',sans-serif;">
+  <a href="yokohama_keizaijin_32.html" style="font-family:'Noto Serif JP',serif;font-size:11px;color:#c9a84c;text-decoration:none;font-weight:700;white-space:nowrap;padding-right:8px;border-right:1px solid rgba(255,255,255,0.1);margin-right:6px;flex-shrink:0;">第32回</a>
+  <div id="portal-nav-links" style="display:flex;gap:2px;overflow-x:auto;flex:1;-webkit-overflow-scrolling:touch;scrollbar-width:none;"></div>
+</nav>
+<script>
+(function(){
+  var pages=[
+    {href:"yokohama_keizaijin_32.html",label:"🏠 ホーム"},
+    {href:"scenario.html",label:"📜 シナリオ"},
+    {href:"roles.html",label:"👤 役割分担"},
+    {href:"arrivals.html",label:"✅ 到着管理"},
+    {href:"sekijihyo.html",label:"🪑 席次表"},
+    {href:"pr_schedule.html",label:"📣 広報"},
+    {href:"checklist.html",label:"📦 準備物"},
+    {href:"trouble.html",label:"⚠️ トラブル"},
+    {href:"yokohama_kaigi_v6.html",label:"📋 申込管理"}
+  ];
+  var cur=location.pathname.split("/").pop()||"yokohama_keizaijin_32.html";
+  var nav=document.getElementById("portal-nav-links");
+  if(!nav)return;
+  pages.forEach(function(p){
+    var a=document.createElement("a");a.href=p.href;a.textContent=p.label;
+    var active=cur===p.href;
+    a.style.cssText="padding:4px 8px;border-radius:4px;font-size:11px;text-decoration:none;white-space:nowrap;"
+      +"font-weight:"+(active?"700":"400")+";"
+      +"background:"+(active?"rgba(201,168,76,0.22)":"transparent")+";"
+      +"color:"+(active?"#e8c97d":"rgba(255,255,255,0.42)")+";"
+      +"border:"+(active?"1px solid rgba(201,168,76,0.35)":"1px solid transparent")+";";
+    nav.appendChild(a);
+  });
+})();
+</script>
+<!-- END NAV -->
+
 
 
 <div id="toolbar">
