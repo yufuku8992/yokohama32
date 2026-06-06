@@ -508,9 +508,12 @@ document.addEventListener('DOMContentLoaded', function(){
   <div class="modal">
     <div class="modal-header"><div class="modal-title">進行項目を追加</div><button class="modal-close" onclick="closeModal('modal-new-runbook')">✕</button></div>
     <div class="modal-body">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
         <div class="form-row"><label class="form-label">開始時間 *</label><input class="form-input" type="time" id="rb-time" value="17:00"></div>
-        <div class="form-row"><label class="form-label">終了時間</label><input class="form-input" type="time" id="rb-end" value="17:10"></div>
+        <div class="form-row"><label class="form-label">終了時間</label><input class="form-input" type="time" id="rb-end-time" value="17:10"></div>
+        <div class="form-row"><label class="form-label">ステータス</label>
+          <select class="form-select" id="rb-status"><option value="todo">未着手</option><option value="doing">進行中</option><option value="done">完了</option></select>
+        </div>
       </div>
       <div class="form-row"><label class="form-label">内容 *</label><input class="form-input" type="text" id="rb-title" placeholder="プログラム内容..."></div>
       <div class="form-row"><label class="form-label">担当者</label><input class="form-input" type="text" id="rb-team" placeholder="司会者、MC班など"></div>
@@ -787,7 +790,11 @@ function renderRunbook(){
       <div><div style="font-size:13px;font-weight:700;color:${isCurrent?'var(--gold)':'var(--navy)'}">${r.time}</div>${r.end_time?`<div style="font-size:10px;color:var(--gray-400)">〜${r.end_time}</div>`:''}</div>
       <div><div style="font-size:13px;font-weight:500">${r.title}</div>${r.team?`<div style="font-size:11px;color:var(--gray-400)">👤 ${r.team}</div>`:''}${r.note?`<div style="font-size:11px;color:var(--orange);margin-top:1px">💡 ${r.note}</div>`:''}</div>
       <div>${rbBadge(r.status)} ${isCurrent?'<span class="current-bar">NOW</span>':''}</div>
-      <div><button class="btn btn-outline btn-sm" onclick="cycleRb('${r.id}')">更新</button></div>
+      <div style="display:flex;gap:3px;flex-wrap:wrap">
+        <button class="btn btn-outline btn-sm" onclick="cycleRb('${r.id}')">更新</button>
+        <button class="btn btn-outline btn-sm" onclick="openEditRb('${r.id}')" style="padding:3px 6px">✏️</button>
+        <button class="btn btn-outline btn-sm" onclick="deleteRb('${r.id}')" style="padding:3px 6px;color:var(--red);border-color:var(--red)">✕</button>
+      </div>
     </div>`;
   });
   el.innerHTML=html;
@@ -798,11 +805,53 @@ async function cycleRb(id){
   await sb.from('runbook').update({status:o[(o.indexOf(r.status)+1)%o.length]}).eq('id',id);
   showToast('ステータスを更新しました','success');
 }
+
+function openEditRb(id){
+  const r=runbook.find(x=>x.id===id);if(!r)return;
+  // modal-new-runbookを編集モードで開く
+  const m=document.getElementById('modal-new-runbook');
+  if(!m)return;
+  const fields=['rb-time','rb-end-time','rb-title','rb-team','rb-note'];
+  const vals=[r.time,r.end_time,r.title,r.team,r.note];
+  fields.forEach((f,i)=>{const el=document.getElementById(f);if(el)el.value=vals[i]||'';});
+  const statusEl=document.getElementById('rb-status');if(statusEl)statusEl.value=r.status||'todo';
+  const titleEl=m.querySelector('.modal-title');if(titleEl)titleEl.textContent='進行項目を編集';
+  const saveBtn=m.querySelector('.btn-primary');
+  if(saveBtn){saveBtn.textContent='更新する';saveBtn.onclick=()=>updateRb(id);}
+  openModal('modal-new-runbook');
+}
+
+async function updateRb(id){
+  const title=document.getElementById('rb-title').value.trim();
+  if(!title){showToast('内容を入力してください','error');return;}
+  setSyncStatus('syncing');
+  await sb.from('runbook').update({
+    time:document.getElementById('rb-time').value,
+    end_time:document.getElementById('rb-end-time')?.value||'',
+    title,
+    team:document.getElementById('rb-team').value,
+    note:document.getElementById('rb-note').value,
+    status:document.getElementById('rb-status')?.value||'todo',
+  }).eq('id',id);
+  closeModal('modal-new-runbook');
+  const m=document.getElementById('modal-new-runbook');
+  const titleEl=m?.querySelector('.modal-title');if(titleEl)titleEl.textContent='進行項目を追加';
+  const saveBtn=m?.querySelector('.btn-primary');if(saveBtn){saveBtn.textContent='追加する';saveBtn.onclick=addRunbook;}
+  showToast('進行項目を更新しました','success');
+}
+
+async function deleteRb(id){
+  const r=runbook.find(x=>x.id===id);
+  if(!confirm(`「${r?r.title:''}」を削除しますか？`))return;
+  setSyncStatus('syncing');
+  await sb.from('runbook').delete().eq('id',id);
+  showToast('削除しました','success');
+}
 async function addRunbookItem(){
   const title=document.getElementById('rb-title').value.trim();
   if(!title){showToast('内容を入力してください','error');return;}
   setSyncStatus('syncing');
-  await sb.from('runbook').insert({time:document.getElementById('rb-time').value,end_time:document.getElementById('rb-end').value,title,team:document.getElementById('rb-team').value,note:document.getElementById('rb-note').value,status:'todo',sort_order:runbook.length});
+  await sb.from('runbook').insert({time:document.getElementById('rb-time').value,end_time:document.getElementById('rb-end-time')?.value||document.getElementById('rb-end')?.value||'',title,team:document.getElementById('rb-team').value,note:document.getElementById('rb-note').value,status:'todo',sort_order:runbook.length});
   closeModal('modal-new-runbook');showToast('進行項目を追加しました','success');
 }
 

@@ -7,134 +7,82 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{--navy:#0d1b3e;--gold:#c9a84c;--gold-light:#e8c97d;--bg:#f5f3ee;--gray-100:#f0ede6;--gray-200:#e2ddd4;--gray-400:#9e9488;--gray-600:#6b6358;--gray-800:#3a342c;--green:#1a7a4a;--green-light:#e8f5ed;--red:#c0392b;--red-light:#fdecea;--orange:#c76b0a;--orange-light:#fef3e2;--blue:#1a4a8a;--blue-light:#e8eef8;}
+:root{--navy:#0d1b3e;--gold:#c9a84c;--gold-light:#e8c97d;--bg:#f5f3ee;--gray-50:#f9f8f6;--gray-100:#f0ede6;--gray-200:#e2ddd4;--gray-400:#9e9488;--gray-600:#6b6358;--gray-800:#3a342c;--green:#1a7a4a;--green-light:#e8f5ed;--red:#c0392b;--red-light:#fdecea;--orange:#c76b0a;--orange-light:#fef3e2;--blue:#1a4a8a;}
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:"Noto Sans JP",sans-serif;background:var(--bg);color:var(--gray-800);min-height:100vh;}
-#toolbar{background:var(--navy);padding:10px 24px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;position:sticky;top:40px;z-index:80;border-bottom:2px solid var(--gold);}
-.toolbar-title{font-family:"Noto Serif JP",serif;font-size:13px;color:var(--gold-light);font-weight:600;}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--gray-800);min-height:100vh;}
+#toolbar{background:var(--navy);padding:10px 20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;position:sticky;top:40px;z-index:80;border-bottom:2px solid var(--gold);}
+.toolbar-title{font-family:'Noto Serif JP',serif;font-size:13px;color:var(--gold-light);font-weight:600;}
 .sync-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#9e9488;margin-right:4px;}
 .sync-dot.on{background:#4aba7a;animation:pulse 2s infinite;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
 .sync-label{font-size:11px;color:rgba(255,255,255,0.4);}
-.btn{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:4px;border:none;cursor:pointer;font-family:"Noto Sans JP",sans-serif;font-size:12.5px;font-weight:500;transition:all 0.15s;}
+.btn{display:inline-flex;align-items:center;gap:4px;padding:6px 13px;border-radius:4px;border:none;cursor:pointer;font-family:'Noto Sans JP',sans-serif;font-size:12px;font-weight:500;transition:all 0.15s;}
 .btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--navy);}
-.btn-danger{background:var(--red);color:#fff;}
 .btn-outline{background:transparent;color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.2);}
-.btn-outline:hover{background:rgba(255,255,255,0.1);}
-.btn-sm{padding:4px 10px;font-size:11.5px;}
+.btn-outline:hover{background:rgba(255,255,255,0.08);}
+.btn-sm{padding:4px 9px;font-size:11px;}
+.btn-danger{background:var(--red);color:#fff;}
+.btn-light{background:#fff;color:var(--gray-800);border:1px solid var(--gray-200);}
 .btn-green{background:var(--green);color:#fff;}
-#main{max-width:1100px;margin:0 auto;padding:24px 28px;}
-.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+#main{max-width:1100px;margin:0 auto;padding:20px 24px;}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
 .card{background:#fff;border:1px solid var(--gray-200);border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.05);}
-.card-header{padding:13px 18px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between;}
-.card-title{font-family:"Noto Serif JP",serif;font-size:13px;font-weight:600;color:var(--navy);}
+.card-header{padding:12px 16px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between;}
+.card-title{font-family:'Noto Serif JP',serif;font-size:13px;font-weight:600;color:var(--navy);}
 /* TROUBLE */
-.trouble-item{padding:14px 18px;border-bottom:1px solid var(--gray-100);border-left:4px solid var(--orange);transition:background 0.1s;}
+.trouble-item{padding:13px 16px;border-bottom:1px solid var(--gray-100);border-left:4px solid var(--orange);}
 .trouble-item:last-child{border-bottom:none;}
-.trouble-item.resolved{border-left-color:var(--green);opacity:0.65;}
-.trouble-top{display:flex;align-items:flex-start;gap:10px;margin-bottom:5px;}
-.trouble-title{font-size:13.5px;font-weight:600;flex:1;}
-.trouble-badge{display:inline-block;padding:2px 8px;border-radius:3px;font-size:10.5px;font-weight:600;white-space:nowrap;}
+.trouble-item.resolved{border-left-color:var(--green);opacity:0.7;}
+.trouble-top{display:flex;align-items:flex-start;gap:8px;margin-bottom:4px;}
+.trouble-title{font-size:13px;font-weight:600;flex:1;}
+.trouble-badge{display:inline-block;padding:2px 7px;border-radius:3px;font-size:10.5px;font-weight:600;white-space:nowrap;}
 .b-open{background:var(--orange-light);color:var(--orange);}
 .b-resolved{background:var(--green-light);color:var(--green);}
 .b-urgent{background:var(--red);color:#fff;}
-.trouble-meta{font-size:11px;color:var(--gray-400);margin-bottom:6px;}
+.trouble-meta{font-size:11px;color:var(--gray-400);margin-bottom:5px;}
 .trouble-detail{font-size:12.5px;color:var(--gray-600);line-height:1.6;}
-.trouble-actions{margin-top:8px;display:flex;gap:6px;}
+.trouble-action-text{font-size:12px;color:var(--green);margin-top:4px;}
+.trouble-btns{margin-top:8px;display:flex;gap:5px;}
+.t-btn{padding:3px 9px;border-radius:3px;border:none;cursor:pointer;font-size:11px;font-weight:600;}
+.t-resolve{background:var(--green);color:#fff;}
+.t-reopen{background:var(--gray-200);color:var(--gray-600);}
+.t-edit{background:var(--navy);color:#fff;}
+.t-del{background:var(--red);color:#fff;}
 /* FAQ */
-.faq-cat{font-family:"Noto Serif JP",serif;font-size:12px;font-weight:600;color:var(--navy);padding:10px 18px 6px;background:var(--gray-100);border-bottom:1px solid var(--gray-200);letter-spacing:0.04em;}
+.faq-cat{font-family:'Noto Serif JP',serif;font-size:12px;font-weight:600;color:var(--navy);padding:9px 16px 6px;background:var(--gray-50);border-bottom:1px solid var(--gray-200);}
 .faq-item{border-bottom:1px solid var(--gray-100);}
-.faq-item:last-child{border-bottom:none;}
-.faq-q{padding:12px 18px;cursor:pointer;display:flex;align-items:flex-start;gap:10px;font-size:13px;font-weight:600;color:var(--navy);background:none;border:none;width:100%;text-align:left;transition:background 0.1s;}
-.faq-q:hover{background:var(--gray-50,#f9f8f6);}
-.faq-q-icon{flex-shrink:0;color:var(--gold);font-weight:700;font-size:14px;}
-.faq-arrow{margin-left:auto;font-size:12px;color:var(--gray-400);transition:transform 0.2s;}
-.faq-a{display:none;padding:0 18px 14px 42px;font-size:13px;color:var(--gray-600);line-height:1.75;border-left:3px solid var(--gold);margin:0 18px 10px;background:rgba(201,168,76,0.04);border-radius:0 4px 4px 0;}
+.faq-q{padding:11px 16px;cursor:pointer;display:flex;align-items:flex-start;gap:8px;font-size:13px;font-weight:600;color:var(--navy);background:none;border:none;width:100%;text-align:left;transition:background 0.1s;}
+.faq-q:hover{background:var(--gray-50);}
+.faq-q-icon{color:var(--gold);font-weight:700;flex-shrink:0;}
+.faq-arrow{margin-left:auto;font-size:11px;color:var(--gray-400);transition:transform 0.2s;flex-shrink:0;}
+.faq-a{display:none;padding:0 16px 12px 40px;font-size:12.5px;color:var(--gray-600);line-height:1.75;border-left:3px solid var(--gold);margin:0 16px 10px;background:rgba(201,168,76,0.04);border-radius:0 4px 4px 0;}
 .faq-item.open .faq-a{display:block;}
 .faq-item.open .faq-arrow{transform:rotate(180deg);}
+.faq-edit-btn{margin-left:auto;padding:2px 7px;border-radius:3px;border:none;cursor:pointer;font-size:10px;font-weight:600;background:var(--navy);color:#fff;opacity:0;}
+.faq-q:hover .faq-edit-btn{opacity:1;}
 /* MODAL */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(13,27,62,0.5);z-index:200;align-items:center;justify-content:center;}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(13,27,62,0.45);z-index:200;align-items:center;justify-content:center;}
 .modal-overlay.open{display:flex;}
-.modal{background:#fff;border-radius:8px;width:540px;max-width:95vw;max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.2);}
-.modal-header{padding:16px 20px 12px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between;}
-.modal-title{font-family:"Noto Serif JP",serif;font-size:15px;font-weight:600;color:var(--navy);}
+.modal{background:#fff;border-radius:8px;width:540px;max-width:95vw;max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.15);}
+.modal-header{padding:14px 18px 11px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between;}
+.modal-title{font-family:'Noto Serif JP',serif;font-size:14px;font-weight:600;color:var(--navy);}
 .modal-close{background:none;border:none;cursor:pointer;font-size:18px;color:var(--gray-400);}
-.modal-body{padding:16px 20px;}
-.modal-footer{padding:12px 20px;border-top:1px solid var(--gray-100);display:flex;justify-content:flex-end;gap:8px;}
-.form-row{margin-bottom:13px;}
-.form-label{font-size:11.5px;font-weight:600;color:var(--gray-600);margin-bottom:4px;display:block;}
-.form-input,.form-select,.form-textarea{width:100%;padding:7px 10px;border:1px solid var(--gray-200);border-radius:4px;font-family:"Noto Sans JP",sans-serif;font-size:13px;color:var(--gray-800);outline:none;}
-.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,0.12);}
-.form-textarea{resize:vertical;min-height:80px;}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-#toast-c{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:999;display:flex;flex-direction:column;align-items:center;gap:6px;}
-.toast{background:var(--navy);color:#fff;padding:9px 18px;border-radius:20px;font-size:12px;border:1px solid var(--gold);animation:tin 0.2s;}
-.toast.err{border-color:var(--red);}
-@keyframes tin{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
-.loading{text-align:center;padding:30px;color:var(--gray-400);}
+.modal-body{padding:14px 18px;}
+.modal-footer{padding:11px 18px;border-top:1px solid var(--gray-100);display:flex;justify-content:flex-end;gap:7px;}
+.form-row{margin-bottom:11px;}
+.form-label{font-size:11px;font-weight:600;color:var(--gray-600);margin-bottom:3px;display:block;}
+.form-input,.form-select,.form-textarea{width:100%;padding:7px 10px;border:1px solid var(--gray-200);border-radius:4px;font-family:'Noto Sans JP',sans-serif;font-size:13px;color:var(--gray-800);background:#fff;outline:none;}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,0.1);}
+.form-textarea{resize:vertical;min-height:80px;line-height:1.6;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .empty{text-align:center;padding:30px;color:var(--gray-400);font-size:13px;}
-
-/* ===== MOBILE ===== */
-@media (max-width: 768px) {
-  body { font-size: 13px; }
-  #toolbar { padding: 8px 14px !important; top: 40px; }
-  #main, .content, [id="main"] { padding: 12px 14px !important; }
-  .grid-2 { grid-template-columns: 1fr !important; gap: 12px !important; }
-  .grid-3 { grid-template-columns: 1fr !important; gap: 10px !important; }
-  .grid-4 { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
-  .card { overflow-x: auto; }
-  .tbl { min-width: 460px; }
-  .btn { font-size: 11.5px !important; padding: 5px 10px !important; }
-  .btn-sm { font-size: 11px !important; padding: 3px 8px !important; }
-  #toc { display: none !important; }
-  #layout { display: block !important; }
-  #main-content { padding: 14px !important; }
-  .progress-strip { flex-wrap: wrap; gap: 10px; }
-  .filter-row { gap: 4px; }
-  .filter-btn { font-size: 11px; padding: 4px 10px; }
-  .arrival-grid { grid-template-columns: 1fr !important; }
-  .cat-sidebar { position: static !important; }
-  .grid-layout { grid-template-columns: 1fr !important; }
-  .tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  .tab { white-space: nowrap; font-size: 12px; padding: 8px 12px; }
-  .modal { width: 95vw !important; max-width: 95vw !important; }
-  .grid-2.modal-grid, .g2 { grid-template-columns: 1fr !important; }
-  .stat-pill { min-width: 60px; padding: 6px 10px; }
-  .stat-num { font-size: 18px !important; }
-  .filter-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; }
-  .filter-tab { white-space: nowrap; font-size: 11px; padding: 4px 10px; }
-  #portal-nav a { font-size: 10px !important; padding: 3px 6px !important; }
-  .section-header { flex-wrap: wrap; gap: 6px; }
-  .section-title { font-size: 15px !important; }
-  .timeline { padding-left: 16px; }
-  .progress-strip .prog-bar { min-width: 100% !important; }
-  .table-wrap { overflow-x: auto; }
-}
-@media (max-width: 480px) {
-  .grid-4 { grid-template-columns: 1fr !important; }
-  .stats-row { flex-wrap: wrap; gap: 6px; }
-}
-
-/* ===== NAV FIX ===== */
-#portal-nav { background:#060f22 !important; }
-#portal-nav a { color:rgba(255,255,255,0.42) !important; text-decoration:none !important; }
-#portal-nav-links a { 
-  display:inline-block;
-  padding:4px 8px;
-  border-radius:4px;
-  font-size:11px;
-  white-space:nowrap;
-  text-decoration:none !important;
-  border:1px solid transparent;
-}
-#portal-nav > a { 
-  color:#c9a84c !important; 
-  font-size:11px;
-  flex-shrink:0;
-}
-@media (max-width:768px) {
-  #portal-nav-links a { font-size:10px !important; padding:3px 6px !important; }
-}
+#toast-c{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:999;display:flex;flex-direction:column;align-items:center;gap:6px;}
+.toast{background:var(--navy);color:#fff;padding:8px 18px;border-radius:20px;font-size:12px;border:1px solid var(--gold);animation:tin 0.2s;}
+@keyframes tin{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+#portal-nav{background:#060f22 !important;}
+#portal-nav a,#portal-nav-links a{text-decoration:none !important;}
+#portal-nav>a{color:#c9a84c !important;flex-shrink:0;}
+@media(max-width:768px){#main{padding:12px 14px;}.grid-2{grid-template-columns:1fr;}.faq-edit-btn{opacity:1 !important;}#portal-nav a{font-size:10px !important;padding:3px 6px !important;}}
 </style>
 </head>
 <body>
@@ -144,65 +92,34 @@ body{font-family:"Noto Sans JP",sans-serif;background:var(--bg);color:var(--gray
   <div id="portal-nav-links" style="display:flex;gap:2px;overflow-x:auto;flex:1;-webkit-overflow-scrolling:touch;scrollbar-width:none;"></div>
 </nav>
 <script>
-(function(){
-  var pages=[
-    {href:"yokohama_keizaijin_32.html",label:"🏠 ホーム"},
-    {href:"scenario.html",label:"📜 シナリオ"},
-    {href:"roles.html",label:"👤 役割分担"},
-    {href:"arrivals.html",label:"✅ 到着管理"},
-    {href:"sekijihyo.html",label:"🪑 席次表"},
-    {href:"pr_schedule.html",label:"📣 広報"},
-    {href:"checklist.html",label:"📦 準備物"},
-    {href:"trouble.html",label:"⚠️ トラブル"},
-    {href:"yokohama_kaigi_v6.html",label:"📋 申込管理"}
-  ];
-  var cur=location.pathname.split("/").pop()||"yokohama_keizaijin_32.html";
-  var nav=document.getElementById("portal-nav-links");
-  if(!nav)return;
-  pages.forEach(function(p){
-    var a=document.createElement("a");a.href=p.href;a.textContent=p.label;
-    var active=cur===p.href;
-    a.style.cssText="padding:4px 8px;border-radius:4px;font-size:11px;text-decoration:none;white-space:nowrap;"
-      +"font-weight:"+(active?"700":"400")+";"
-      +"background:"+(active?"rgba(201,168,76,0.22)":"transparent")+";"
-      +"color:"+(active?"#e8c97d":"rgba(255,255,255,0.42)")+";"
-      +"border:"+(active?"1px solid rgba(201,168,76,0.35)":"1px solid transparent")+";";
-    nav.appendChild(a);
-  });
-})();
+(function(){var pages=[{href:"yokohama_keizaijin_32.html",label:"🏠 ホーム"},{href:"scenario.html",label:"📜 シナリオ"},{href:"roles.html",label:"👤 役割分担"},{href:"arrivals.html",label:"✅ 到着管理"},{href:"sekijihyo.html",label:"🪑 席次表"},{href:"pr_schedule.html",label:"📣 広報"},{href:"checklist.html",label:"📦 準備物"},{href:"trouble.html",label:"⚠️ トラブル"},{href:"yokohama_kaigi_v6.html",label:"📋 申込管理"}];var cur=location.pathname.split("/").pop()||"yokohama_keizaijin_32.html";var nav=document.getElementById("portal-nav-links");if(!nav)return;pages.forEach(function(p){var a=document.createElement("a");a.href=p.href;a.textContent=p.label;var active=cur===p.href;a.style.cssText="padding:4px 8px;border-radius:4px;font-size:11px;text-decoration:none;white-space:nowrap;font-weight:"+(active?"700":"400")+";background:"+(active?"rgba(201,168,76,0.22)":"transparent")+";color:"+(active?"#e8c97d":"rgba(255,255,255,0.42)")+";border:"+(active?"1px solid rgba(201,168,76,0.35)":"1px solid transparent")+";";nav.appendChild(a);});})();
 </script>
 <!-- END NAV -->
 
-
-
 <div id="toolbar">
-  <span class="toolbar-title">⚠️ トラブル対応 ・ FAQ</span>
+  <span class="toolbar-title">⚠️ トラブル対応・FAQ</span>
   <span style="color:rgba(255,255,255,0.2);margin:0 4px;">|</span>
   <span class="sync-dot" id="sync-dot"></span><span class="sync-label" id="sync-label">接続中...</span>
   <div style="flex:1"></div>
-  <button class="btn btn-danger" onclick="openModal('modal-add-trouble')">🚨 トラブルを記録</button>
+  <button class="btn btn-outline btn-sm" onclick="openFaqModal()">＋ FAQ追加</button>
+  <button class="btn btn-danger" onclick="openTroubleModal()">🚨 トラブル記録</button>
 </div>
 
 <div id="main">
   <div class="grid-2">
-    <!-- TROUBLE LIST -->
     <div>
       <div class="card" style="margin-bottom:14px;">
         <div class="card-header">
           <div class="card-title">🚨 トラブル記録</div>
-          <div style="display:flex;gap:6px;align-items:center;">
-            <span id="trouble-open-count" style="font-size:11px;background:var(--red-light);color:var(--red);padding:2px 8px;border-radius:3px;font-weight:600;">対応中 0件</span>
-          </div>
+          <span id="trouble-open-count" style="font-size:11px;background:var(--red-light);color:var(--red);padding:2px 8px;border-radius:3px;font-weight:600;">対応中 0件</span>
         </div>
-        <div id="trouble-list"><div class="loading">読込中...</div></div>
+        <div id="trouble-list"><div class="empty">トラブルはありません ✅</div></div>
       </div>
     </div>
-
-    <!-- FAQ -->
     <div>
       <div class="card">
         <div class="card-header">
-          <div class="card-title">💡 よくあるトラブルと対応（FAQ）</div>
+          <div class="card-title">💡 FAQ（よくあるトラブルと対応）</div>
         </div>
         <div id="faq-list"></div>
       </div>
@@ -210,12 +127,13 @@ body{font-family:"Noto Sans JP",sans-serif;background:var(--bg);color:var(--gray
   </div>
 </div>
 
-<!-- TROUBLE ADD MODAL -->
-<div class="modal-overlay" id="modal-add-trouble">
+<!-- TROUBLE MODAL -->
+<div class="modal-overlay" id="modal-trouble">
   <div class="modal">
-    <div class="modal-header"><div class="modal-title">🚨 トラブルを記録</div><button class="modal-close" onclick="closeModal('modal-add-trouble')">✕</button></div>
+    <div class="modal-header"><div class="modal-title" id="trouble-modal-title">🚨 トラブルを記録</div><button class="modal-close" onclick="closeModal('modal-trouble')">✕</button></div>
     <div class="modal-body">
-      <div class="form-row"><label class="form-label">件名・概要 *</label><input class="form-input" id="tr-title" placeholder="例: マイクから音が出ない"></div>
+      <input type="hidden" id="tr-id">
+      <div class="form-row"><label class="form-label">件名・概要 *</label><input class="form-input" id="tr-title" placeholder="マイクから音が出ない"></div>
       <div class="g2">
         <div class="form-row"><label class="form-label">発生場所</label><input class="form-input" id="tr-loc" placeholder="ステージ上など"></div>
         <div class="form-row"><label class="form-label">緊急度</label>
@@ -228,15 +146,40 @@ body{font-family:"Noto Sans JP",sans-serif;background:var(--bg);color:var(--gray
       </div>
       <div class="form-row"><label class="form-label">対応担当者</label>
         <select class="form-select" id="tr-owner">
-          <option>長谷川 圭一</option><option>荒井 亮一</option><option>弘中 義之</option><option>永井 嵩久</option><option>福田 雄太郎</option><option>Re-Vision（音響）</option>
+          <option>長谷川 圭一</option><option>荒井 亮一</option><option>弘中 義之</option>
+          <option>永井 嵩久</option><option>福田 雄太郎</option><option>Re-Vision（音響）</option>
         </select>
       </div>
       <div class="form-row"><label class="form-label">詳細・状況</label><textarea class="form-textarea" id="tr-detail" placeholder="状況の詳細、経緯など..."></textarea></div>
-      <div class="form-row"><label class="form-label">対応内容（現時点）</label><textarea class="form-textarea" id="tr-action" placeholder="実施した・する予定の対応..."></textarea></div>
+      <div class="form-row"><label class="form-label">対応内容</label><textarea class="form-textarea" id="tr-action" placeholder="実施した・する予定の対応..."></textarea></div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-outline" style="color:var(--gray-600);border-color:var(--gray-200);" onclick="closeModal('modal-add-trouble')">キャンセル</button>
-      <button class="btn btn-danger" onclick="addTrouble()">記録する</button>
+      <button class="btn btn-danger btn-sm" id="tr-del-btn" onclick="deleteTrouble()" style="margin-right:auto;display:none">削除</button>
+      <button class="btn btn-light btn-sm" onclick="closeModal('modal-trouble')">キャンセル</button>
+      <button class="btn btn-danger" onclick="saveTrouble()">記録する</button>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ MODAL -->
+<div class="modal-overlay" id="modal-faq">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title" id="faq-modal-title">FAQを追加</div><button class="modal-close" onclick="closeModal('modal-faq')">✕</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="faq-id">
+      <div class="form-row"><label class="form-label">カテゴリ</label>
+        <select class="form-select" id="faq-cat">
+          <option>📡 映像・音響</option><option>👤 来賓・登壇者</option>
+          <option>👥 参加者・会場</option><option>📋 進行・運営</option><option>その他</option>
+        </select>
+      </div>
+      <div class="form-row"><label class="form-label">質問（トラブル内容） *</label><input class="form-input" id="faq-q" placeholder="プロジェクターが映らない"></div>
+      <div class="form-row"><label class="form-label">対応方法 *</label><textarea class="form-textarea" id="faq-a" placeholder="①〜②〜③の順で対応..."></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger btn-sm" id="faq-del-btn" onclick="deleteFaq()" style="margin-right:auto;display:none">削除</button>
+      <button class="btn btn-light btn-sm" onclick="closeModal('modal-faq')">キャンセル</button>
+      <button class="btn btn-gold" onclick="saveFaq()">保存</button>
     </div>
   </div>
 </div>
@@ -247,108 +190,155 @@ const SB_URL='https://kukckeksvbdgosneezdh.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt1a2NrZWtzdmJkZ29zbmVlemRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1Nzg2MjksImV4cCI6MjA5NjE1NDYyOX0.zM264r67WV4YI7_7cqC53rx5dYYoc77VncKydfNHQUY';
 const sb=supabase.createClient(SB_URL,SB_KEY);
 let troubles=[];
-
-function setSyncStatus(s){
-  const dot=document.getElementById('sync-dot'),label=document.getElementById('sync-label');
-  if(s==='on'){dot.className='sync-dot on';label.textContent='リアルタイム同期中';}
-  else{dot.className='sync-dot';label.textContent='接続中...';}
-}
+let editingTroubleId=null;
 
 // ===== TROUBLE =====
-async function loadTroubles(){
-  const{data}=await sb.from('incidents').select('*').order('created_at',{ascending:false});
-  troubles=data||[];renderTroubles();
-}
+function setSyncStatus(s){const dot=document.getElementById('sync-dot'),label=document.getElementById('sync-label');if(s==='on'){dot.className='sync-dot on';label.textContent='リアルタイム同期中';}else{dot.className='sync-dot';label.textContent='接続中...';}}
+async function loadTroubles(){const{data}=await sb.from('incidents').select('*').order('created_at',{ascending:false});troubles=data||[];renderTroubles();}
+
 function renderTroubles(){
   const el=document.getElementById('trouble-list');
   const openCount=troubles.filter(t=>!t.resolved).length;
-  document.getElementById('trouble-open-count').textContent=`対応中 ${openCount}件`;
+  document.getElementById('trouble-open-count').textContent='対応中 '+openCount+'件';
   if(!troubles.length){el.innerHTML='<div class="empty">トラブルはありません ✅</div>';return;}
-  el.innerHTML=troubles.map(t=>{
-    const urgencyMap={urgent:'🔴 緊急',normal:'🟡 通常',low:'🟢 軽微'};
-    const urgency=t.urgency||'normal';
-    return`<div class="trouble-item ${t.resolved?'resolved':''}">
+  const urgMap={urgent:'🔴 緊急',normal:'🟡 通常',low:'🟢 軽微'};
+  el.innerHTML=troubles.map(t=>`
+    <div class="trouble-item ${t.resolved?'resolved':''}">
       <div class="trouble-top">
         <div class="trouble-title">⚠️ ${t.title}</div>
-        <span class="trouble-badge ${t.resolved?'b-resolved':urgency==='urgent'?'b-urgent':'b-open'}">${t.resolved?'✓ 解決済':urgencyMap[urgency]||'通常'}</span>
+        <span class="trouble-badge ${t.resolved?'b-resolved':t.urgency==='urgent'?'b-urgent':'b-open'}">${t.resolved?'✓ 解決済':urgMap[t.urgency||'normal']}</span>
       </div>
       <div class="trouble-meta">📍 ${t.location||'—'} · 👤 ${t.assignee||'—'} · 🕐 ${fmtTime(t.created_at)}</div>
       ${t.detail?`<div class="trouble-detail">📋 ${t.detail}</div>`:''}
-      ${t.action?`<div class="trouble-detail" style="margin-top:4px;color:var(--green)">✅ 対応: ${t.action}</div>`:''}
-      <div class="trouble-actions">
-        ${!t.resolved?`<button class="btn btn-green btn-sm" onclick="resolveTrouble('${t.id}')">✓ 解決済みにする</button>`:`<button class="btn btn-outline btn-sm" style="color:var(--gray-600);border-color:var(--gray-200);" onclick="reopenTrouble('${t.id}')">再開</button>`}
+      ${t.action?`<div class="trouble-action-text">✅ 対応: ${t.action}</div>`:''}
+      <div class="trouble-btns">
+        ${!t.resolved?`<button class="t-btn t-resolve" onclick="resolveTrouble('${t.id}')">✓ 解決済み</button>`:`<button class="t-btn t-reopen" onclick="reopenTrouble('${t.id}')">再開</button>`}
+        <button class="t-btn t-edit" onclick="openEditTrouble('${t.id}')">編集</button>
+        <button class="t-btn t-del" onclick="deleteTroubleById('${t.id}')">削除</button>
       </div>
-    </div>`;
-  }).join('');
+    </div>`).join('');
 }
 
-async function addTrouble(){
-  const title=document.getElementById('tr-title').value.trim();
-  if(!title){toast('件名を入力してください','err');return;}
-  await sb.from('incidents').insert({title,location:document.getElementById('tr-loc').value,urgency:document.getElementById('tr-urgency').value,assignee:document.getElementById('tr-owner').value,detail:document.getElementById('tr-detail').value,action:document.getElementById('tr-action').value,resolved:false});
-  closeModal('modal-add-trouble');
-  toast('🚨 トラブルを記録しました — 全メンバーに反映','');
+function openTroubleModal(){
+  editingTroubleId=null;
+  document.getElementById('trouble-modal-title').textContent='🚨 トラブルを記録';
+  document.getElementById('tr-id').value='';
   ['tr-title','tr-loc','tr-detail','tr-action'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('tr-urgency').value='normal';
+  document.getElementById('tr-del-btn').style.display='none';
+  openModal('modal-trouble');
 }
-async function resolveTrouble(id){await sb.from('incidents').update({resolved:true}).eq('id',id);toast('✅ 解決済みにしました');}
+function openEditTrouble(id){
+  const t=troubles.find(x=>x.id===id);if(!t)return;
+  editingTroubleId=id;
+  document.getElementById('trouble-modal-title').textContent='トラブルを編集';
+  document.getElementById('tr-id').value=id;
+  document.getElementById('tr-title').value=t.title||'';
+  document.getElementById('tr-loc').value=t.location||'';
+  document.getElementById('tr-urgency').value=t.urgency||'normal';
+  document.getElementById('tr-owner').value=t.assignee||'長谷川 圭一';
+  document.getElementById('tr-detail').value=t.detail||'';
+  document.getElementById('tr-action').value=t.action||'';
+  document.getElementById('tr-del-btn').style.display='inline-flex';
+  openModal('modal-trouble');
+}
+async function saveTrouble(){
+  const title=document.getElementById('tr-title').value.trim();
+  if(!title){toast('件名を入力してください');return;}
+  const payload={title,location:document.getElementById('tr-loc').value,urgency:document.getElementById('tr-urgency').value,assignee:document.getElementById('tr-owner').value,detail:document.getElementById('tr-detail').value,action:document.getElementById('tr-action').value};
+  if(editingTroubleId){await sb.from('incidents').update(payload).eq('id',editingTroubleId);toast('✅ 更新しました');}
+  else{await sb.from('incidents').insert({...payload,resolved:false});toast('🚨 記録しました');}
+  closeModal('modal-trouble');
+}
+async function deleteTrouble(){
+  if(!editingTroubleId||!confirm('削除しますか？'))return;
+  await sb.from('incidents').delete().eq('id',editingTroubleId);
+  closeModal('modal-trouble');toast('削除しました');
+}
+async function deleteTroubleById(id){
+  if(!confirm('削除しますか？'))return;
+  await sb.from('incidents').delete().eq('id',id);toast('削除しました');
+}
+async function resolveTrouble(id){await sb.from('incidents').update({resolved:true}).eq('id',id);toast('✅ 解決済み');}
 async function reopenTrouble(id){await sb.from('incidents').update({resolved:false}).eq('id',id);toast('再開しました');}
 
+sb.channel('trouble-rt').on('postgres_changes',{event:'*',schema:'public',table:'incidents'},()=>loadTroubles()).subscribe(s=>{if(s==='SUBSCRIBED')setSyncStatus('on');});
+
 // ===== FAQ =====
-const FAQ = [
-  {cat:'📡 映像・音響',items:[
-    {q:'プロジェクターが映らない',a:'①接続ケーブルを確認。②Re-Vision担当者（音響・映像操作室）に即連絡。③予備ケーブルは操作室に保管。④解決しない場合はスクリーン投影なしで進行を継続し、司会者に状況説明のアナウンスを依頼する。'},
-    {q:'マイクから音が出ない / ハウリングが発生',a:'①Re-Vision担当者に即連絡。②予備マイクと交換（予備は操作室に保管）。③ハウリングはマイクとスピーカーの位置関係を変えることで解消できる場合がある。④登壇者には落ち着いて待機いただくよう伝える。'},
-    {q:'動画が再生されない',a:'①Re-Vision担当者に即連絡。②PCの音量・映像出力設定を確認。③バックアップUSBから再生。④どうしても再生できない場合はそのパートを省略し、司会者が口頭で内容を要約して進行を続ける。'},
-  ]},
-  {cat:'👤 来賓・登壇者',items:[
-    {q:'来賓・登壇者が予定時刻に到着しない',a:'①担当アテンド者が連絡先に電話。②到着予定時刻を確認し、司会者に共有。③遅参の場合は進行順を一部変更（趣旨説明や動画放映で時間を調整）。④市長等公務による遅参は事前に対応策を共有済み。'},
-    {q:'登壇者が体調不良・急なキャンセル',a:'①委員長・室長に即報告。②該当パートの進行を他の登壇者・ファシリテーターで吸収。③司会者から参加者にアナウンス（「諸事情により〜様はご欠席となりました」）。④Supabaseトラブル対応欄に記録。'},
-    {q:'来賓の名前・肩書きを間違えた',a:'①その場で落ち着いて「失礼いたしました、正しくは〜様でございます」と訂正。②過度に謝罪しない（参加者の注意が集まりすぎるため）。③後日担当者から来賓に書面で謝罪。'},
-  ]},
-  {cat:'👥 参加者・会場',items:[
-    {q:'参加者が定員を超えそう',a:'①受付で整理券配布に切り替え。②2階席へ誘導（500席弱は1階のみ。2階は経済政策室・スタッフ用）。③立見は安全上NGのため入場制限を実施。④受付担当リーダーに即報告。'},
-    {q:'参加者が体調不良・気分が悪い',a:'①近くのスタッフが対応。②会場外（ロビー等）に誘導。③必要であれば救急車を要請（119）。④会場の救急箱の場所を事前に確認しておく。⑤進行はそのまま続ける。'},
-    {q:'会場内で迷子・迷われている参加者がいる',a:'①最寄りのスタッフが目的地まで誘導。②受付・スタッフ配置図を手元に持っておく。③JCメンバーへの案内はサイネージ・誘導看板を活用。'},
-    {q:'退場時に混雑・パニックが発生',a:'①司会者が冷静に「後方からご退場ください」とアナウンスを繰り返す。②スタッフが各通路に配置し誘導。③焦らず、ゆっくり、安全第一。④緊急の場合は会場の避難誘導マニュアルに従う。'},
-  ]},
-  {cat:'📋 進行・運営',items:[
-    {q:'タイムスケジュールが大幅に押している',a:'①司会者がファシリテーターに「あと〇分で締め」と合図。②各パートの終了合図は事前に打ち合わせ済み。③アンケート時間（4分）は削らない（データ収集が目的のため）。④最大5分程度の遅延は許容範囲内。それ以上の場合は委員長・室長に相談。'},
-    {q:'停電・火災など緊急事態が発生',a:'①参加者の安全を最優先。②会場スタッフの指示に従う。③司会者が冷静にアナウンス「非常時のため、スタッフの誘導に従い退場ください」。④会場の避難経路・集合場所を事前に確認しておく。'},
-    {q:'アンケートQRコードが読めない',a:'①スクリーンのQRコードを拡大投影。②スタッフが持つQRコードの掲示板を参加者に近づける。③読めない参加者には紙のアンケート（予備を用意）を手渡す。'},
-  ]},
+let faqs=[
+  {id:'f01',cat:'📡 映像・音響',q:'プロジェクターが映らない',a:'①接続ケーブルを確認。②Re-Vision担当者に即連絡。③予備ケーブルは操作室に保管。④解決しない場合はスクリーン投影なしで進行し、司会者にアナウンスを依頼。'},
+  {id:'f02',cat:'📡 映像・音響',q:'マイクから音が出ない・ハウリングが発生',a:'①Re-Vision担当者に即連絡。②予備マイクと交換（操作室に保管）。③ハウリングはマイクとスピーカーの位置関係を調整。④登壇者に落ち着いて待機いただくよう伝える。'},
+  {id:'f03',cat:'📡 映像・音響',q:'動画が再生されない',a:'①Re-Vision担当者に即連絡。②PCの音量・映像出力設定を確認。③バックアップUSBから再生。④それでも再生できない場合は省略し、司会者が口頭で内容を要約して進行を続ける。'},
+  {id:'f04',cat:'👤 来賓・登壇者',q:'来賓・登壇者が予定時刻に到着しない',a:'①アテンド担当者が連絡先に電話。②到着予定時刻を確認し司会者に共有。③遅参の場合は進行順を調整（趣旨説明や動画放映で時間を調整）。④市長等公務による遅参は事前対応策を共有済み。'},
+  {id:'f05',cat:'👤 来賓・登壇者',q:'登壇者が体調不良・急なキャンセル',a:'①委員長・室長に即報告。②該当パートの進行を他の登壇者・ファシリテーターで吸収。③司会者からアナウンス。④Supabaseトラブル欄に記録。'},
+  {id:'f06',cat:'👥 参加者・会場',q:'参加者が定員を超えそう',a:'①受付で整理券配布に切り替え。②2階席へ誘導。③立見はNG。④受付担当リーダーに即報告。'},
+  {id:'f07',cat:'👥 参加者・会場',q:'参加者が体調不良・気分が悪い',a:'①近くのスタッフが対応。②会場外へ誘導。③必要であれば救急車を要請（119）。④会場の救急箱の場所を事前確認。⑤進行はそのまま続ける。'},
+  {id:'f08',cat:'📋 進行・運営',q:'タイムスケジュールが大幅に押している',a:'①司会者がファシリテーターに「あと〇分で締め」と合図。②各パートの終了合図は事前打合せ済み。③アンケート時間（4分）は削らない。④5分以上の遅延は委員長・室長に相談。'},
+  {id:'f09',cat:'📋 進行・運営',q:'停電・火災など緊急事態が発生',a:'①参加者の安全を最優先。②会場スタッフの指示に従う。③司会者が冷静にアナウンス「非常時のため、スタッフの誘導に従い退場ください」。④会場の避難経路・集合場所を事前確認。'},
 ];
+let faqIdCounter=200;
+let editingFaqId=null;
 
 function renderFAQ(){
   const el=document.getElementById('faq-list');
-  el.innerHTML=FAQ.map(section=>`
-    <div class="faq-cat">${section.cat}</div>
-    ${section.items.map((item,i)=>`
-      <div class="faq-item" id="faq-${section.cat}-${i}">
-        <button class="faq-q" onclick="toggleFAQ('faq-${section.cat}-${i}')">
+  const cats=[...new Set(faqs.map(f=>f.cat))];
+  el.innerHTML=cats.map(cat=>`
+    <div class="faq-cat">${cat}</div>
+    ${faqs.filter(f=>f.cat===cat).map(f=>`
+      <div class="faq-item" id="faq-${f.id}">
+        <button class="faq-q" onclick="toggleFaq('${f.id}')">
           <span class="faq-q-icon">Q</span>
-          <span style="flex:1">${item.q}</span>
+          <span style="flex:1;text-align:left">${f.q}</span>
+          <button class="faq-edit-btn" onclick="event.stopPropagation();openEditFaq('${f.id}')">編集</button>
           <span class="faq-arrow">▼</span>
         </button>
-        <div class="faq-a">A. ${item.a}</div>
-      </div>`).join('')}
-  `).join('');
+        <div class="faq-a">A. ${f.a}</div>
+      </div>`).join('')}`).join('');
 }
 
-function toggleFAQ(id){
-  const el=document.getElementById(id);
-  el.classList.toggle('open');
+function toggleFaq(id){document.getElementById('faq-'+id).classList.toggle('open');}
+
+function openFaqModal(){
+  editingFaqId=null;
+  document.getElementById('faq-modal-title').textContent='FAQを追加';
+  document.getElementById('faq-id').value='';
+  document.getElementById('faq-cat').value='📡 映像・音響';
+  document.getElementById('faq-q').value='';
+  document.getElementById('faq-a').value='';
+  document.getElementById('faq-del-btn').style.display='none';
+  openModal('modal-faq');
+}
+function openEditFaq(id){
+  const f=faqs.find(x=>x.id===id);if(!f)return;
+  editingFaqId=id;
+  document.getElementById('faq-modal-title').textContent='FAQを編集';
+  document.getElementById('faq-id').value=id;
+  document.getElementById('faq-cat').value=f.cat;
+  document.getElementById('faq-q').value=f.q;
+  document.getElementById('faq-a').value=f.a;
+  document.getElementById('faq-del-btn').style.display='inline-flex';
+  openModal('modal-faq');
+}
+function saveFaq(){
+  const q=document.getElementById('faq-q').value.trim();
+  const a=document.getElementById('faq-a').value.trim();
+  if(!q||!a){toast('質問と対応方法を入力してください');return;}
+  const payload={cat:document.getElementById('faq-cat').value,q,a};
+  if(editingFaqId){const f=faqs.find(x=>x.id===editingFaqId);if(f)Object.assign(f,payload);toast('✅ 更新しました');}
+  else{faqs.push({id:'f'+(faqIdCounter++),done:false,...payload});toast('✅ 追加しました');}
+  closeModal('modal-faq');renderFAQ();
+}
+function deleteFaq(){
+  if(!confirm('削除しますか？'))return;
+  faqs=faqs.filter(x=>x.id!==editingFaqId);
+  closeModal('modal-faq');renderFAQ();toast('削除しました');
 }
 
 function fmtTime(ts){if(!ts)return'';const d=new Date(ts);const diff=Math.floor((new Date()-d)/60000);if(diff<1)return'たった今';if(diff<60)return diff+'分前';if(diff<1440)return Math.floor(diff/60)+'時間前';return(d.getMonth()+1)+'/'+(d.getDate());}
-
-sb.channel('trouble-rt')
-  .on('postgres_changes',{event:'*',schema:'public',table:'incidents'},()=>loadTroubles())
-  .subscribe(s=>{if(s==='SUBSCRIBED')setSyncStatus('on');});
-
 function openModal(id){document.getElementById(id).classList.add('open');}
 function closeModal(id){document.getElementById(id).classList.remove('open');}
 document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
-function toast(msg,type){const c=document.getElementById('toast-c');const t=document.createElement('div');t.className='toast'+(type?' '+type:'');t.textContent=msg;c.appendChild(t);setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity 0.3s';setTimeout(()=>t.remove(),300);},3000);}
+function toast(msg){const c=document.getElementById('toast-c');const t=document.createElement('div');t.className='toast';t.textContent=msg;c.appendChild(t);setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity 0.3s';setTimeout(()=>t.remove(),300);},2500);}
 
 renderFAQ();
 loadTroubles();
