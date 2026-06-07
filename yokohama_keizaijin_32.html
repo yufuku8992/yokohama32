@@ -274,10 +274,9 @@
     nav.appendChild(a);
   });
 })();
-</script>
-<!-- END NAV -->
-<script>
-function toggleSidebar() {
+
+// ===== サイドバー開閉（グローバル・即時定義）=====
+window.toggleSidebar = function() {
   var sb = document.getElementById('sidebar');
   var ov = document.getElementById('sidebar-overlay');
   if (!sb) return;
@@ -288,21 +287,27 @@ function toggleSidebar() {
     sb.classList.add('open');
     if(ov){ov.style.display='block';setTimeout(function(){ov.style.opacity='1';ov.style.pointerEvents='all';},10);}
   }
-}
-function closeSidebar() {
+};
+window.closeSidebar = function() {
   var sb = document.getElementById('sidebar');
   var ov = document.getElementById('sidebar-overlay');
   if (!sb) return;
   sb.classList.remove('open');
   if(ov){ov.style.opacity='0';ov.style.pointerEvents='none';setTimeout(function(){ov.style.display='none';},250);}
-}
-document.addEventListener('DOMContentLoaded', function(){
-  var hb = document.getElementById('hamburger');
-  if(hb) hb.addEventListener('click', function(e){ e.stopPropagation(); toggleSidebar(); });
-  var ov = document.getElementById('sidebar-overlay');
-  if(ov) ov.addEventListener('click', closeSidebar);
-});
+};
+// ハンバーガーとオーバーレイにイベント登録
+(function bindHamburger(){
+  function tryBind(){
+    var hb=document.getElementById('hamburger');
+    var ov=document.getElementById('sidebar-overlay');
+    if(hb){hb.removeEventListener('click',window.toggleSidebar);hb.addEventListener('click',function(e){e.stopPropagation();window.toggleSidebar();});}
+    if(ov){ov.removeEventListener('click',window.closeSidebar);ov.addEventListener('click',window.closeSidebar);}
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',tryBind);}
+  else{tryBind();}
+})();
 </script>
+<!-- END NAV -->
 
 
 <!-- サイドバーオーバーレイ -->
@@ -331,12 +336,6 @@ function closeSidebar() {
   if(ov){ov.style.opacity='0';ov.style.pointerEvents='none';setTimeout(function(){ov.style.display='none';},250);}
 }
 // ハンバーガーボタンにイベント登録
-document.addEventListener('DOMContentLoaded', function(){
-  var hb = document.getElementById('hamburger');
-  if(hb) hb.addEventListener('click', function(e){ e.stopPropagation(); toggleSidebar(); });
-  var ov = document.getElementById('sidebar-overlay');
-  if(ov) ov.addEventListener('click', closeSidebar);
-});
 </script>
 
 
@@ -369,7 +368,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <div id="main">
   <header id="topbar">
     <div style="display:flex;align-items:center;gap:10px;">
-      <button id="hamburger" style="display:none;background:none;border:none;cursor:pointer;padding:6px;flex-direction:column;gap:5px;justify-content:center;align-items:center;">
+      <button id="hamburger" onclick="if(window.toggleSidebar)window.toggleSidebar();else{var s=document.getElementById('sidebar');if(s)s.classList.toggle('open');}" style="display:none;background:none;border:none;cursor:pointer;padding:6px;flex-direction:column;gap:5px;justify-content:center;align-items:center;">
         <span style="display:block;width:20px;height:2px;background:var(--navy);border-radius:2px;"></span>
         <span style="display:block;width:20px;height:2px;background:var(--navy);border-radius:2px;"></span>
         <span style="display:block;width:20px;height:2px;background:var(--navy);border-radius:2px;"></span>
