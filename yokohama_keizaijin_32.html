@@ -168,7 +168,7 @@
     transition: transform 0.25s ease !important;
     width: 260px !important;
     top: 40px !important;
-    z-index: 200 !important;
+    z-index: 300 !important;
   }
   #sidebar.open {
     transform: translateX(0) !important;
@@ -276,32 +276,43 @@
 })();
 
 // ===== サイドバー開閉（グローバル・即時定義）=====
-window.toggleSidebar = function() {
+window._sidebarOpen = false;
+window.toggleSidebar = function(e) {
+  if(e){e.preventDefault();e.stopPropagation();}
   var sb = document.getElementById('sidebar');
   var ov = document.getElementById('sidebar-overlay');
   if (!sb) return;
-  if (sb.classList.contains('open')) {
-    sb.classList.remove('open');
-    if(ov){ov.style.opacity='0';ov.style.pointerEvents='none';setTimeout(function(){ov.style.display='none';},250);}
+  window._sidebarOpen = !window._sidebarOpen;
+  if(window._sidebarOpen){
+    sb.style.transform='translateX(0)';
+    sb.style.boxShadow='4px 0 24px rgba(0,0,0,0.5)';
+    if(ov){ov.style.display='block';ov.style.pointerEvents='all';setTimeout(function(){ov.style.opacity='1';},10);}
   } else {
-    sb.classList.add('open');
-    if(ov){ov.style.display='block';setTimeout(function(){ov.style.opacity='1';ov.style.pointerEvents='all';},10);}
+    sb.style.transform='';
+    sb.style.boxShadow='';
+    if(ov){ov.style.opacity='0';ov.style.pointerEvents='none';setTimeout(function(){ov.style.display='none';},250);}
   }
 };
-window.closeSidebar = function() {
+window.closeSidebar = function(e) {
+  if(e){e.preventDefault();e.stopPropagation();}
   var sb = document.getElementById('sidebar');
   var ov = document.getElementById('sidebar-overlay');
-  if (!sb) return;
-  sb.classList.remove('open');
+  window._sidebarOpen = false;
+  if(sb){sb.style.transform='';sb.style.boxShadow='';}
   if(ov){ov.style.opacity='0';ov.style.pointerEvents='none';setTimeout(function(){ov.style.display='none';},250);}
 };
-// ハンバーガーとオーバーレイにイベント登録
 (function bindHamburger(){
   function tryBind(){
     var hb=document.getElementById('hamburger');
     var ov=document.getElementById('sidebar-overlay');
-    if(hb){hb.removeEventListener('click',window.toggleSidebar);hb.addEventListener('click',function(e){e.stopPropagation();window.toggleSidebar();});}
-    if(ov){ov.removeEventListener('click',window.closeSidebar);ov.addEventListener('click',window.closeSidebar);}
+    if(hb){
+      hb.addEventListener('touchend',function(e){e.preventDefault();e.stopPropagation();window.toggleSidebar();},{passive:false});
+      hb.addEventListener('click',function(e){e.stopPropagation();window.toggleSidebar();});
+    }
+    if(ov){
+      ov.addEventListener('touchend',function(e){e.preventDefault();window.closeSidebar();},{passive:false});
+      ov.addEventListener('click',function(e){e.stopPropagation();window.closeSidebar();});
+    }
   }
   if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',tryBind);}
   else{tryBind();}
@@ -311,7 +322,7 @@ window.closeSidebar = function() {
 
 
 <!-- サイドバーオーバーレイ -->
-<div id="sidebar-overlay" onclick="closeSidebar()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:199;opacity:0;pointer-events:none;transition:opacity 0.25s;"></div>
+<div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:150;opacity:0;pointer-events:none;transition:opacity 0.25s;"></div>
 
 
 <script>
@@ -368,7 +379,7 @@ function closeSidebar() {
 <div id="main">
   <header id="topbar">
     <div style="display:flex;align-items:center;gap:10px;">
-      <button id="hamburger" onclick="if(window.toggleSidebar)window.toggleSidebar();else{var s=document.getElementById('sidebar');if(s)s.classList.toggle('open');}" style="display:none;background:none;border:none;cursor:pointer;padding:6px;flex-direction:column;gap:5px;justify-content:center;align-items:center;">
+      <button id="hamburger" style="display:none;background:none;border:none;cursor:pointer;padding:6px;flex-direction:column;gap:5px;justify-content:center;align-items:center;position:relative;z-index:400;">
         <span style="display:block;width:20px;height:2px;background:var(--navy);border-radius:2px;"></span>
         <span style="display:block;width:20px;height:2px;background:var(--navy);border-radius:2px;"></span>
         <span style="display:block;width:20px;height:2px;background:var(--navy);border-radius:2px;"></span>
