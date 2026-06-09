@@ -24,6 +24,8 @@
   --note-bg:#f0f2f4;
   --fasili:#c0392b;    /* ファシリテーター */
   --fasili-bg:#fdecea;
+  --pc:#0a7d8c;        /* PC操作 */
+  --pc-bg:#e0f4f6;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--gray-800);font-size:14px;line-height:1.7;}
@@ -123,6 +125,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--gray
 .cue-staff   {background:var(--staff-bg);  border-color:#f0dcc0;}
 .cue-note    {background:var(--note-bg);   border-color:#d8dde2;}
 .cue-fasili  {background:var(--fasili-bg); border-color:#f0c8c8;}
+.cue-pc      {background:var(--pc-bg);     border-color:#b0dde2;}
 
 .cue-header{
   display:flex;align-items:center;gap:10px;
@@ -142,6 +145,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--gray
 .tag-staff   {background:var(--staff);   color:#fff;}
 .tag-note    {background:var(--note);    color:#fff;}
 .tag-fasili  {background:var(--fasili);  color:#fff;}
+.tag-pc      {background:var(--pc);      color:#fff;}
 
 .cue-label{font-size:12px;color:var(--gray-600);flex:1;}
 .cue-duration{font-size:10px;color:var(--gray-400);white-space:nowrap;}
@@ -394,6 +398,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--gray
             <option value="fasili">🎙 ファシリテーター</option>
             <option value="speaker">🏛 登壇者</option>
             <option value="staff">⚙️ スタッフ・全員</option>
+            <option value="pc">🖥 PC操作（Re-Vision）</option>
             <option value="note">📋 備考・ト書き</option>
           </select>
         </div>
@@ -450,6 +455,8 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--gray
             <option value="fasili">🎙 ファシリテーター</option>
             <option value="speaker">🏛 登壇者</option>
             <option value="staff">⚙️ スタッフ・全員</option>
+            <option value="pc">🖥 PC操作（Re-Vision）</option>
+            <option value="pc">🖥 PC操作（Re-Vision）</option>
             <option value="note">📋 備考・ト書き</option>
           </select>
         </div>
@@ -528,6 +535,7 @@ const SPEAKER_MAP = {
   fasili:  { label:'ファシリテーター', tag:'tag-fasili',  cls:'cue-fasili' },
   speaker: { label:'登壇者',          tag:'tag-speaker', cls:'cue-speaker' },
   staff:   { label:'スタッフ',        tag:'tag-staff',   cls:'cue-staff' },
+  pc:      { label:'PC操作',          tag:'tag-pc',      cls:'cue-pc' },
   note:    { label:'備考',            tag:'tag-note',    cls:'cue-note' },
 };
 

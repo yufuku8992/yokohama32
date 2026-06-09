@@ -19,37 +19,38 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--gray
 .btn-danger{background:var(--red);color:#fff;}
 .btn-light{background:#fff;color:var(--gray-800);border:1px solid var(--gray-200);}
 #main{max-width:1100px;margin:0 auto;padding:20px 24px;}
-.tabs{display:flex;gap:0;border-bottom:2px solid var(--gray-200);margin-bottom:18px;}
-.tab{padding:9px 20px;cursor:pointer;border:none;background:none;font-family:'Noto Sans JP',sans-serif;font-size:13px;color:var(--gray-600);border-bottom:2px solid transparent;margin-bottom:-2px;transition:all 0.15s;}
+.tabs{display:flex;gap:0;border-bottom:2px solid var(--gray-200);margin-bottom:18px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.tab{padding:9px 20px;cursor:pointer;border:none;background:none;font-family:'Noto Sans JP',sans-serif;font-size:13px;color:var(--gray-600);border-bottom:2px solid transparent;margin-bottom:-2px;transition:all 0.15s;white-space:nowrap;}
 .tab.active{color:var(--navy);border-bottom-color:var(--gold);font-weight:600;}
 .card{background:#fff;border:1px solid var(--gray-200);border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.05);margin-bottom:18px;}
 .card-header{padding:12px 16px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between;}
 .card-title{font-family:'Noto Serif JP',serif;font-size:13px;font-weight:600;color:var(--navy);}
 .progress-strip{background:#fff;border:1px solid var(--gray-200);border-radius:8px;padding:14px 18px;margin-bottom:16px;display:flex;gap:20px;align-items:center;flex-wrap:wrap;box-shadow:0 1px 4px rgba(0,0,0,0.05);}
-.prog-item{text-align:center;}
 .prog-num{font-size:22px;font-weight:700;color:var(--navy);}
 .prog-label{font-size:10px;color:var(--gray-400);}
-.prog-bar{flex:1;min-width:200px;}
+.prog-bar{flex:1;min-width:160px;}
 .prog-bar-track{height:8px;background:var(--gray-100);border-radius:4px;overflow:hidden;}
 .prog-bar-fill{height:100%;background:linear-gradient(90deg,var(--green),#4aba7a);border-radius:4px;transition:width 0.4s;}
-/* TABLE */
 .tbl{width:100%;border-collapse:collapse;}
 .tbl thead tr{background:var(--navy);}
 .tbl th{padding:9px 12px;text-align:left;font-size:10.5px;font-weight:600;color:rgba(255,255,255,0.8);white-space:nowrap;}
-.tbl td{padding:9px 12px;border-bottom:1px solid var(--gray-100);font-size:12.5px;vertical-align:top;}
+.tbl td{padding:8px 12px;border-bottom:1px solid var(--gray-100);font-size:12.5px;vertical-align:middle;}
 .tbl tbody tr:hover td{background:var(--gray-50);}
 .tbl tbody tr.done td{opacity:0.45;}
 .check-cell{width:32px;text-align:center;cursor:pointer;}
 .check-box{width:17px;height:17px;border:2px solid var(--gray-200);border-radius:3px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;color:#fff;transition:all 0.15s;}
 .check-box.done{background:var(--green);border-color:var(--green);}
+/* インライン編集可能セル */
+.cell-input{width:100%;border:none;background:transparent;font-family:'Noto Sans JP',sans-serif;font-size:12.5px;color:var(--gray-800);padding:4px 6px;outline:none;border-radius:3px;}
+.cell-input:focus{background:rgba(201,168,76,0.08);outline:2px solid var(--gold);outline-offset:-1px;}
+.cell-input.owner-input{color:var(--gray-600);}
 .period-badge{display:inline-block;padding:2px 7px;border-radius:3px;font-size:10.5px;font-weight:600;white-space:nowrap;}
 .media-badge{display:inline-block;padding:2px 7px;border-radius:3px;font-size:10.5px;font-weight:600;background:var(--gray-100);color:var(--gray-600);}
-.action-cell{white-space:nowrap;opacity:0;}
+.action-cell{white-space:nowrap;opacity:0;transition:opacity 0.15s;}
 .tbl tbody tr:hover .action-cell{opacity:1;}
-.act-btn{padding:2px 7px;border-radius:3px;border:none;cursor:pointer;font-size:10px;font-weight:600;margin-left:3px;}
+.act-btn{padding:2px 7px;border-radius:3px;border:none;cursor:pointer;font-size:10px;font-weight:600;margin-left:2px;}
 .act-edit{background:var(--navy);color:#fff;}
 .act-del{background:var(--red);color:#fff;}
-/* MODAL */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(13,27,62,0.45);z-index:200;align-items:center;justify-content:center;}
 .modal-overlay.open{display:flex;}
 .modal{background:#fff;border-radius:8px;width:520px;max-width:95vw;max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.15);}
@@ -60,8 +61,9 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--gray
 .modal-footer{padding:11px 18px;border-top:1px solid var(--gray-100);display:flex;justify-content:flex-end;gap:7px;}
 .form-row{margin-bottom:11px;}
 .form-label{font-size:11px;font-weight:600;color:var(--gray-600);margin-bottom:3px;display:block;}
-.form-input,.form-select{width:100%;padding:7px 10px;border:1px solid var(--gray-200);border-radius:4px;font-family:'Noto Sans JP',sans-serif;font-size:13px;color:var(--gray-800);background:#fff;outline:none;}
+.form-input,.form-select,.form-textarea{width:100%;padding:7px 10px;border:1px solid var(--gray-200);border-radius:4px;font-family:'Noto Sans JP',sans-serif;font-size:13px;color:var(--gray-800);background:#fff;outline:none;}
 .form-input:focus,.form-select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,0.1);}
+.form-textarea{resize:vertical;min-height:60px;line-height:1.6;}
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 #toast-c{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:999;display:flex;flex-direction:column;align-items:center;gap:6px;}
 .toast{background:var(--navy);color:#fff;padding:8px 18px;border-radius:20px;font-size:12px;border:1px solid var(--gold);animation:tin 0.2s;}
@@ -69,7 +71,8 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--gray
 #portal-nav{background:#060f22 !important;}
 #portal-nav a,#portal-nav-links a{text-decoration:none !important;}
 #portal-nav>a{color:#c9a84c !important;flex-shrink:0;}
-@media(max-width:768px){#main{padding:12px 14px;}.tbl{min-width:600px;}.card{overflow-x:auto;}.tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;}.tab{white-space:nowrap;font-size:12px;padding:8px 12px;}.action-cell{opacity:1 !important;}#portal-nav a{font-size:10px !important;padding:3px 6px !important;}}
+@media(max-width:768px){#main{padding:12px 14px;}.card{overflow-x:auto;}.tbl{min-width:600px;}.action-cell{opacity:1 !important;}#portal-nav a{font-size:10px !important;padding:3px 6px !important;}}
+@media print{#toolbar,#portal-nav,.action-cell{display:none!important;}}
 </style>
 </head>
 <body>
@@ -92,12 +95,13 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--gray
 
 <div id="main">
   <div class="progress-strip">
-    <div class="prog-item"><div class="prog-num" id="pr-done-all">0</div><div class="prog-label">完了</div></div>
-    <div class="prog-item"><div class="prog-num" id="pr-total-all" style="color:var(--gray-400)">0</div><div class="prog-label">全件</div></div>
+    <div style="text-align:center"><div class="prog-num" id="pr-done-all">0</div><div class="prog-label">完了</div></div>
+    <div style="text-align:center"><div class="prog-num" id="pr-total-all" style="color:var(--gray-400)">0</div><div class="prog-label">全件</div></div>
     <div class="prog-bar">
       <div style="font-size:11px;color:var(--gray-400);margin-bottom:4px;display:flex;justify-content:space-between;"><span>全体進捗</span><span id="pr-pct">0%</span></div>
       <div class="prog-bar-track"><div class="prog-bar-fill" id="pr-bar" style="width:0%"></div></div>
     </div>
+    <div style="font-size:11px;color:var(--gray-400);">セルをクリックして直接編集</div>
   </div>
 
   <div class="tabs">
@@ -108,22 +112,26 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--gray
   <div id="tab-gaigai">
     <div class="card">
       <div class="card-header">
-        <div class="card-title">📢 対外広報スケジュール</div>
+        <div class="card-title">📢 対外広報スケジュール（市内事業者・後援先・メディア向け）</div>
         <button class="btn btn-gold btn-sm" onclick="openAddModal('gaigai')">＋ 追加</button>
       </div>
-      <table class="tbl"><thead><tr><th style="width:32px"></th><th style="width:100px">日付</th><th style="width:90px">時期</th><th>内容</th><th style="width:120px">担当</th><th style="width:100px">媒体</th><th style="width:70px"></th></tr></thead>
-      <tbody id="tbody-gaigai"></tbody></table>
+      <table class="tbl">
+        <thead><tr><th style="width:32px"></th><th style="width:95px">日付</th><th style="width:85px">時期</th><th>内容</th><th style="width:130px">担当</th><th style="width:110px">媒体</th><th style="width:110px">備考</th><th style="width:70px"></th></tr></thead>
+        <tbody id="tbody-gaigai"></tbody>
+      </table>
     </div>
   </div>
 
   <div id="tab-nainai" style="display:none">
     <div class="card">
       <div class="card-header">
-        <div class="card-title">📣 対内広報スケジュール</div>
+        <div class="card-title">📣 対内広報スケジュール（JCメンバー向け）</div>
         <button class="btn btn-gold btn-sm" onclick="openAddModal('nainai')">＋ 追加</button>
       </div>
-      <table class="tbl"><thead><tr><th style="width:32px"></th><th style="width:100px">日付</th><th style="width:90px">時期</th><th>内容</th><th style="width:120px">担当</th><th style="width:100px">媒体</th><th style="width:70px"></th></tr></thead>
-      <tbody id="tbody-nainai"></tbody>
+      <table class="tbl">
+        <thead><tr><th style="width:32px"></th><th style="width:95px">日付</th><th style="width:85px">時期</th><th>内容</th><th style="width:130px">担当</th><th style="width:110px">媒体</th><th style="width:110px">備考</th><th style="width:70px"></th></tr></thead>
+        <tbody id="tbody-nainai"></tbody>
+      </table>
     </div>
   </div>
 </div>
@@ -144,11 +152,12 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--gray
           </select>
         </div>
       </div>
-      <div class="form-row"><label class="form-label">内容 *</label><input class="form-input" id="edit-content" placeholder="SNS告知など"></div>
+      <div class="form-row"><label class="form-label">内容 *</label><textarea class="form-textarea" id="edit-content" placeholder="SNS告知など"></textarea></div>
       <div class="grid-2">
-        <div class="form-row"><label class="form-label">担当</label><input class="form-input" id="edit-owner" placeholder="荒井 亮一"></div>
+        <div class="form-row"><label class="form-label">担当</label><input class="form-input" id="edit-owner" placeholder="（空欄でOK）"></div>
         <div class="form-row"><label class="form-label">媒体</label><input class="form-input" id="edit-media" placeholder="SNS / メール / LINE"></div>
       </div>
+      <div class="form-row"><label class="form-label">備考</label><input class="form-input" id="edit-memo" placeholder="詳細メモ"></div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-danger btn-sm" id="edit-del-btn" onclick="deleteItem()" style="margin-right:auto;display:none">削除</button>
@@ -163,38 +172,40 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--gray
 const PERIOD_COLORS={'事業承認後':'#7d3c98','1ヶ月半前':'#1a4a8a','1ヶ月前':'#c76b0a','半月前':'#c0392b','1週間前':'#1a7a4a','前日':'#0d1b3e','事業後':'#566573'};
 
 let gaigai=[
-  {id:'g01',done:false,date:'2026-07-08',period:'事業承認後',content:'横浜JC公式SNS告知①（デジタルフライヤー配信）',owner:'荒井 亮一',media:'SNS（HP/FB/Instagram）'},
-  {id:'g02',done:false,date:'2026-07-14',period:'1ヶ月半前',content:'PR TIMES・PressWalkerによる配信（第1回）',owner:'弘中 義之',media:'PR配信'},
-  {id:'g03',done:false,date:'2026-07-14',period:'1ヶ月半前',content:'プレスリリース第1回配信（市政記者会13社・キー局FAX）',owner:'福田 雄太郎',media:'FAX/メール'},
-  {id:'g04',done:false,date:'2026-07-14',period:'1ヶ月半前',content:'メール・FAX案内資料送付（開催案内先一覧に基づき）',owner:'弘中 義之',media:'メール/FAX'},
-  {id:'g05',done:false,date:'2026-07-14',period:'1ヶ月半前',content:'後援先への後援依頼・当日参加依頼実施',owner:'荒井 亮一',media:'メール/訪問'},
-  {id:'g06',done:false,date:'2026-07-28',period:'1ヶ月前',content:'横浜JC公式SNS告知②（講師プロフィール・講演内容紹介）',owner:'荒井 亮一',media:'SNS'},
-  {id:'g07',done:false,date:'2026-08-14',period:'半月前',content:'開催予告動画 配信（YouTube・SNS）',owner:'荒井 亮一',media:'YouTube/SNS'},
-  {id:'g08',done:false,date:'2026-08-14',period:'半月前',content:'プレスリリース第2回配信（再配信）',owner:'福田 雄太郎',media:'FAX/メール'},
-  {id:'g09',done:false,date:'2026-08-14',period:'半月前',content:'PR TIMES・PressWalker再配信（第2回）',owner:'弘中 義之',media:'PR配信'},
-  {id:'g10',done:false,date:'2026-08-14',period:'半月前',content:'SNS告知③（講師プロフィール・講演内容詳細紹介）',owner:'荒井 亮一',media:'SNS'},
-  {id:'g11',done:false,date:'2026-08-21',period:'1週間前',content:'開催予告動画 再配信',owner:'荒井 亮一',media:'YouTube/SNS'},
-  {id:'g12',done:false,date:'2026-08-21',period:'1週間前',content:'申込者へのリマインドメール送付（デジタルパンフ同封）',owner:'永井 嵩久',media:'メール'},
-  {id:'g13',done:false,date:'2026-08-21',period:'1週間前',content:'SNS告知④（最終案内・参加促進）',owner:'荒井 亮一',media:'SNS'},
-  {id:'g14',done:false,date:'2026-09-05',period:'事業後',content:'SNS事業報告（FB・Instagram）',owner:'荒井 亮一',media:'SNS'},
-  {id:'g15',done:false,date:'2026-10-01',period:'事業後',content:'アーカイブ動画 分割配信（4本）・登壇企業へ共有依頼',owner:'荒井 亮一',media:'YouTube'},
+  {id:'g01',done:false,date:'2026-07-08',period:'事業承認後',content:'横浜JC公式SNS告知①（デジタルフライヤー配信）',owner:'',media:'SNS（HP/FB/Instagram）',memo:''},
+  {id:'g02',done:false,date:'2026-07-14',period:'1ヶ月半前',content:'PR TIMES・PressWalkerによる配信（第1回）',owner:'',media:'PR配信',memo:''},
+  {id:'g03',done:false,date:'2026-07-14',period:'1ヶ月半前',content:'プレスリリース第1回配信（市政記者会13社・キー局FAX）',owner:'',media:'FAX/メール',memo:''},
+  {id:'g04',done:false,date:'2026-07-14',period:'1ヶ月半前',content:'メール・FAX案内資料送付（開催案内先一覧に基づき）',owner:'',media:'メール/FAX',memo:''},
+  {id:'g05',done:false,date:'2026-07-14',period:'1ヶ月半前',content:'後援先への後援依頼・当日参加依頼実施',owner:'',media:'メール/訪問',memo:''},
+  {id:'g06',done:false,date:'2026-07-28',period:'1ヶ月前',content:'横浜JC公式SNS告知②（講師プロフィール・講演内容紹介）',owner:'',media:'SNS',memo:''},
+  {id:'g07',done:false,date:'2026-07-28',period:'1ヶ月前',content:'デジタルパンフレット第1回配信（提言①・第1部パネルディスカッション）',owner:'',media:'メール',memo:'申込者へメール送付'},
+  {id:'g08',done:false,date:'2026-08-14',period:'半月前',content:'開催予告動画 配信（YouTube・SNS）',owner:'',media:'YouTube/SNS',memo:''},
+  {id:'g09',done:false,date:'2026-08-14',period:'半月前',content:'プレスリリース第2回配信（再配信）',owner:'',media:'FAX/メール',memo:''},
+  {id:'g10',done:false,date:'2026-08-14',period:'半月前',content:'PR TIMES・PressWalker再配信（第2回）',owner:'',media:'PR配信',memo:''},
+  {id:'g11',done:false,date:'2026-08-14',period:'半月前',content:'SNS告知③（講師プロフィール・講演内容詳細紹介）',owner:'',media:'SNS',memo:''},
+  {id:'g12',done:false,date:'2026-08-14',period:'半月前',content:'デジタルパンフレット第2回配信（提言②・第2部パネルディスカッション）',owner:'',media:'メール',memo:'申込者へメール送付'},
+  {id:'g13',done:false,date:'2026-08-21',period:'1週間前',content:'開催予告動画 再配信',owner:'',media:'YouTube/SNS',memo:''},
+  {id:'g14',done:false,date:'2026-08-21',period:'1週間前',content:'申込者へのリマインドメール送付',owner:'',media:'メール',memo:''},
+  {id:'g15',done:false,date:'2026-08-21',period:'1週間前',content:'SNS告知④（最終案内・参加促進）',owner:'',media:'SNS',memo:''},
+  {id:'g16',done:false,date:'2026-08-21',period:'1週間前',content:'デジタルパンフレット第3回配信（提言③・第3部パネルディスカッション）',owner:'',media:'メール',memo:'申込者へメール送付'},
+  {id:'g17',done:false,date:'2026-08-27',period:'前日',content:'デジタルパンフレット第4回配信（全提言・全パネルディスカッション）',owner:'',media:'メール',memo:'申込者へメール送付（最終版）'},
+  {id:'g18',done:false,date:'2026-09-05',period:'事業後',content:'SNS事業報告（FB・Instagram）',owner:'',media:'SNS',memo:''},
+  {id:'g19',done:false,date:'2026-10-01',period:'事業後',content:'アーカイブ動画 分割配信（4本）・登壇企業へ共有依頼',owner:'',media:'YouTube',memo:''},
 ];
 
 let nainai=[
-  {id:'n01',done:false,date:'2026-07-08',period:'事業承認後',content:'公式LINEで告知①（デジタルフライヤー配信）',owner:'弘中 義之',media:'公式LINE'},
-  {id:'n02',done:false,date:'2026-07-28',period:'1ヶ月前',content:'公式LINEで告知②（事業内容の周知①）',owner:'弘中 義之',media:'公式LINE'},
-  {id:'n03',done:false,date:'2026-07-28',period:'1ヶ月前',content:'委員会PRを全委員会で実施（地域開発×国際観光で手分け）',owner:'荒井 亮一/弘中 義之',media:'対面/委員会'},
-  {id:'n04',done:false,date:'2026-08-14',period:'半月前',content:'出席者一次確認',owner:'弘中 義之',media:'総括LINE'},
-  {id:'n05',done:false,date:'2026-08-14',period:'半月前',content:'公式LINEで告知③（事業内容の周知②）',owner:'弘中 義之',media:'公式LINE'},
-  {id:'n06',done:false,date:'2026-08-21',period:'1週間前',content:'公式LINEで告知④（事業内容の周知③）',owner:'弘中 義之',media:'公式LINE'},
-  {id:'n07',done:false,date:'2026-08-21',period:'1週間前',content:'出席者二次確認',owner:'弘中 義之',media:'総括LINE'},
-  {id:'n08',done:false,date:'2026-08-21',period:'1週間前',content:'対内メンバーへデジタルパンフレット配布',owner:'弘中 義之',media:'公式LINE'},
-  {id:'n09',done:false,date:'2026-08-27',period:'前日',content:'公式LINE最終案内',owner:'弘中 義之',media:'公式LINE'},
+  {id:'n01',done:false,date:'2026-07-08',period:'事業承認後',content:'公式LINEで告知①（デジタルフライヤー配信）',owner:'',media:'公式LINE',memo:''},
+  {id:'n02',done:false,date:'2026-07-28',period:'1ヶ月前',content:'公式LINEで告知②（事業内容の周知①）',owner:'',media:'公式LINE',memo:''},
+  {id:'n03',done:false,date:'2026-07-28',period:'1ヶ月前',content:'委員会PRを全委員会で実施（地域開発×国際観光で手分け）',owner:'',media:'対面/委員会',memo:'7月下旬〜8月上旬'},
+  {id:'n04',done:false,date:'2026-08-14',period:'半月前',content:'出席者一次確認',owner:'',media:'総括LINE',memo:''},
+  {id:'n05',done:false,date:'2026-08-14',period:'半月前',content:'公式LINEで告知③（事業内容の周知②）',owner:'',media:'公式LINE',memo:''},
+  {id:'n06',done:false,date:'2026-08-21',period:'1週間前',content:'公式LINEで告知④（事業内容の周知③）',owner:'',media:'公式LINE',memo:''},
+  {id:'n07',done:false,date:'2026-08-21',period:'1週間前',content:'出席者二次確認',owner:'',media:'総括LINE',memo:''},
+  {id:'n08',done:false,date:'2026-08-21',period:'1週間前',content:'対内メンバーへデジタルパンフレット配布',owner:'',media:'公式LINE',memo:''},
+  {id:'n09',done:false,date:'2026-08-27',period:'前日',content:'公式LINE最終案内',owner:'',media:'公式LINE',memo:''},
 ];
 
-let editingId=null;
-let editingType=null;
-let idCounter=200;
+let editingId=null,editingType=null,idCounter=200;
 
 function getList(type){return type==='gaigai'?gaigai:nainai;}
 
@@ -202,16 +213,17 @@ function renderTable(type){
   const list=getList(type);
   const tbody=document.getElementById('tbody-'+type);
   tbody.innerHTML=list.map(r=>{
-    const c=PERIOD_COLORS[r.period]||'#566573';
+    const col=PERIOD_COLORS[r.period]||'#566573';
     return`<tr class="${r.done?'done':''}">
       <td class="check-cell" onclick="toggle('${r.id}','${type}')">
         <div class="check-box ${r.done?'done':''}">${r.done?'✓':''}</div>
       </td>
-      <td style="white-space:nowrap;color:var(--gray-600);font-size:11.5px">${r.date}</td>
-      <td><span class="period-badge" style="background:${c}18;color:${c};border:1px solid ${c}33">${r.period}</span></td>
-      <td style="font-weight:${r.done?'400':'500'}">${r.content}</td>
-      <td style="color:var(--gray-600);font-size:11.5px">${r.owner}</td>
-      <td><span class="media-badge">${r.media}</span></td>
+      <td><input class="cell-input" value="${esc(r.date)}" onchange="updateField('${r.id}','${type}','date',this.value)" style="width:90px;font-size:11.5px;color:var(--gray-600)"></td>
+      <td><span class="period-badge" style="background:${col}18;color:${col};border:1px solid ${col}33">${r.period}</span></td>
+      <td><input class="cell-input" value="${esc(r.content)}" onchange="updateField('${r.id}','${type}','content',this.value)" style="font-weight:${r.done?'400':'500'}"></td>
+      <td><input class="cell-input owner-input" value="${esc(r.owner)}" onchange="updateField('${r.id}','${type}','owner',this.value)" placeholder="担当者名"></td>
+      <td><input class="cell-input" value="${esc(r.media)}" onchange="updateField('${r.id}','${type}','media',this.value)" style="font-size:11.5px"></td>
+      <td><input class="cell-input" value="${esc(r.memo||'')}" onchange="updateField('${r.id}','${type}','memo',this.value)" placeholder="備考..." style="font-size:11px;color:var(--gray-600)"></td>
       <td class="action-cell">
         <button class="act-btn act-edit" onclick="openEditModal('${r.id}','${type}')">編集</button>
         <button class="act-btn act-del" onclick="deleteById('${r.id}','${type}')">削除</button>
@@ -221,9 +233,16 @@ function renderTable(type){
   updateProgress();
 }
 
-function toggle(id,type){
+function esc(s){return(s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
+
+function updateField(id,type,field,value){
   const list=getList(type);
   const r=list.find(x=>x.id===id);
+  if(r){r[field]=value;updateProgress();toast('保存しました');}
+}
+
+function toggle(id,type){
+  const list=getList(type);const r=list.find(x=>x.id===id);
   if(r){r.done=!r.done;renderTable(type);toast(r.done?'✅ 完了':'◻ 未対応に戻した');}
 }
 
@@ -245,7 +264,6 @@ function showTab(id,btn){
   btn.classList.add('active');
 }
 
-// ADD
 function openAddModal(type){
   editingId=null;editingType=type;
   document.getElementById('edit-title').textContent=type==='gaigai'?'対外広報を追加':'対内広報を追加';
@@ -256,24 +274,22 @@ function openAddModal(type){
   document.getElementById('edit-content').value='';
   document.getElementById('edit-owner').value='';
   document.getElementById('edit-media').value='';
+  document.getElementById('edit-memo').value='';
   document.getElementById('edit-del-btn').style.display='none';
   openModal('modal-edit');
 }
 
-// EDIT
 function openEditModal(id,type){
-  const list=getList(type);
-  const r=list.find(x=>x.id===id);
-  if(!r)return;
+  const list=getList(type);const r=list.find(x=>x.id===id);if(!r)return;
   editingId=id;editingType=type;
   document.getElementById('edit-title').textContent='広報を編集';
-  document.getElementById('edit-id').value=id;
   document.getElementById('edit-type').value=type;
   document.getElementById('edit-date').value=r.date||'';
   document.getElementById('edit-period').value=r.period||'事業承認後';
   document.getElementById('edit-content').value=r.content||'';
   document.getElementById('edit-owner').value=r.owner||'';
   document.getElementById('edit-media').value=r.media||'';
+  document.getElementById('edit-memo').value=r.memo||'';
   document.getElementById('edit-del-btn').style.display='inline-flex';
   openModal('modal-edit');
 }
@@ -287,38 +303,26 @@ function saveItem(){
     content:document.getElementById('edit-content').value,
     owner:document.getElementById('edit-owner').value,
     media:document.getElementById('edit-media').value,
+    memo:document.getElementById('edit-memo').value,
   };
   if(!payload.content){toast('内容を入力してください');return;}
-  if(editingId){
-    const r=list.find(x=>x.id===editingId);
-    if(r)Object.assign(r,payload);
-    toast('✅ 更新しました');
-  } else {
-    list.push({id:'u'+(idCounter++),done:false,...payload});
-    toast('✅ 追加しました');
-  }
-  closeModal('modal-edit');
-  renderTable(type);
+  if(editingId){const r=list.find(x=>x.id===editingId);if(r)Object.assign(r,payload);toast('✅ 更新しました');}
+  else{list.push({id:'u'+(idCounter++),done:false,...payload});toast('✅ 追加しました');}
+  closeModal('modal-edit');renderTable(type);
 }
 
-function deleteItem(){
-  const type=document.getElementById('edit-type').value;
-  deleteById(editingId,type);
-  closeModal('modal-edit');
-}
-
+function deleteItem(){deleteById(editingId,editingType);closeModal('modal-edit');}
 function deleteById(id,type){
   if(!confirm('削除しますか？'))return;
   if(type==='gaigai')gaigai=gaigai.filter(x=>x.id!==id);
   else nainai=nainai.filter(x=>x.id!==id);
-  renderTable(type);
-  toast('削除しました');
+  renderTable(type);toast('削除しました');
 }
 
 function openModal(id){document.getElementById(id).classList.add('open');}
 function closeModal(id){document.getElementById(id).classList.remove('open');}
 document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
-function toast(msg){const c=document.getElementById('toast-c');const t=document.createElement('div');t.className='toast';t.textContent=msg;c.appendChild(t);setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity 0.3s';setTimeout(()=>t.remove(),300);},2500);}
+function toast(msg){const c=document.getElementById('toast-c');const t=document.createElement('div');t.className='toast';t.textContent=msg;c.appendChild(t);setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity 0.3s';setTimeout(()=>t.remove(),300);},2000);}
 
 renderTable('gaigai');renderTable('nainai');
 </script>
