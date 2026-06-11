@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第32回横浜経済人会議 | ステージレイアウト</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0d1b3e;--gold:#c9a84c;--gold-light:#e8c97d;
+  --bg:#f5f3ee;--gray-100:#f0ede6;--gray-200:#e2ddd4;--gray-400:#9e9488;--gray-600:#6b6358;--gray-800:#3a342c;
+  --blue:#1a4a8a;--blue-light:#4a7ac8;--red:#c0392b;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--gray-800);min-height:100vh;}
+
+#toolbar{background:var(--navy);padding:10px 20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;position:sticky;top:40px;z-index:80;border-bottom:2px solid var(--gold);}
+.toolbar-title{font-family:'Noto Serif JP',serif;font-size:13px;color:var(--gold-light);font-weight:600;}
+
+/* TABS */
+.scene-tabs{display:flex;gap:6px;padding:14px 20px;background:#fff;border-bottom:1px solid var(--gray-200);overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;}
+.scene-tab{padding:6px 14px;border-radius:20px;border:1px solid var(--gray-200);background:#fff;color:var(--gray-600);font-family:'Noto Sans JP',sans-serif;font-size:12px;cursor:pointer;white-space:nowrap;transition:all 0.15s;flex-shrink:0;}
+.scene-tab.active{background:var(--navy);color:#fff;border-color:var(--navy);font-weight:600;}
+.scene-tab:hover:not(.active){background:var(--gray-100);}
+
+/* MAIN */
+#main{max-width:900px;margin:0 auto;padding:20px 16px;}
+
+.scene-panel{display:none;}
+.scene-panel.active{display:block;}
+
+.scene-title{font-family:'Noto Serif JP',serif;font-size:16px;font-weight:700;color:var(--navy);margin-bottom:4px;}
+.scene-desc{font-size:12px;color:var(--gray-400);margin-bottom:16px;}
+
+/* STAGE WRAP - レスポンシブ */
+.stage-wrap{
+  width:100%;
+  background:#fff;
+  border:1px solid var(--gray-200);
+  border-radius:8px;
+  padding:16px;
+  box-shadow:0 1px 4px rgba(0,0,0,0.06);
+  overflow-x:auto;
+}
+.stage-svg{
+  display:block;
+  width:100%;
+  max-width:800px;
+  margin:0 auto;
+  height:auto;
+}
+
+/* LEGEND */
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:14px;padding:12px 16px;background:var(--gray-100);border-radius:6px;}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--gray-600);}
+.legend-dot{width:14px;height:14px;border-radius:2px;flex-shrink:0;}
+
+/* MEMBERS LIST */
+.members-card{margin-top:14px;background:#fff;border:1px solid var(--gray-200);border-radius:8px;padding:14px 16px;}
+.members-title{font-size:12px;font-weight:600;color:var(--navy);margin-bottom:8px;}
+.members-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px;}
+.member-item{display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(--gray-100);border-radius:4px;font-size:12px;}
+.member-role{font-size:10px;color:var(--gray-400);}
+
+/* NAV */
+#portal-nav{background:#060f22 !important;}
+#portal-nav a,#portal-nav-links a{text-decoration:none !important;}
+#portal-nav>a{color:#c9a84c !important;flex-shrink:0;}
+
+@media(max-width:600px){
+  .scene-title{font-size:14px;}
+  .legend{gap:10px;}
+  .legend-item{font-size:11px;}
+  .members-grid{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="portal-nav" style="background:#060f22;border-bottom:1px solid rgba(201,168,76,0.25);padding:0 12px;height:40px;display:flex;align-items:center;gap:0;position:sticky;top:0;z-index:999;font-family:'Noto Sans JP',sans-serif;">
+  <a href="yokohama_keizaijin_32.html" style="font-family:'Noto Serif JP',serif;font-size:11px;color:#c9a84c;text-decoration:none;font-weight:700;white-space:nowrap;padding-right:8px;border-right:1px solid rgba(255,255,255,0.1);margin-right:6px;flex-shrink:0;">第32回</a>
+  <div id="portal-nav-links" style="display:flex;gap:2px;overflow-x:auto;flex:1;-webkit-overflow-scrolling:touch;scrollbar-width:none;"></div>
+</nav>
+<script>
+(function(){
+  var pages=[
+    {href:"yokohama_keizaijin_32.html",label:"🏠 ホーム"},
+    {href:"scenario.html",label:"📜 シナリオ"},
+    {href:"roles.html",label:"👤 役割分担"},
+    {href:"arrivals.html",label:"✅ 到着管理"},
+    {href:"sekijihyo.html",label:"🪑 席次表"},
+    {href:"stage.html",label:"🎭 ステージ"},
+    {href:"pr_schedule.html",label:"📣 広報"},
+    {href:"checklist.html",label:"📦 準備物"},
+    {href:"trouble.html",label:"⚠️ トラブル"},
+    {href:"yokohama_kaigi_v6.html",label:"📋 申込管理"}
+  ];
+  var cur=location.pathname.split("/").pop()||"yokohama_keizaijin_32.html";
+  var nav=document.getElementById("portal-nav-links");
+  if(!nav)return;
+  pages.forEach(function(p){
+    var a=document.createElement("a");a.href=p.href;a.textContent=p.label;
+    var active=cur===p.href;
+    a.style.cssText="padding:4px 8px;border-radius:4px;font-size:11px;text-decoration:none;white-space:nowrap;font-weight:"+(active?"700":"400")+";background:"+(active?"rgba(201,168,76,0.22)":"transparent")+";color:"+(active?"#e8c97d":"rgba(255,255,255,0.42)")+";border:"+(active?"1px solid rgba(201,168,76,0.35)":"1px solid transparent")+";";
+    nav.appendChild(a);
+  });
+})();
+</script>
+
+<div id="toolbar">
+  <span class="toolbar-title">🎭 ステージレイアウト</span>
+  <span style="font-size:11px;color:rgba(255,255,255,0.4);">第32回横浜経済人会議 ｜ テンネー記念ホール</span>
+</div>
+
+<div class="scene-tabs">
+  <button class="scene-tab active" onclick="showScene('s1',this)">第1部</button>
+  <button class="scene-tab" onclick="showScene('s2',this)">第2部</button>
+  <button class="scene-tab" onclick="showScene('s3',this)">第3部</button>
+  <button class="scene-tab" onclick="showScene('s4',this)">政策提言</button>
+  <button class="scene-tab" onclick="showScene('s5',this)">閉会宣言</button>
+</div>
+
+<div id="main">
+
+  <!-- ===== 第1部 ===== -->
+  <div class="scene-panel active" id="s1">
+    <div class="scene-title">第1部 パネルディスカッション</div>
+    <div class="scene-desc">横浜の歴史資産を、動かす ～実践事例から導く公民連携モデルの可能性～</div>
+    <div class="stage-wrap">
+      <svg class="stage-svg" viewBox="0 0 760 340" xmlns="http://www.w3.org/2000/svg">
+        <!-- ステージ外枠 -->
+        <rect x="80" y="20" width="640" height="300" rx="6" fill="white" stroke="#c8c2ba" stroke-width="1.5"/>
+        <!-- スクリーン（後方） -->
+        <rect x="120" y="35" width="500" height="28" rx="3" fill="#1a4a8a"/>
+        <text x="370" y="54" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="white" font-weight="600">スクリーン</text>
+        <!-- メディアボード 左 -->
+        <rect x="120" y="75" width="140" height="16" rx="2" fill="#4a7ac8"/>
+        <text x="190" y="65" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#4a7ac8">メディアボード</text>
+        <!-- メディアボード 右 -->
+        <rect x="500" y="75" width="140" height="16" rx="2" fill="#4a7ac8"/>
+        <text x="570" y="65" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#4a7ac8">メディアボード</text>
+        <!-- 国旗 -->
+        <rect x="122" y="102" width="32" height="20" rx="2" fill="white" stroke="#c0392b" stroke-width="1.5"/>
+        <text x="138" y="116" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#c0392b">国旗</text>
+        <!-- JC旗 -->
+        <rect x="606" y="102" width="32" height="20" rx="2" fill="white" stroke="#1a4a8a" stroke-width="1.5"/>
+        <text x="622" y="116" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#1a4a8a">JC旗</text>
+        <!-- 司会台（斜め） -->
+        <g transform="translate(104,210) rotate(-20)">
+          <rect x="-24" y="-14" width="48" height="28" rx="3" fill="white" stroke="#9e9488" stroke-width="1.5"/>
+        </g>
+        <text x="96" y="248" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#6b6358">司会台</text>
+        <!-- 登壇者席（ファシリ・羽毛田・廣瀬・鈴木） -->
+        <!-- ファシリテーター -->
+        <rect x="170" y="160" width="72" height="56" rx="3" fill="white" stroke="#9e9488" stroke-width="1.5"/>
+        <circle cx="206" cy="240" r="16" fill="#4a7ac8"/>
+        <text x="206" y="244" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="8" fill="white">永井</text>
+        <text x="206" y="152" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#0d1b3e" font-weight="600">ファシリ</text>
+        <text x="206" y="164" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#6b6358">（永井副理事長）</text>
+        <!-- 羽毛田様 -->
+        <rect x="280" y="160" width="72" height="56" rx="3" fill="white" stroke="#9e9488" stroke-width="1.5"/>
+        <circle cx="316" cy="240" r="16" fill="#4a7ac8"/>
+        <text x="316" y="244" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="8" fill="white">羽毛</text>
+        <text x="316" y="152" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#0d1b3e" font-weight="600">羽毛田様</text>
+        <text x="316" y="164" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#6b6358">星野リゾート</text>
+        <!-- 廣瀬様 -->
+        <rect x="390" y="160" width="72" height="56" rx="3" fill="white" stroke="#9e9488" stroke-width="1.5"/>
+        <circle cx="426" cy="240" r="16" fill="#4a7ac8"/>
+        <text x="426" y="244" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="8" fill="white">廣瀬</text>
+        <text x="426" y="152" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#0d1b3e" font-weight="600">廣瀬様</text>
+        <text x="426" y="164" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#6b6358">竹中工務店</text>
+        <!-- 鈴木様 -->
+        <rect x="500" y="160" width="72" height="56" rx="3" fill="white" stroke="#9e9488" stroke-width="1.5"/>
+        <circle cx="536" cy="240" r="16" fill="#4a7ac8"/>
+        <text x="536" y="244" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="8" fill="white">鈴木</text>
+        <text x="536" y="152" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#0d1b3e" font-weight="600">鈴木様</text>
+        <text x="536" y="164" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#6b6358">横浜市副市長</text>
+        <!-- 客席方向 -->
+        <text x="370" y="310" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#9e9488">▲ 客席</text>
+      </svg>
+    </div>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#4a7ac8;border-radius:50%"></div>登壇者・ファシリテーター</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#4a7ac8"></div>メディアボード</div>
+      <div class="legend-item"><div class="legend-dot" style="background:white;border:2px solid #c0392b"></div>国旗</div>
+      <div class="legend-item"><div class="legend-dot" style="background:white;border:2px solid #1a4a8a"></div>JC旗</div>
+    </div>
+    <div class="members-card">
+      <div class="members-title">📋 第1部 登壇者一覧</div>
+      <div class="members-grid">
+        <div class="member-item">🎙 <div><div>永井 嵩久</div><div class="member-role">ファシリテーター（副理事長）</div></div></div>
+        <div class="member-item">👔 <div><div>羽毛田 実 様</div><div class="member-role">OMO7横浜 by 星野リゾート</div></div></div>
+        <div class="member-item">👔 <div><div>廣瀬 正美 様</div><div class="member-role">株式会社竹中工務店</div></div></div>
+        <div class="member-item">👔 <div><div>鈴木 和宏 様</div><div class="member-role">横浜市 副市長</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 第2部 ===== -->
+  <div class="scene-panel" id="s2">
+    <div class="scene-title">第2部 パネルディスカッション</div>
+    <div class="scene-desc">小さく始めて、大きく変える ～パークラボ制度が拓く都市部の公園のにぎわい創出～</div>
+    <div class="stage-wrap">
+      <svg class="stage-svg" viewBox="0 0 760 340" xmlns="http://www.w3.org/2000/svg">
+        <rect x="80" y="20" width="640" height="300" rx="6" fill="white" stroke="#c8c2ba" stroke-width="1.5"/>
+        <rect x="120" y="35" width="500" height="28" rx="3" fill="#1a4a8a"/>
+        <text x="370" y="54" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="white" font-weight="600">スクリーン</text>
+        <rect x="120" y="75" width="140" height="16" rx="2" fill="#4a7ac8"/>
+        <text x="190" y="65" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#4a7ac8">メディアボード</text>
+        <rect x="500" y="75" width="140" height="16" rx="2" fill="#4a7ac8"/>
+        <text x="570" y="65" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#4a7ac8">メディアボード</text>
+        <rect x="122" y="102" width="32" height="20" rx="2" fill="white" stroke="#c0392b" stroke-width="1.5"/>
+        <text x="138" y="116" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#c0392b">国旗</text>
+        <rect x="606" y="102" width="32" height="20" rx="2" fill="white" stroke="#1a4a8a" stroke-width="1.5"/>
+        <text x="622" y="116" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#1a4a8a">JC旗</text>
+        <!-- 司会台 -->
+        <g transform="translate(104,210) rotate(-20)">
+          <rect x="-24" y="-14" width="48" height="28" rx="3" fill="white" stroke="#9e9488" stroke-width="1.5"/>
+        </g>
+        <text x="96" y="248" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#6b6358">司会台</text>
+        <!-- ファシリ（荒井） -->
+        <rect x="170" y="160" width="72" height="56" rx="3" fill="white" stroke="#9e9488" stroke-width="1.5"/>
+        <circle cx="206" cy="240" r="16" fill="#4a7ac8"/>
+        <text x="206" y="244" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="8" fill="white">荒井</text>
+        <text x="206" y="152" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#0d1b3e" font-weight="600">ファシリ</text>
+        <text x="206" y="164" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#6b6358">（荒井委員長）</text>
+        <!-- 柳川様 -->
+        <rect x="280" y="160" width="72" height="56" rx="3" fill="white" stroke="#9e9488" stroke-width="1.5"/>
+        <circle cx="316" cy="240" r="16" fill="#4a7ac8"/>
+        <text x="316" y="244" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="8" fill="white">柳川</text>
+        <text x="316" y="152" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#0d1b3e" font-weight="600">柳川様</text>
+        <text x="316" y="164" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#6b6358">三井不動産</text>
+        <!-- 早野様 -->
+        <rect x="390" y="160" width="72" height="56" rx="3" fill="white" stroke="#9e9488" stroke-width="1.5"/>
+        <circle cx="426" cy="240" r="16" fill="#4a7ac8"/>
+        <text x="426" y="244" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="8" fill="white">早野</text>
+        <text x="426" y="152" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#0d1b3e" font-weight="600">早野様</text>
+        <text x="426" y="164" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#6b6358">横浜スタジアム</text>
+        <!-- 中村様 -->
+        <rect x="500" y="160" width="72" height="56" rx="3" fill="white" stroke="#9e9488" stroke-width="1.5"/>
+        <circle cx="536" cy="240" r="16" fill="#4a7ac8"/>
+        <text x="536" y="244" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="8" fill="white">中村</text>
+        <text x="536" y="152" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#0d1b3e" font-weight="600">中村様</text>
+        <text x="536" y="164" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#6b6358">東洋大学教授</text>
+        <text x="370" y="310" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#9e9488">▲ 客席</text>
+      </svg>
+    </div>
+    <div class="members-card">
+      <div class="members-title">📋 第2部 登壇者一覧</div>
+      <div class="members-grid">
+        <div class="member-item">🎙 <div><div>荒井 亮一</div><div class="member-role">ファシリテーター（委員長）</div></div></div>
+        <div class="member-item">👔 <div><div>柳川 元宏 様</div><div class="member-role">三井不動産 室長</div></div></div>
+        <div class="member-item">👔 <div><div>早野 禎一 様</div><div class="member-role">横浜スタジアム 部長</div></div></div>
+        <div class="member-item">👔 <div><div>中村 郁博 様</div><div class="member-role">東洋大学 教授</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 第3部 ===== -->
+  <div class="scene-panel" id="s3">
+    <div class="scene-title">第3部 パネルディスカッション</div>
+    <div class="scene-desc">観光を地域経済へ変える ～インバウンドによる横浜型経済循環モデル～</div>
+    <div class="stage-wrap">
+      <svg class="stage-svg" viewBox="0 0 760 340" xmlns="http://www.w3.org/2000/svg">
+        <rect x="80" y="20" width="640" height="300" rx="6" fill="white" stroke="#c8c2ba" stroke-width="1.5"/>
+        <rect x="120" y="35" width="500" height="28" rx="3" fill="#1a4a8a"/>
+        <text x="370" y="54" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="white" font-weight="600">スクリーン</text>
+        <rect x="120" y="75" width="140" height="16" rx="2" fill="#4a7ac8"/>
+        <text x="190" y="65" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#4a7ac8">メディアボード</text>
+        <rect x="500" y="75" width="140" height="16" rx="2" fill="#4a7ac8"/>
+        <text x="570" y="65" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#4a7ac8">メディアボード</text>
+        <rect x="122" y="102" width="32" height="20" rx="2" fill="white" stroke="#c0392b" stroke-width="1.5"/>
+        <text x="138" y="116" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#c0392b">国旗</text>
+        <rect x="606" y="102" width="32" height="20" rx="2" fill="white" stroke="#1a4a8a" stroke-width="1.5"/>
+        <text x="622" y="116" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#1a4a8a">JC旗</text>
+        <g transform="translate(104,210) rotate(-20)">
+          <rect x="-24" y="-14" width="48" height="28" rx="3" fill="white" stroke="#9e9488" stroke-width="1.5"/>
+        </g>
+        <text x="96" y="248" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#6b6358">司会台</text>
+        <!-- 江崎様（ファシリ） -->
+        <rect x="170" y="160" width="72" height="56" rx="3" fill="white" stroke="#9e9488" stroke-width="1.5"/>
+        <circle cx="206" cy="240" r="16" fill="#4a7ac8"/>
+        <text x="206" y="244" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="8" fill="white">江崎</text>
+        <text x="206" y="152" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#0d1b3e" font-weight="600">江﨑様</text>
+        <text x="206" y="164" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#6b6358">ファシリテーター</text>
+        <!-- 佐々木様 -->
+        <rect x="320" y="160" width="72" height="56" rx="3" fill="white" stroke="#9e9488" stroke-width="1.5"/>
+        <circle cx="356" cy="240" r="16" fill="#4a7ac8"/>
+        <text x="356" y="244" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="8" fill="white">佐々木</text>
+        <text x="356" y="152" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#0d1b3e" font-weight="600">佐々木様</text>
+        <text x="356" y="164" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#6b6358">京浜急行電鉄</text>
+        <!-- 加藤様 -->
+        <rect x="460" y="160" width="72" height="56" rx="3" fill="white" stroke="#9e9488" stroke-width="1.5"/>
+        <circle cx="496" cy="240" r="16" fill="#4a7ac8"/>
+        <text x="496" y="244" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="8" fill="white">加藤</text>
+        <text x="496" y="152" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#0d1b3e" font-weight="600">加藤様</text>
+        <text x="496" y="164" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#6b6358">相鉄HD</text>
+        <text x="370" y="310" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#9e9488">▲ 客席</text>
+      </svg>
+    </div>
+    <div class="members-card">
+      <div class="members-title">📋 第3部 登壇者一覧</div>
+      <div class="members-grid">
+        <div class="member-item">🎙 <div><div>江﨑 貴昭 様</div><div class="member-role">ファシリテーター（日本交通公社）</div></div></div>
+        <div class="member-item">👔 <div><div>佐々木 忠弘 様</div><div class="member-role">京浜急行電鉄 担当部長</div></div></div>
+        <div class="member-item">👔 <div><div>加藤 努 様</div><div class="member-role">相鉄ホールディングス 執行役員</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 政策提言 ===== -->
+  <div class="scene-panel" id="s4">
+    <div class="scene-title">政策提言</div>
+    <div class="scene-desc">川本理事長による単独プレゼン形式（動画→演説）</div>
+    <div class="stage-wrap">
+      <svg class="stage-svg" viewBox="0 0 760 320" xmlns="http://www.w3.org/2000/svg">
+        <rect x="80" y="20" width="640" height="280" rx="6" fill="white" stroke="#c8c2ba" stroke-width="1.5"/>
+        <rect x="120" y="35" width="500" height="28" rx="3" fill="#1a4a8a"/>
+        <text x="370" y="54" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="white" font-weight="600">スクリーン</text>
+        <!-- メディアボード 左（2枚重なり） -->
+        <rect x="120" y="75" width="140" height="16" rx="2" fill="#4a7ac8"/>
+        <rect x="120" y="94" width="140" height="16" rx="2" fill="#4a7ac8" opacity="0.6"/>
+        <text x="190" y="65" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#4a7ac8">メディアボード×2</text>
+        <!-- メディアボード 右（1枚） -->
+        <rect x="500" y="75" width="140" height="16" rx="2" fill="#4a7ac8"/>
+        <text x="570" y="65" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#4a7ac8">メディアボード</text>
+        <rect x="122" y="115" width="32" height="20" rx="2" fill="white" stroke="#c0392b" stroke-width="1.5"/>
+        <text x="138" y="129" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#c0392b">国旗</text>
+        <rect x="606" y="115" width="32" height="20" rx="2" fill="white" stroke="#1a4a8a" stroke-width="1.5"/>
+        <text x="622" y="129" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#1a4a8a">JC旗</text>
+        <!-- 司会台 -->
+        <g transform="translate(104,210) rotate(-20)">
+          <rect x="-24" y="-14" width="48" height="28" rx="3" fill="white" stroke="#9e9488" stroke-width="1.5"/>
+        </g>
+        <text x="96" y="248" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#6b6358">司会台</text>
+        <!-- 川本理事長（センター） -->
+        <rect x="310" y="155" width="100" height="66" rx="3" fill="white" stroke="#c9a84c" stroke-width="2"/>
+        <circle cx="360" cy="248" r="20" fill="#c9a84c"/>
+        <text x="360" y="253" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="white" font-weight="600">川本理事長</text>
+        <text x="360" y="146" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#0d1b3e" font-weight="700">川本泰之 理事長</text>
+        <text x="360" y="159" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#c9a84c">政策提言①②③</text>
+        <text x="370" y="295" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#9e9488">▲ 客席</text>
+      </svg>
+    </div>
+    <div class="members-card">
+      <div class="members-title">📋 政策提言 進行メモ</div>
+      <div class="members-grid">
+        <div class="member-item">👑 <div><div>川本 泰之 理事長</div><div class="member-role">単独プレゼン形式（動画→演説）</div></div></div>
+        <div class="member-item">🎥 <div><div>事業紹介動画（6分）</div><div class="member-role">暗転中に理事長スタンバイ</div></div></div>
+        <div class="member-item">📽 <div><div>政策提言①動画→演説（3分）</div><div class="member-role">一等馬見所を、横浜の稼ぐ力に</div></div></div>
+        <div class="member-item">📽 <div><div>政策提言②動画→演説（3分）</div><div class="member-role">横浜の公園を、民間の力で動かす</div></div></div>
+        <div class="member-item">📽 <div><div>政策提言③動画→演説（3分）</div><div class="member-role">観光・インバウンド地域経済循環</div></div></div>
+        <div class="member-item">🎬 <div><div>エンディング動画（1分）</div><div class="member-role">理事長降壇後に放映</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 閉会宣言 ===== -->
+  <div class="scene-panel" id="s5">
+    <div class="scene-title">閉会宣言</div>
+    <div class="scene-desc">福田副委員長による閉会宣言</div>
+    <div class="stage-wrap">
+      <svg class="stage-svg" viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg">
+        <rect x="80" y="20" width="640" height="260" rx="6" fill="white" stroke="#c8c2ba" stroke-width="1.5"/>
+        <rect x="120" y="35" width="500" height="28" rx="3" fill="#1a4a8a"/>
+        <text x="370" y="54" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="white" font-weight="600">スクリーン</text>
+        <rect x="120" y="75" width="140" height="16" rx="2" fill="#4a7ac8"/>
+        <rect x="120" y="94" width="140" height="16" rx="2" fill="#4a7ac8" opacity="0.6"/>
+        <text x="190" y="65" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#4a7ac8">メディアボード×2</text>
+        <rect x="500" y="75" width="140" height="16" rx="2" fill="#4a7ac8"/>
+        <text x="570" y="65" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#4a7ac8">メディアボード</text>
+        <rect x="122" y="115" width="32" height="20" rx="2" fill="white" stroke="#c0392b" stroke-width="1.5"/>
+        <text x="138" y="129" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#c0392b">国旗</text>
+        <rect x="606" y="115" width="32" height="20" rx="2" fill="white" stroke="#1a4a8a" stroke-width="1.5"/>
+        <text x="622" y="129" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#1a4a8a">JC旗</text>
+        <g transform="translate(104,195) rotate(-20)">
+          <rect x="-24" y="-14" width="48" height="28" rx="3" fill="white" stroke="#9e9488" stroke-width="1.5"/>
+        </g>
+        <text x="96" y="233" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#6b6358">司会台</text>
+        <!-- 福田副委員長 -->
+        <rect x="310" y="140" width="100" height="66" rx="3" fill="white" stroke="#1a7a4a" stroke-width="2"/>
+        <circle cx="360" cy="228" r="20" fill="#1a7a4a"/>
+        <text x="360" y="233" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="white" font-weight="600">福田</text>
+        <text x="360" y="131" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#0d1b3e" font-weight="700">福田雄太郎 副委員長</text>
+        <text x="360" y="144" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#1a7a4a">閉会宣言</text>
+        <text x="370" y="275" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#9e9488">▲ 客席</text>
+      </svg>
+    </div>
+    <div class="members-card">
+      <div class="members-title">📋 閉会宣言 メモ</div>
+      <div class="members-grid">
+        <div class="member-item">🎤 <div><div>福田 雄太郎 副委員長</div><div class="member-role">地域開発創造委員会</div></div></div>
+        <div class="member-item">📊 <div><div>アンケートQRコード投影後</div><div class="member-role">4分間確保してから閉会宣言</div></div></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<script>
+function showScene(id, btn) {
+  document.querySelectorAll('.scene-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.scene-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>

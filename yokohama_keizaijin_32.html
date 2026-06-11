@@ -249,17 +249,7 @@
 </nav>
 <script>
 (function(){
-  var pages=[
-    {href:"yokohama_keizaijin_32.html",label:"🏠 ホーム"},
-    {href:"scenario.html",label:"📜 シナリオ"},
-    {href:"roles.html",label:"👤 役割分担"},
-    {href:"arrivals.html",label:"✅ 到着管理"},
-    {href:"sekijihyo.html",label:"🪑 席次表"},
-    {href:"pr_schedule.html",label:"📣 広報"},
-    {href:"checklist.html",label:"📦 準備物"},
-    {href:"trouble.html",label:"⚠️ トラブル"},
-    {href:"yokohama_kaigi_v6.html",label:"📋 申込管理"}
-  ];
+  var pages=[{href:"yokohama_keizaijin_32.html",label:"🏠 ホーム"},{href:"scenario.html",label:"📜 シナリオ"},{href:"roles.html",label:"👤 役割分担"},{href:"arrivals.html",label:"✅ 到着管理"},{href:"sekijihyo.html",label:"🪑 席次表"},{href:"stage.html",label:"🎭 ステージ"},{href:"pr_schedule.html",label:"📣 広報"},{href:"checklist.html",label:"📦 準備物"},{href:"trouble.html",label:"⚠️ トラブル"},{href:"yokohama_kaigi_v6.html",label:"📋 申込管理"}];
   var cur=location.pathname.split("/").pop()||"yokohama_keizaijin_32.html";
   var nav=document.getElementById("portal-nav-links");
   if(!nav)return;
@@ -364,9 +354,20 @@ function closeSidebar() {
     <button class="nav-item active" onclick="showPage('dashboard')"><span class="nav-icon">📊</span> ダッシュボード</button>
     <button class="nav-item" onclick="showPage('tasks')"><span class="nav-icon">✅</span> タスク管理<span class="nav-badge" id="badge-tasks" style="display:none">0</span></button>
     <button class="nav-item" onclick="showPage('runbook')"><span class="nav-icon">📋</span> 進行表</button>
-
     <div class="nav-section">情報共有</div>
     <button class="nav-item" onclick="showPage('announcements')"><span class="nav-icon">📢</span> お知らせ</button>
+    <div class="nav-section">準備・スケジュール</div>
+    <button class="nav-item" onclick="showPage('rehearsal')"><span class="nav-icon">🎬</span> リハーサル予定</button>
+    <div class="nav-section">外部ページ</div>
+    <button class="nav-item" onclick="location.href='stage.html'"><span class="nav-icon">🎭</span> ステージレイアウト</button>
+    <button class="nav-item" onclick="location.href='scenario.html'"><span class="nav-icon">📜</span> シナリオ</button>
+    <button class="nav-item" onclick="location.href='pr_schedule.html'"><span class="nav-icon">📣</span> 広報スケジュール</button>
+    <button class="nav-item" onclick="location.href='checklist.html'"><span class="nav-icon">📦</span> 事前準備物</button>
+    <button class="nav-item" onclick="location.href='trouble.html'"><span class="nav-icon">⚠️</span> トラブル対応</button>
+    <button class="nav-item" onclick="location.href='roles.html'"><span class="nav-icon">👤</span> 役割分担表</button>
+    <button class="nav-item" onclick="location.href='arrivals.html'"><span class="nav-icon">✅</span> 到着管理</button>
+    <button class="nav-item" onclick="location.href='sekijihyo.html'"><span class="nav-icon">🪑</span> 席次表</button>
+    <button class="nav-item" onclick="location.href='yokohama_kaigi_v6.html'"><span class="nav-icon">📋</span> 申込管理</button>
   </div>
   <div class="sidebar-footer">
     <div class="user-chip">
