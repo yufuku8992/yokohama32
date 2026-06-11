@@ -13,38 +13,38 @@
     --gray-400:#9e9488;--gray-600:#6b6358;--gray-800:#3a342c;
     --red:#c0392b;--red-light:#fdecea;--green:#1a7a4a;--green-light:#e8f5ed;
     --orange:#c76b0a;--orange-light:#fef3e2;--blue:#1a4a8a;--blue-light:#e8eef8;
-    --sidebar-w:244px;
+    
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   body{font-family:'Noto Sans JP',sans-serif;background:var(--cream);color:var(--gray-800);min-height:100vh;font-size:14px;line-height:1.6;}
 
-  #sidebar{position:fixed;left:0;top:0;bottom:0;width:var(--sidebar-w);background:var(--navy);display:flex;flex-direction:column;z-index:100;}
-  .sidebar-header{padding:20px 18px 16px;border-bottom:1px solid rgba(201,168,76,0.25);}
-  .event-badge{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--navy);font-size:10px;font-weight:700;padding:2px 8px;border-radius:2px;letter-spacing:0.08em;display:inline-block;margin-bottom:8px;}
-  .event-title{font-family:'Noto Serif JP',serif;font-size:12.5px;color:var(--white);font-weight:600;line-height:1.5;}
-  .event-meta{font-size:10.5px;color:rgba(255,255,255,0.4);margin-top:6px;line-height:1.7;}
+  
+  
+  
+  
+  
   .sync-status{font-size:10px;color:rgba(255,255,255,0.4);display:flex;align-items:center;margin-top:6px;}
   .sync-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;background:var(--gray-400);}
   .sync-dot.connected{background:var(--green);animation:pulse 2s infinite;}
   .sync-dot.syncing{background:var(--orange);}
   .sync-dot.error{background:var(--red);}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
-  .sidebar-nav{flex:1;overflow-y:auto;padding:10px 0;}
-  .nav-section{padding:8px 16px 3px;font-size:9px;text-transform:uppercase;letter-spacing:0.12em;color:rgba(255,255,255,0.3);font-weight:500;}
-  .nav-item{display:flex;align-items:center;gap:9px;padding:8px 18px;cursor:pointer;border:none;background:none;color:rgba(255,255,255,0.6);font-family:'Noto Sans JP',sans-serif;font-size:12.5px;width:100%;text-align:left;transition:all 0.15s;position:relative;}
-  .nav-item:hover{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.9);}
-  .nav-item.active{background:rgba(201,168,76,0.15);color:var(--gold-light);}
+  
+  
+  
+  
+  
   .nav-item.active::before{content:'';position:absolute;left:0;top:6px;bottom:6px;width:3px;background:var(--gold);border-radius:0 2px 2px 0;}
-  .nav-icon{font-size:15px;flex-shrink:0;}
-  .nav-badge{margin-left:auto;background:var(--red);color:white;font-size:9px;padding:1px 5px;border-radius:10px;font-weight:700;}
-  .sidebar-footer{padding:14px 18px;border-top:1px solid rgba(255,255,255,0.08);}
-  .user-chip{display:flex;align-items:center;gap:8px;}
-  .user-avatar{width:28px;height:28px;background:linear-gradient(135deg,var(--gold),var(--gold-light));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--navy);flex-shrink:0;}
-  .user-name{font-size:12px;color:rgba(255,255,255,0.75);font-weight:500;}
-  .user-role{font-size:10px;color:rgba(255,255,255,0.35);}
+  
+  
+  
+  
+  
+  
+  
 
-  #main{margin-left:var(--sidebar-w);min-height:100vh;display:flex;flex-direction:column;}
-  #topbar{background:var(--white);border-bottom:1px solid var(--gray-200);padding:0 26px;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:90;}
+  #main{min-height:100vh;display:flex;flex-direction:column;}
+  #topbar{background:var(--white);border-bottom:1px solid var(--gray-200);padding:0 26px;height:54px;position:sticky;top:40px;z-index:79;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:90;}
   .page-title{font-family:'Noto Serif JP',serif;font-size:15px;font-weight:600;color:var(--navy);}
   .topbar-right{display:flex;align-items:center;gap:10px;}
   .btn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:4px;border:none;cursor:pointer;font-family:'Noto Sans JP',sans-serif;font-size:12.5px;font-weight:500;transition:all 0.15s;}
@@ -160,62 +160,7 @@
   .toast.error{border-left-color:var(--red);}
   @keyframes slideIn{from{transform:translateX(20px);opacity:0;}to{transform:translateX(0);opacity:1;}}
 
-/* ===== MOBILE ===== */
-@media (max-width: 768px) {
-  /* サイドバーをデフォルトで非表示 */
-  #sidebar {
-    transform: translateX(-100%) !important;
-    transition: transform 0.25s ease !important;
-    width: 260px !important;
-    top: 40px !important;
-    z-index: 300 !important;
-  }
-  #sidebar.open {
-    transform: translateX(0) !important;
-    box-shadow: 4px 0 24px rgba(0,0,0,0.5) !important;
-  }
-  #main { margin-left: 0 !important; }
-  #topbar { padding: 0 12px !important; }
-  .page-title { font-size: 13px !important; }
 
-  /* ハンバーガーボタンを表示 */
-  #hamburger { display: flex !important; }
-
-  /* オーバーレイ */
-  #sidebar-overlay.visible { opacity: 1 !important; pointer-events: all !important; }
-
-  /* グリッド */
-  .grid-4 { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
-  .grid-2 { grid-template-columns: 1fr !important; gap: 12px !important; }
-  .grid-3 { grid-template-columns: 1fr !important; gap: 12px !important; }
-
-  /* コンテンツ */
-  #content { padding: 12px !important; }
-
-  /* テーブル横スクロール */
-  .card { overflow-x: auto; }
-  .tbl { min-width: 500px; }
-
-  /* stat-card */
-  .stat-value { font-size: 20px !important; }
-  .stat-label { font-size: 9px !important; }
-  .stat-sub { font-size: 10px !important; }
-  .stat-icon { font-size: 18px !important; }
-
-  /* ナビバー */
-  #portal-nav a { font-size: 10px !important; padding: 3px 6px !important; }
-
-  /* カード */
-  .card-body { padding: 12px !important; }
-  .card-header { padding: 10px 14px !important; }
-  #participants-bars { font-size: 12px; }
-
-  /* トップバー右側ボタンのテキスト非表示 */
-  .topbar-actions .btn-text { display: none; }
-}
-
-@media (max-width: 480px) {
-  .grid-4 { grid-template-columns: 1fr 1fr !important; }
   .stat-value { font-size: 18px !important; }
 }
 
@@ -238,6 +183,27 @@
 }
 @media (max-width:768px) {
   #portal-nav-links a { font-size:10px !important; padding:3px 6px !important; }
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 768px) {
+  #content { padding: 12px !important; }
+  .grid-4 { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
+  .grid-2 { grid-template-columns: 1fr !important; gap: 12px !important; }
+  .grid-3 { grid-template-columns: 1fr !important; gap: 10px !important; }
+  .card { overflow-x: auto; }
+  .tbl { min-width: 480px; }
+  .stat-value { font-size: 20px !important; }
+  .stat-label { font-size: 9px !important; }
+  .stat-sub { font-size: 10px !important; }
+  .stat-icon { font-size: 18px !important; }
+  #topbar { padding: 0 12px !important; }
+  .topbar-right .btn span { display: none; }
+  #portal-nav a { font-size: 10px !important; padding: 3px 6px !important; }
+  #participants-bars { font-size: 12px; }
+}
+@media (max-width: 480px) {
+  .grid-4 { grid-template-columns: 1fr 1fr !important; }
 }
 </style>
 </head>
@@ -265,76 +231,20 @@
   });
 })();
 
-// ===== サイドバー開閉（グローバル・即時定義）=====
-window._sidebarOpen = false;
-window.toggleSidebar = function(e) {
-  if(e){e.preventDefault();e.stopPropagation();}
-  var sb = document.getElementById('sidebar');
-  var ov = document.getElementById('sidebar-overlay');
-  if (!sb) return;
-  window._sidebarOpen = !window._sidebarOpen;
-  if(window._sidebarOpen){
-    sb.style.transform='translateX(0)';
-    sb.style.boxShadow='4px 0 24px rgba(0,0,0,0.5)';
-    if(ov){ov.style.display='block';ov.style.pointerEvents='all';setTimeout(function(){ov.style.opacity='1';},10);}
-  } else {
-    sb.style.transform='';
-    sb.style.boxShadow='';
-    if(ov){ov.style.opacity='0';ov.style.pointerEvents='none';setTimeout(function(){ov.style.display='none';},250);}
-  }
-};
-window.closeSidebar = function(e) {
-  if(e){e.preventDefault();e.stopPropagation();}
-  var sb = document.getElementById('sidebar');
-  var ov = document.getElementById('sidebar-overlay');
-  window._sidebarOpen = false;
-  if(sb){sb.style.transform='';sb.style.boxShadow='';}
-  if(ov){ov.style.opacity='0';ov.style.pointerEvents='none';setTimeout(function(){ov.style.display='none';},250);}
-};
-(function bindHamburger(){
-  function tryBind(){
-    var hb=document.getElementById('hamburger');
-    var ov=document.getElementById('sidebar-overlay');
-    if(hb){
-      hb.addEventListener('touchend',function(e){e.preventDefault();e.stopPropagation();window.toggleSidebar();},{passive:false});
-      hb.addEventListener('click',function(e){e.stopPropagation();window.toggleSidebar();});
-    }
-    if(ov){
-      ov.addEventListener('touchend',function(e){e.preventDefault();window.closeSidebar();},{passive:false});
-      ov.addEventListener('click',function(e){e.stopPropagation();window.closeSidebar();});
-    }
-  }
-  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',tryBind);}
-  else{tryBind();}
-})();
+
 </script>
 <!-- END NAV -->
 
 
-<!-- サイドバーオーバーレイ -->
-<div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:150;opacity:0;pointer-events:none;transition:opacity 0.25s;"></div>
-
-
 <script>
 // サイドバー開閉（グローバルスコープで定義）
-function toggleSidebar() {
-  var sb = document.getElementById('sidebar');
-  var ov = document.getElementById('sidebar-overlay');
-  if (!sb) return;
-  if (sb.classList.contains('open')) {
-    sb.classList.remove('open');
-    if(ov){ov.style.opacity='0';ov.style.pointerEvents='none';setTimeout(function(){ov.style.display='none';},250);}
+,250);}
   } else {
     sb.classList.add('open');
     if(ov){ov.style.display='block';setTimeout(function(){ov.style.opacity='1';ov.style.pointerEvents='all';},10);}
   }
 }
-function closeSidebar() {
-  var sb = document.getElementById('sidebar');
-  var ov = document.getElementById('sidebar-overlay');
-  if (!sb) return;
-  sb.classList.remove('open');
-  if(ov){ov.style.opacity='0';ov.style.pointerEvents='none';setTimeout(function(){ov.style.display='none';},250);}
+,250);}
 }
 // ハンバーガーボタンにイベント登録
 </script>
@@ -342,49 +252,11 @@ function closeSidebar() {
 
 
 
-<nav id="sidebar">
-  <div class="sidebar-header">
-    <div class="event-badge">第32回</div>
-    <div class="event-title">横浜経済人会議<br>運営管理システム</div>
-    <div class="event-meta">2026年8月28日（金）17:00〜20:00<br>関東学院大学 関内キャンパス<br>テンネー記念ホール</div>
-    <div class="sync-status"><span class="sync-dot" id="sync-dot"></span><span id="sync-label">接続中...</span></div>
-  </div>
-  <div class="sidebar-nav">
-    <div class="nav-section">メイン</div>
-    <button class="nav-item active" onclick="showPage('dashboard')"><span class="nav-icon">📊</span> ダッシュボード</button>
-    <button class="nav-item" onclick="showPage('tasks')"><span class="nav-icon">✅</span> タスク管理<span class="nav-badge" id="badge-tasks" style="display:none">0</span></button>
-    <button class="nav-item" onclick="showPage('runbook')"><span class="nav-icon">📋</span> 進行表</button>
-    <div class="nav-section">情報共有</div>
-    <button class="nav-item" onclick="showPage('announcements')"><span class="nav-icon">📢</span> お知らせ</button>
-    <div class="nav-section">準備・スケジュール</div>
-    <button class="nav-item" onclick="showPage('rehearsal')"><span class="nav-icon">🎬</span> リハーサル予定</button>
-    <div class="nav-section">外部ページ</div>
-    <button class="nav-item" onclick="location.href='stage.html'"><span class="nav-icon">🎭</span> ステージレイアウト</button>
-    <button class="nav-item" onclick="location.href='scenario.html'"><span class="nav-icon">📜</span> シナリオ</button>
-    <button class="nav-item" onclick="location.href='pr_schedule.html'"><span class="nav-icon">📣</span> 広報スケジュール</button>
-    <button class="nav-item" onclick="location.href='checklist.html'"><span class="nav-icon">📦</span> 事前準備物</button>
-    <button class="nav-item" onclick="location.href='trouble.html'"><span class="nav-icon">⚠️</span> トラブル対応</button>
-    <button class="nav-item" onclick="location.href='roles.html'"><span class="nav-icon">👤</span> 役割分担表</button>
-    <button class="nav-item" onclick="location.href='arrivals.html'"><span class="nav-icon">✅</span> 到着管理</button>
-    <button class="nav-item" onclick="location.href='sekijihyo.html'"><span class="nav-icon">🪑</span> 席次表</button>
-    <button class="nav-item" onclick="location.href='yokohama_kaigi_v6.html'"><span class="nav-icon">📋</span> 申込管理</button>
-  </div>
-  <div class="sidebar-footer">
-    <div class="user-chip">
-      <div class="user-avatar">福</div>
-      <div><div class="user-name">福田 雄太郎</div><div class="user-role">副委員長 / 議案作成者</div></div>
-    </div>
-  </div>
-</nav>
+
 
 <div id="main">
   <header id="topbar">
     <div style="display:flex;align-items:center;gap:10px;">
-      <button id="hamburger" style="display:none;background:none;border:none;cursor:pointer;padding:6px;flex-direction:column;gap:5px;justify-content:center;align-items:center;position:relative;z-index:400;">
-        <span style="display:block;width:20px;height:2px;background:var(--navy);border-radius:2px;"></span>
-        <span style="display:block;width:20px;height:2px;background:var(--navy);border-radius:2px;"></span>
-        <span style="display:block;width:20px;height:2px;background:var(--navy);border-radius:2px;"></span>
-      </button>
       <div class="page-title" id="page-title">ダッシュボード</div>
     </div>
     <div class="topbar-right">
